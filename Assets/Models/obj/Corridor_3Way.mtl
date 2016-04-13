@@ -1,0 +1,20 @@
+# Blender MTL File: 'Corridor_3Way.blend'
+# Material Count: 2
+
+newmtl None
+Ns 0
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+Ks 0.8 0.8 0.8
+d 1
+illum 2
+
+newmtl wire_027177088
+Ns 31.372549
+Ka 0.381700 0.381700 0.381700
+Kd 0.105900 0.694100 0.345100
+Ks 0.350000 0.350000 0.350000
+Ke 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
