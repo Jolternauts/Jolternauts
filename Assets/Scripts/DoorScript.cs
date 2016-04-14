@@ -140,32 +140,54 @@ public class DoorScript : MonoBehaviour
 		}
 	}
 
-/*	public void transferPowerSupplyToRoomA()
+	public void transferPowerSupply()
 	{
-		if (!roomA.isPowered) 
+		int spareSupply = roomB.availableRoomSupply - roomB.totalRoomDemand;
+
+		if (roomB.playerIsHere && !roomA.isPowered) 
 		{
-			int spareSupply = roomB.totalPowerSupply - roomB.totalPowerDemand;
-			roomB.totalPowerSupply -= spareSupply;
-			roomA.totalPowerSupply += spareSupply;
+//			roomB.availableRoomSupply -= spareSupply;
+			roomA.availableRoomSupply += spareSupply;
+
+//			Debug.Log ("Power transferred to RoomA - " + roomA.name);
+		} 
+		else if (roomB.playerIsHere && roomA.playerIsHere && roomA.isPowered) 
+		{
+//			roomA.availableRoomSupply -= spareSupply;
+			roomB.availableRoomSupply += spareSupply;
+		} 
+		else if (roomA.playerIsHere && !roomB.isPowered) 
+		{
+//			roomA.availableRoomSupply -= spareSupply;
+			roomB.availableRoomSupply += spareSupply;
+		}
+		else if (roomA.playerIsHere && roomB.playerIsHere && roomB.isPowered) 
+		{
+//			roomB.availableRoomSupply -= spareSupply;
+			roomA.availableRoomSupply += spareSupply;
 		} 
 
 
-		Debug.Log ("Power transferred to RoomA - " + roomA.name);
 	}
 
-	public void transferPowerSupplyToRoomB()
+/*	public void transferPowerSupplyToRoomB()
 	{
-		if (!roomB.isPowered) 
-		{
-			int spareSupply = roomA.totalPowerSupply - roomA.totalPowerDemand;
-			roomA.totalPowerSupply -= spareSupply;
-			roomB.totalPowerSupply += spareSupply;
-		}
+		int spareSupply = roomA.totalRoomSupply - roomA.totalRoomDemand;
 
+		if (roomA.playerIsHere && !roomB.isPowered) 
+		{
+			roomA.totalRoomSupply -= spareSupply;
+			roomB.totalRoomSupply += spareSupply;
+		}
+		else if (roomA.playerIsHere && roomB.playerIsHere && roomB.isPowered) 
+		{
+			roomB.totalRoomSupply -= spareSupply;
+			roomA.totalRoomSupply += spareSupply;
+		} 
 
 		Debug.Log ("Power transferred to RoomB - " + roomB.name);
 	}
-*/	
+*/
 }
 
 
