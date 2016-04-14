@@ -12,6 +12,7 @@ public class FuseBox : ObjectClass
 //	AngusMovement player;
 //	GameManager gameMngr;
 	RoomScript room;
+	DoorScript door;
 
 	Renderer boxRend;
 
@@ -23,6 +24,11 @@ public class FuseBox : ObjectClass
 		gameMngr = GameManager.instance;
 		room = this.gameObject.GetComponentInParent<RoomScript> ();		
 		boxRend = this.gameObject.GetComponent<Renderer> ();
+
+		for (int x = 0; x < room.doors.Count; x++) 
+		{
+			door = room.doors [x].GetComponent<DoorScript> ();
+		}
 	}
 
 	void Update()
@@ -114,6 +120,18 @@ public class FuseBox : ObjectClass
 			}
 
 			if (Input.GetKeyUp (KeyCode.LeftShift) || Input.GetKeyUp (KeyCode.P)) 
+			{
+				statePressed (false);
+			}
+
+			if (Input.GetKeyDown (KeyCode.T) && !statePressed ()) 
+			{
+//				changeState (this.gameObject);
+				door.transferPowerSupply();
+				statePressed (true);
+			}
+
+			if (Input.GetKeyUp (KeyCode.T)) 
 			{
 				statePressed (false);
 			}

@@ -3,9 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class RoomScript : MonoBehaviour 
-{	
-//	public int roomPowerSupply,roomPowerDemand;
-	
+{		
 	public GameObject floorGravity;
 	public GameObject ceilingGravity;
 
