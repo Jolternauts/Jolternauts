@@ -8,9 +8,15 @@ public class RoomScript : MonoBehaviour
 	public GameObject ceilingGravity;
 
 	public GameObject roomFuseBox;
+	public GameObject north;
+	public GameObject east;
+	public GameObject south;
+	public GameObject west;
+	public GameObject compass;
 
 	public List<GameObject> roomItems = new List<GameObject>();
 	public List<GameObject> doors = new List<GameObject>();
+	public List<GameObject> neighbours = new List<GameObject>();
 
 	public bool isPowered = false;
 	public bool playerIsHere = false;
@@ -19,6 +25,10 @@ public class RoomScript : MonoBehaviour
 		
 	GameManager gameMngr;
 	AngusMovement player;
+	RoomScript northScript;
+	RoomScript eastScript;
+	RoomScript southScript;
+	RoomScript westScript;
 
 	public int totalRoomSupply;
 	public int availableRoomSupply;
@@ -34,6 +44,7 @@ public class RoomScript : MonoBehaviour
 		player = GameObject.FindWithTag ("Player").GetComponent<AngusMovement>();
 		this.GetComponent<BoxCollider> ().isTrigger = true;
 		tallyTotalRoomPower ();
+		directionSetup ();
     }
 
 	void Update ()
@@ -43,12 +54,35 @@ public class RoomScript : MonoBehaviour
 			availableRoomSupply = 0;
 			currentRoomDemand = 0;
 		}
+
+		if (playerIsHere) 
+		{
+			player.room = this.gameObject.GetComponent<RoomScript> ();
+		}
     }
 
-	/// <summary>
+	// Checks what direction a neighbouring room is in and accesses their script.
+	public void directionSetup ()
+	{
+		if (north) 
+		{
+			northScript = north.GetComponent<RoomScript> ();
+		}
+		else if (east)
+		{
+			eastScript = east.GetComponent<RoomScript> ();
+		}
+		else if (south)
+		{
+			southScript = south.GetComponent<RoomScript> ();
+		}
+		else if (west)
+		{
+			westScript = west.GetComponent<RoomScript> ();
+		}
+	}
+
 	/// Detects player entering room & updates power UI.
-	/// </summary>
-	/// <param name="detector">Detector.</param>
 	void OnTriggerEnter(Collider detector)
 	{
 		if (detector.transform.tag == "Player") 
@@ -62,12 +96,9 @@ public class RoomScript : MonoBehaviour
 		}
 	}
 
-	/// <summary>
 	/// Detects player still in room.
 	/// Runs roomStateCheck function.
 	/// If Fusebox is Active, Room is Active.
-	/// </summary>
-	/// <param name="detector">Detector.</param>
 	void OnTriggerStay(Collider detector)
 	{
 		if (detector.transform.tag == "Player") 
@@ -83,24 +114,18 @@ public class RoomScript : MonoBehaviour
 		}
 	}
 
-	/// <summary>
 	/// Detects player leaving room & updates power UI.
-	/// </summary>
-	/// <param name="detector">Detector.</param>
 	void OnTriggerExit(Collider detector)
 	{
 		if (detector.transform.tag == "Player")
 		{
             runOnce = false;
 			playerIsHere = false;
-        }
+       }
 	}
 		
-	/// <summary>
 	/// Check active state of room.
-	/// If the room is active updates are made.
 	/// If the room is inactive oxygen & health are depleted.
-	/// </summary>
 	public void roomStateCheck()
 	{
 		if (isPowered) 
@@ -118,19 +143,35 @@ public class RoomScript : MonoBehaviour
 		}
 	}
 
-	/// <summary>
 	/// Tallies the total room power.
 	/// It is summed up by the values of every device in the room.
-	/// </summary>
 	public void tallyTotalRoomPower()
 	{
 		FuseBox box = roomFuseBox.GetComponent<FuseBox> ();
 
-		foreach (GameObject machine in box.roomObjects) 
+		for (int x = 0; x < box.roomObjects.Count; x++) 
 		{
-			totalRoomSupply += machine.GetComponent<ObjectClass> ().powerSupply;
-			totalRoomDemand += machine.GetComponent<ObjectClass> ().powerDemand;
+			ObjectClass machine = box.roomObjects [x].GetComponent<ObjectClass> ();
+			totalRoomSupply += machine.powerSupply;
+			totalRoomDemand += machine.powerDemand;
 		}
+	}
+
+	/// Transfers the power supply in the designated direction.
+	/// Deucts that room's demand from the room with supply.
+	public void transferPowerSupply(GameObject direction)
+	{
+		RoomScript directionScript = direction.GetComponent<RoomScript> ();
+		int requiredSupply = directionScript.totalRoomDemand;;
+		directionScript.availableRoomSupply += requiredSupply;
+		#pragma warning disable
+		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
+		{
+			RoomScript supplyroom = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
+			supplyroom.availableRoomSupply -= requiredSupply;
+			break;
+		}
+		#pragma warning restore
 	}
 
 }

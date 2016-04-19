@@ -7,10 +7,6 @@ public class PowerDrain : ObjectClass
 {
 	//this is for anything that demands power
 
-	//this tracks the devices max demandable power
-//	public int powerDemand;
-
-//	AngusMovement player;
 	RoomScript room;
 	FuseBox box;
 	Renderer deviceRend;
@@ -19,8 +15,11 @@ public class PowerDrain : ObjectClass
 
 	void Start()
 	{
-//		player = GameObject.FindWithTag ("Player").GetComponent<AngusMovement>();
+		myName = this.gameObject.transform.name;
+		myTag = this.gameObject.transform.tag;
 		room = this.gameObject.GetComponentInParent<RoomScript> ();
+		gameMngr = GameManager.instance;
+		player = GameObject.FindWithTag ("Player").GetComponent<AngusMovement>();
 		box = room.roomFuseBox.GetComponent<FuseBox> ();
 		deviceRend = this.gameObject.GetComponent<Renderer> ();
 	}
@@ -30,10 +29,14 @@ public class PowerDrain : ObjectClass
 		
 	}
 
+	// Change state of device.
 	public void changeState(GameObject reference)
 	{
+		// If fusebox is active.
 		if (box.stateActive ()) 
 		{
+			// If A.R.S is over 0.
+			// Change active / damaged states and elements.
 			if (room.availableRoomSupply > 0) 
 			{
 				if (stateActive () && !stateDamaged ()) 
@@ -42,6 +45,7 @@ public class PowerDrain : ObjectClass
 					changeRendColor (offColor);
 					stateActive (false);
 					box.roomSinglePowerDown (powerDemand);
+					gameMngr.availableLevelSupply += powerDemand;
 				}
 				else if (stateActive () && stateDamaged ()) 
 				{
@@ -49,6 +53,7 @@ public class PowerDrain : ObjectClass
 					changeRendColor (damagedColor);
 					stateActive (false);
 					box.roomSinglePowerDown (powerDemand);
+					gameMngr.availableLevelSupply += powerDemand;
 				}
 				else if (!stateActive () && !stateDamaged ()) 
 				{
@@ -56,6 +61,7 @@ public class PowerDrain : ObjectClass
 					changeRendColor (activeColor);
 					stateActive (true);
 					box.roomSinglePowerUp (powerDemand);
+					gameMngr.availableLevelSupply -= powerDemand;
 				}
 				else if (!stateActive () && stateDamaged ()) 
 				{
@@ -73,8 +79,7 @@ public class PowerDrain : ObjectClass
 			/* If the object is not Neutral: (That means not off but with no power reaching it anyway.)
 				 * Debug.
 				 * Change its color.
-				 * Turn it to Neutral !!!.
-				*/
+				 * Turn it to Neutral !!!.	*/
 			if (!stateOn ()) 
 			{
 				Debug.Log ("Device neutral");
@@ -85,8 +90,7 @@ public class PowerDrain : ObjectClass
 			/* If the object is Neutral:
 				 * Debug.
 				 * Change its color.
-				 * Turn it to OFF !!!.
-				*/
+				 * Turn it to OFF !!!.	*/
 			else if (stateOn ()) 
 			{
 				Debug.Log ("Device off");
@@ -144,6 +148,7 @@ public class PowerDrain : ObjectClass
 		}
 	}
 
+	// Checks if device group is damaged or not and A.R.S is enough to turn on.
 	public void massActivationCheck()
 	{
 		if (!stateDamaged() && stateOn() && room.availableRoomSupply - powerDemand >= 0)
@@ -153,6 +158,7 @@ public class PowerDrain : ObjectClass
 			stateOn(false);
 			changeRendColor (activeColor);
 			box.roomSinglePowerUp (powerDemand);
+			gameMngr.availableLevelSupply -= powerDemand;
 		}
 		else if (stateDamaged() && stateOn()) 
 		{
@@ -195,6 +201,9 @@ public class PowerDrain : ObjectClass
 		deviceRend.material.color = colour;
 	}
 
+	/* If device group is turned on:
+	 * if any are damaged, changed to damaged criteria.
+	 * If true and others aren't make them inactive.	*/
 	public void massCrashCheckForDevice()
 	{
 		if (stateActive() && !stateDamaged() || stateOn() && !stateDamaged()) 

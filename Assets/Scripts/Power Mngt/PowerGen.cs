@@ -7,41 +7,30 @@ public class PowerGen : ObjectClass
 {
 	//this is for anything that supplies power
 
-	//this tracks the devices max suppliable power
-//	public int powerSupply;
-
-	//this tracks the devices max demandable power
-//	public int powerDemand;
-
 	public bool poweringUp;
 	public bool besideGen;
 
 	RoomScript room;
 	FuseBox box;
-//	GameManager gameMngr;
-//	AngusMovement player;
 	Renderer genRend;
-
 
 	void Start()
 	{
+		myName = this.gameObject.transform.name;
+		myTag = this.gameObject.transform.tag;
 		room = this.gameObject.GetComponentInParent<RoomScript> ();
 		box = room.roomFuseBox.GetComponent<FuseBox> ();
-//		gameMngr = GameManager.instance;
-//		player = GameObject.FindWithTag ("Player").GetComponent<AngusMovement>();
+		gameMngr = GameManager.instance;
+		player = GameObject.FindWithTag ("Player").GetComponent<AngusMovement>();
 		genRend = this.gameObject.GetComponent<Renderer> ();
-
 	}
 
 	void Update()
 	{
-		if (poweringUp) 
-		{
-			powerUp ();
-		}
 
 	}
 
+	// Changes the state of generator.
 	public void changeState(GameObject reference)
 	{
 		if (stateActive() && !stateDamaged()) 
@@ -52,6 +41,7 @@ public class PowerGen : ObjectClass
 			gameMngr.availableLevelSupply -= powerSupply;
 			room.availableRoomSupply -= powerSupply;
 			box.roomSinglePowerDown (powerDemand);
+			gameMngr.suppliers.Remove (this.gameObject);
 		}
 
 		else if (stateActive() && stateDamaged()) 
@@ -62,6 +52,7 @@ public class PowerGen : ObjectClass
 			gameMngr.availableLevelSupply -= powerSupply;
 			room.availableRoomSupply -= powerSupply;
 			box.roomSinglePowerDown (powerDemand);
+			gameMngr.suppliers.Remove (this.gameObject);
 		}
 
 		else if (!stateActive() && !stateDamaged()) 
@@ -70,9 +61,10 @@ public class PowerGen : ObjectClass
 			changeRendColor (activeColor);
 			stateActive (true);
 			gameMngr.availableLevelSupply += powerSupply;
+			gameMngr.availableLevelSupply -= powerDemand;
 			room.availableRoomSupply += powerSupply;
 			box.roomSinglePowerUp (powerDemand);
-			poweringUp = false;
+			gameMngr.suppliers.Add (this.gameObject);
 		}
 
 		else if (!stateActive() && stateDamaged()) 
@@ -106,7 +98,7 @@ public class PowerGen : ObjectClass
 			{
 				if (!stateActive ()) 
 				{
-					poweringUp = true;
+					powerUp ();
 				} 
 				else
 					changeState (this.gameObject);
@@ -119,9 +111,7 @@ public class PowerGen : ObjectClass
 				statePressed (false);
 			}
 		}
-
 		machineStateMeterCheck ();
-
 	}
 		
 	void OnTriggerExit(Collider detector)
@@ -133,24 +123,18 @@ public class PowerGen : ObjectClass
 		}
 	}
 
+	/// Wait function.
+	public IEnumerator Stall()
+	{
+		Debug.Log ("Buffering");
+		yield return new WaitForSeconds (repairTime);
+		changeState (this.gameObject);
+	}
+
 	public void powerUp()
 	{
-		// Change stateMeter2 color. (StateMeter2 is Object UI for the action of activating a power supplier).
-		// Fill stateMeter2 over time. (Duration depends on object's individual activation time (as represented by repair time)).
-		gameMngr.machineStateMeter2.color = activeColor;
-		gameMngr.machineStateMeter2.fillAmount += 1.0f / repairTime * Time.deltaTime;
-
-		/* When meter is filled:
-		 * Empty the meter.
-		 * Change Object state.
-		 */
-		if (gameMngr.machineStateMeter2.fillAmount == 1.0f) 
-		{
-			Debug.Log ("Meter filled, attempt changeState");
-			gameMngr.machineStateMeter2.fillAmount = 0f;
-			changeState (this.gameObject);
-			poweringUp = false;
-		}
+		changeRendColor (neutralColor);
+		StartCoroutine (Stall ());
 	}
 
 	public void machineStateMeterCheck()
