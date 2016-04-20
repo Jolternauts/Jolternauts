@@ -50,55 +50,39 @@ public class ObjectClass : MonoBehaviour
 	{
 		
 	}
-
-
-
+		
 	// While player is colliding and R is held down repair object:
 	void OnTriggerStay(Collider detector)
 	{
 		if (detector.transform.tag == "Player") 
 		{
-			if (Input.GetKey (KeyCode.R) && this.gameObject.GetComponent<ObjectsList> ().isDamaged) 
+			if (Input.GetKeyDown (KeyCode.R) && this.gameObject.GetComponent<ObjectsList> ().isDamaged) 
 			{
 				repairObject (this.gameObject);
 			}
 		}
 	}
 
-	/// <summary>
-	/// Repairs the object.
-	/// </summary>
-	/// <param name="device">Device.</param>
-	public void repairObject(GameObject device)
+	/// Wait function.
+	IEnumerator Stall()
 	{
-		Renderer deviceRend = device.GetComponent<Renderer> ();
-
-		// Change stateMeter2 color. (StateMeter2 is Object UI for the action of repairing it).
-		// Fill stateMeter2 over time. (Duration depends on object's individual repair time).
-		gameMngr.machineStateMeter2.color = offColor;
-		gameMngr.machineStateMeter2.fillAmount += 1.0f / repairTime * Time.deltaTime;
-
-		/* When meter is filled:
-			 * Empty the meter.
-			 * Object no longer damaged.
-			 * Turn Object to OFF.
-			 * Change stateMeter2 color.
-			 * Change Object color.
-			*/
-		if (gameMngr.machineStateMeter2.fillAmount == 1.0f) 
-		{
-			gameMngr.machineStateMeter2.fillAmount = 0f;
-			isDamaged = false;
-			isActive = false;
-			gameMngr.machineStateMeter1.color = offColor;
-			deviceRend.material.color = offColor;
-		}
+		Debug.Log ("Buffering");
+		yield return new WaitForSeconds (repairTime);
 	}
 
-	/// <summary>
+	/// Repairs the object.
+	public void repairObject(GameObject device)
+	{
+		StartCoroutine (Stall ());
+		Renderer deviceRend = device.GetComponent<Renderer> ();
+		isDamaged = false;
+		isActive = false;
+		gameMngr.machineStateMeter1.color = offColor;
+		deviceRend.material.color = offColor;
+	}
+
 	/// This detects if an object has a box collider or a renderer.
 	/// And changes their color and trigger status.
-	/// </summary>
 	void objectStartup()
 	{
 		if (boxColl && rend) 
@@ -116,17 +100,10 @@ public class ObjectClass : MonoBehaviour
 		} 
 	}
 
-	/// <summary>
 	/// Initializes a new instance of the <see cref="ObjectClass"/> class.
-	/// </summary>
 	public ObjectClass(){}
 
-	/// <summary>
 	/// Initializes a new instance of the <see cref="ObjectClass"/> class.
-	/// </summary>
-	/// <param name="setOn">If set to <c>true</c> set on.</param>
-	/// <param name="setActive">If set to <c>true</c> set active.</param>
-	/// <param name="setDamage">If set to <c>true</c> set damage.</param>
 	public ObjectClass(bool setOn, bool setActive, bool setDamage)
 	{
 		isOn = setOn;
@@ -134,88 +111,55 @@ public class ObjectClass : MonoBehaviour
 		isDamaged = setDamage;
 	}
 
-	/// <summary>
-	/// States the on.
-	/// </summary>
-	/// <param name="setOn">If set to <c>true</c> set on.</param>
+	// Sets bool state.
 	public void stateOn(bool setOn)
 	{
 		isOn = setOn;
 	}
 
-	/// <summary>
-	/// States the on.
-	/// </summary>
-	/// <returns><c>true</c>, if on was stated, <c>false</c> otherwise.</returns>
+	// Returns bool state.
 	public bool stateOn()
 	{
 		return isOn;
 	}
 		
-	/// <summary>
-	/// States the active.
-	/// </summary>
-	/// <param name="setActive">If set to <c>true</c> set active.</param>
+	// Sets bool state.
 	public void stateActive(bool setActive)
 	{
 		isActive = setActive;
 	}
 
-	/// <summary>
-	/// States the active.
-	/// </summary>
-	/// <returns><c>true</c>, if active was stated, <c>false</c> otherwise.</returns>
+	// Returns bool state.
 	public bool stateActive()
 	{
 		return isActive;
 	}
 
-	/// <summary>
-	/// States the damaged.
-	/// </summary>
-	/// <param name="setDamage">If set to <c>true</c> set damage.</param>
+	// Sets bool state.
 	public void stateDamaged(bool setDamage)
 	{
 		isDamaged = setDamage;
 	}
 
-	/// <summary>
-	/// States the damaged.
-	/// </summary>
-	/// <returns><c>true</c>, if damaged was stated, <c>false</c> otherwise.</returns>
+	// Returns bool state.
 	public bool stateDamaged()
 	{
 		return isDamaged;
 	}
 
-/*	public void stateBeside(bool setBeside)
-	{
-		isBesideMachine = setBeside;
-	}
-
-	public bool stateBeside()
-	{
-		return isBesideMachine;
-	}
-*/
+	// Sets bool state.
 	public void statePressed(bool setPress)
 	{
 		keyPressed = setPress;
 	}
 
+	// Returns bool state.
 	public bool statePressed()
 	{
 		return keyPressed;
 	}
 
-/*	public void changeColors(Color32 colour)
-	{
-		stateMeter1.color = colour;
-		stateMeter2.color = colour;
-		rend.material.color = colour;
-	}
-*/		
-
+	/// Checks if any machines are damaged and affects the rest accordingly.
 	public void massCrashCheck()
 	{
 		PowerGen gen = this.gameObject.GetComponent<PowerGen> ();
@@ -237,8 +181,6 @@ public class ObjectClass : MonoBehaviour
 			drain.changeRendColor (offColor);		
 		}
 	}
-
-		
 }
 
 

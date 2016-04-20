@@ -36,7 +36,7 @@ public class AngusMovement : MonoBehaviour
 	RaycastHit hit;
 	GameObject currentHitTarget;
 
-	RoomScript room;
+	public RoomScript room;
 	GameManager gameMngr;
 
     void Start () 
@@ -46,6 +46,7 @@ public class AngusMovement : MonoBehaviour
 		currentOxygen = startOxygen;
 		rigBod = transform.GetComponent<Rigidbody> ();
 		gameMngr = GameManager.instance;
+
     }
 		
 		void Update()
@@ -105,7 +106,7 @@ public class AngusMovement : MonoBehaviour
 						PowerGen targetGen = currentHitTarget.GetComponent<PowerGen>();
 						if (!targetGen.stateActive ()) 
 						{
-							targetGen.poweringUp = true;
+							targetGen.powerUp ();
 						} 
 						else
 							targetGen.changeState (targetGen.gameObject);
@@ -115,6 +116,29 @@ public class AngusMovement : MonoBehaviour
 					{
 						currentHitTarget.GetComponent<PowerDrain>().changeState(currentHitTarget);
 					}
+				}
+
+				if (currentHitTarget.GetComponent<DoorScript> () && targetDistance <= maxRange) 
+				{
+					// If any doors are the receiver make them not.
+					for (int x = 0; x < room.doors.Count; x++) 
+					{
+						DoorScript door = room.doors [x].GetComponent<DoorScript> ();
+						if (door.isDirectionalReceiver) 
+						{
+							door.isDirectionalReceiver = false;
+						}
+					}
+
+					// Changes if target door is receiver or not.
+					DoorScript targetDoor = currentHitTarget.GetComponent<DoorScript> ();
+					if (targetDoor.isDirectionalReceiver) 
+					{
+						targetDoor.isDirectionalReceiver = false;
+					} 
+					else 
+						targetDoor.isDirectionalReceiver = true;
+
 				}
 
 				//If the object is activated by the mouse click.
@@ -130,8 +154,6 @@ public class AngusMovement : MonoBehaviour
 		{
 			/*Commands for when target reticle is just aimed at an object.
 			 * Basically depending on what your aiming at change the color of the reticle.
-			 * If it has the Door script, yellow.
-			 * If it has the Object script, blue.
 			*/
 			if (Physics.Raycast (fpsCameraIn.transform.position, fpsCameraIn.transform.forward, out hit)) 
 			{
@@ -187,10 +209,7 @@ public class AngusMovement : MonoBehaviour
 		}
 	}
 
-	/// <summary>
 	/// While the Player is colliding with a trigger.
-	/// </summary>
-	/// <param name="detector">Detector.</param>
 	void OnTriggerStay(Collider detector)
 	{
 		/*If the trigger's tag is this.
@@ -204,7 +223,7 @@ public class AngusMovement : MonoBehaviour
 		}
 	}
 
-	//When the Player leaves a trigger.
+	//When the Player leaves the trigger.
 	void OnTriggerExit(Collider detector)
 	{
 		/*If the trigger's tag is this.
@@ -217,11 +236,8 @@ public class AngusMovement : MonoBehaviour
 		}
 	}
 
-	/// <summary>
 	/// Player's Health increase.
 	/// It can't go below 0 or above start amount.
-	/// </summary>
-	/// <param name="amount">positive values heal, negative values damage</param>
 	public void changeHealth(float amount)
 	{
 		currentHealth += amount;
@@ -237,11 +253,8 @@ public class AngusMovement : MonoBehaviour
 		}
 	}
 
-	/// <summary>
 	/// Players Oxygen Level (Suit level) increase.
 	/// It can't go below 0 or above start amount.
-	/// </summary>
-	/// <param name="amount">positive values increase, negative values Decrease</param>
 	public void changeOxygen(float amount)
 	{
 		currentOxygen += amount;
@@ -256,11 +269,8 @@ public class AngusMovement : MonoBehaviour
 		}
 	}
 
-	/// <summary>
 	/// Player Energy Level (Suit level) Increase.
 	/// It can't go below 0 or above start amount.
-	/// </summary>
-	/// <param name="amount">positive values increase, negative values decrease</param>
 	public void changeEnergy(float amount)
 	{
 		currentEnergy += amount;
@@ -281,6 +291,7 @@ public class AngusMovement : MonoBehaviour
 		currentEnergy -= 5.0f;
 	}
 
+	// Does exactly what it says on the tin.
 	public void changeStateMeterColors(Color32 colour)
 	{
 		gameMngr.machineStateMeter1.color = colour;

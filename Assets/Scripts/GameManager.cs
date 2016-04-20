@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 
 	public List <GameObject> roomList = new List<GameObject>();
 	public List <GameObject> doorList = new List<GameObject>();
+	public List <GameObject> suppliers = new List<GameObject>();
 
 	DoorScript Door;
 	RoomScript Room;
@@ -51,10 +52,8 @@ public class GameManager : MonoBehaviour
 		instance = this;
 	}
 
-	/// <summary>
 	/// Identify player.
 	/// Determine power figures and initiate UI.
-	/// </summary>
 	void Start()
 	{
 		player = playerObject.GetComponent<AngusMovement> ();
@@ -64,9 +63,7 @@ public class GameManager : MonoBehaviour
 		tallyTotalLevelPower();
 	}
 
-	/// <summary>
 	/// Update Player UI and power figures.
-	/// </summary>
 	void Update()
 	{
         updateUI ();
@@ -79,9 +76,7 @@ public class GameManager : MonoBehaviour
 		}
     }
 
-	/// <summary>
 	/// Runs the UI.
-	/// </summary>
 	void UIStart()
 	{
 		playerHealthBar.color = Color.red;
@@ -95,9 +90,7 @@ public class GameManager : MonoBehaviour
 		textActiveGlobalDemand.text = System.Convert.ToString(activeLevelDemand);
 	}
 
-	/// <summary>
 	/// Updates the Player UI.
-	/// </summary>
 	void updateUI()
 	{
 		float currentHealth = player.currentHealth;
@@ -107,25 +100,30 @@ public class GameManager : MonoBehaviour
 		playerOxygenBar.fillAmount = (float)(player.currentOxygen / player.startOxygen);
 	}
 
-	/// <summary>
 	/// Tallies the total level power.
 	/// Summed up by the total room values.
-	/// </summary>
 	public void tallyTotalLevelPower()
 	{
-		foreach(GameObject room in roomList)
-		{			
+		foreach (GameObject room in roomList) 
+		{
 			RoomScript currentRoom = room.GetComponent<RoomScript> ();
 			totalLevelSupply += currentRoom.totalRoomSupply;
 			totalLevelDemand += currentRoom.totalRoomDemand;
-       }
+		}
+
+//		#pragma warning disable
+/*		for (int x = 0; x < roomList.Count; x++) 
+		{
+			RoomScript currentRoom = roomList[x].GetComponent<RoomScript> ();
+			totalLevelSupply += currentRoom.totalRoomSupply;
+			totalLevelDemand += currentRoom.totalRoomDemand;
+//			break;
+		}
+//		#pragma warning restore
+*/
 	}
 
-	/// <summary>
 	/// Updates the room power UI.
-	/// </summary>
-	/// <param name="supply">Supply.</param>
-	/// <param name="demand">Demand.</param>
 	public void updateRoomUI(int supply, int demand, int activeSupply, int activeDemand)
     {
 		textRoomSupply.text = System.Convert.ToString(supply);
@@ -134,61 +132,36 @@ public class GameManager : MonoBehaviour
 		textActiveRoomDemand.text = System.Convert.ToString(activeDemand);
     }
 
-   /// <summary>
    /// Updates the global power UI.
-   /// </summary>
-   /// <param name="supply">Supply.</param>
-   /// <param name="demand">Demand.</param>
-	public void updateAllSupplyDemand(int supply, int demand, int activeSupply, int activeDemand)
+	public void updateAllSupplyDemand(int supply, int demand, int availableSupply, int activeDemand)
     {
 		textGlobalSupply.text = System.Convert.ToString(supply);
 		textGlobalDemand.text = System.Convert.ToString(demand);
-		textAvailableGlobalSupply.text = System.Convert.ToString(activeSupply);
+		textAvailableGlobalSupply.text = System.Convert.ToString(availableSupply);
 		textActiveGlobalDemand.text = System.Convert.ToString(activeDemand);   
 	}
-
-
-	/// <summary>
+		
 	/// Increases active global supply by the values of a room.
-	/// </summary>
-	/// <param name="supply">Supply.</param>
-	/// <param name="demand">Demand.</param>
 	public void levelRoomPowerUp(int demand)
 	{
 		availableLevelSupply -= demand;
-		activeLevelDemand += demand;
 	}
 
-	/// <summary>
 	/// Decreases active global supply by the values of a room.
-	/// </summary>
-	/// <param name="supply">Supply.</param>
-	/// <param name="demand">Demand.</param>
 	public void levelRoomPowerDown(int demand)
 	{
 		availableLevelSupply += demand;
-		activeLevelDemand -= demand;
 	}
 
-	/// <summary>
 	/// Increases active global supply by the value of a single object.
-	/// </summary>
-	/// <param name="supply">Supply.</param>
-	/// <param name="demand">Demand.</param>
 	public void levelObjectPowerUp(int demand)
 	{
 		availableLevelSupply -= demand;
-		activeLevelDemand += demand;
 	}
 
-	/// <summary>
 	/// Decreases active global supply by the values of a single object.
-	/// </summary>
-	/// <param name="supply">Supply.</param>
-	/// <param name="demand">Demand.</param>
 	public void levelObjectPowerDown(int demand)
 	{
 		availableLevelSupply += demand;
-		activeLevelDemand -= demand;
 	}
 }
