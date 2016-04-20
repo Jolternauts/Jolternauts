@@ -29,6 +29,7 @@ public class RoomScript : MonoBehaviour
 	RoomScript eastScript;
 	RoomScript southScript;
 	RoomScript westScript;
+	CompassScript locator;
 
 	public int totalRoomSupply;
 	public int availableRoomSupply;
@@ -42,6 +43,7 @@ public class RoomScript : MonoBehaviour
 	{	
 		gameMngr = GameManager.instance;
 		player = GameObject.FindWithTag ("Player").GetComponent<AngusMovement>();
+		locator = compass.GetComponent<CompassScript> ();
 		this.GetComponent<BoxCollider> ().isTrigger = true;
 		tallyTotalRoomPower ();
 		directionSetup ();
@@ -58,6 +60,7 @@ public class RoomScript : MonoBehaviour
 		if (playerIsHere) 
 		{
 			player.room = this.gameObject.GetComponent<RoomScript> ();
+//			locater.checkFlowReceiver ();
 		}
     }
 
@@ -91,6 +94,8 @@ public class RoomScript : MonoBehaviour
 			{
 				runOnce = true;
 				playerIsHere = true;
+				roomStateCheck ();
+				locator.checkFlowReceiver ();
 				gameMngr.updateRoomUI(totalRoomSupply, totalRoomDemand, availableRoomSupply, currentRoomDemand);
 			}
 		}
@@ -105,6 +110,7 @@ public class RoomScript : MonoBehaviour
 		{
 			playerIsHere = true;
 			roomStateCheck ();
+			locator.checkFlowReceiver ();
 			gameMngr.updateRoomUI(totalRoomSupply, totalRoomDemand, availableRoomSupply, currentRoomDemand);
 
 			if (this.roomFuseBox.GetComponent<ObjectClass>().stateActive())
@@ -173,7 +179,6 @@ public class RoomScript : MonoBehaviour
 		}
 		#pragma warning restore
 	}
-
 }
 
 

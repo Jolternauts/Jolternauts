@@ -10,6 +10,7 @@ public class FuseBox : ObjectClass
 	public List<GameObject> roomObjects = new List<GameObject>();
 
 	RoomScript room;
+	CompassScript compass;
 
 	Renderer boxRend;
 
@@ -23,7 +24,7 @@ public class FuseBox : ObjectClass
 		gameMngr = GameManager.instance;
 		room = this.gameObject.GetComponentInParent<RoomScript> ();		
 		boxRend = this.gameObject.GetComponent<Renderer> ();
-
+		compass = room.GetComponentInChildren<CompassScript> ();
 	}
 
 	void Update()

@@ -4,9 +4,15 @@ using System.Collections.Generic;
 
 public class DoorScript : MonoBehaviour 
 {
+	public List<GameObject> connectedRooms = new List<GameObject> ();
 	public GameObject doorSideA;
 	public GameObject doorSideB;
 
+	GameObject me;
+	GameObject connectorsDoor;
+	CompassScript locator;
+	DoorScript myScript;
+	RoomScript connector;
 	RoomScript roomA;
 	RoomScript roomB;
 
@@ -32,6 +38,8 @@ public class DoorScript : MonoBehaviour
 
 	void Start ()
 	{
+		me = this.gameObject;
+		myScript = me.GetComponent<DoorScript> ();
 		roomA = doorSideA.GetComponent<RoomScript> ();
 		roomB = doorSideB.GetComponent<RoomScript> ();
 		this.GetComponent<BoxCollider> ().isTrigger = true;
@@ -51,6 +59,60 @@ public class DoorScript : MonoBehaviour
 		}
 		else
 			closeDoor ();
+
+
+/*		if (doorSideA == roomA.compass.GetComponent<CompassScript> ().currentHitTarget) 
+		{
+			if (roomA.isPowered) 
+			{
+				for (int x = 0; x < roomB.doors.Count; x++) 
+				{
+					if (roomB.doors[x] == me)
+					{
+						isDirectionalReceiver = true;
+					}
+				}
+			}
+		}
+		else if (doorSideB == roomB.compass.GetComponent<CompassScript> ().currentHitTarget) 
+		{
+			if (roomB.isPowered) 
+			{
+				for (int x = 0; x < roomA.doors.Count; x++) 
+				{
+					if (roomA.doors[x] == me)
+					{
+						isDirectionalReceiver = true;
+					}
+				}
+			}
+		}
+
+		for (int x = 0; x < connectedRooms.Count; x++) 
+		{
+			connector = connectedRooms [x].GetComponent<RoomScript> ();
+			locator = connector.compass.GetComponent<CompassScript> ();
+
+			if (connector.isPowered) 
+			{
+				if (connectedRooms [x] == locator.currentHitTarget) 
+				{
+					for (int y = 0; y < connector.doors.Count; y++) 
+					{
+						connectorsDoor = connector.doors [y];
+						if (connectorsDoor == me) 
+						{
+							myScript.isDirectionalReceiver = true;
+						}
+					}
+				}
+				else
+				{
+					isDirectionalReceiver = false;
+				}
+			}
+		}
+*/
 	}
 		
 	/// Changes the active state of the door.
