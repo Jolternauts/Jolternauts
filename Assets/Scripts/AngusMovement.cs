@@ -86,6 +86,20 @@ public class AngusMovement : MonoBehaviour
 			Cursor.visible = true;
 		}
 
+		if (Input.GetMouseButtonDown (1)) 
+		{
+			currentHitTarget = hit.collider.gameObject;
+
+			if (Physics.Raycast (fpsCameraIn.transform.position, fpsCameraIn.transform.forward, out hit)) 
+			{
+				if (currentHitTarget.GetComponent<CompassScript> ())
+				{
+					CompassScript compass = currentHitTarget.GetComponent<CompassScript> ();
+					compass.turnDialRight ();
+				}
+			}
+		}
+
 		//Commands for when target reticle is aimed at an object and left mouse is clicked.
 		if (Input.GetMouseButtonDown (0)) 
 		{
@@ -147,6 +161,12 @@ public class AngusMovement : MonoBehaviour
 				{
 					//Do this function saps some of the suit's power.
 					useSuitPower ();
+				}
+
+				if (currentHitTarget.GetComponent<CompassScript> ())
+				{
+					CompassScript compass = currentHitTarget.GetComponent<CompassScript> ();
+					compass.turnDialLeft ();
 				}
 			}
 		} 
