@@ -13,6 +13,7 @@ public class RoomScript : MonoBehaviour
 	public GameObject south;
 	public GameObject west;
 	public GameObject compass;
+	public GameObject here;
 
 	public List<GameObject> roomItems = new List<GameObject>();
 	public List<GameObject> doors = new List<GameObject>();
@@ -25,11 +26,10 @@ public class RoomScript : MonoBehaviour
 		
 	GameManager gameMngr;
 	AngusMovement player;
-	RoomScript northScript;
-	RoomScript eastScript;
-	RoomScript southScript;
-	RoomScript westScript;
-	CompassScript locator;
+	public RoomScript northScript;
+	public RoomScript eastScript;
+	public RoomScript southScript;
+	public RoomScript westScript;
 
 	public int totalRoomSupply;
 	public int availableRoomSupply;
@@ -43,10 +43,10 @@ public class RoomScript : MonoBehaviour
 	{	
 		gameMngr = GameManager.instance;
 		player = GameObject.FindWithTag ("Player").GetComponent<AngusMovement>();
-		locator = compass.GetComponent<CompassScript> ();
 		this.GetComponent<BoxCollider> ().isTrigger = true;
 		tallyTotalRoomPower ();
 		directionSetup ();
+		here = this.gameObject;
     }
 
 	void Update ()
@@ -60,7 +60,6 @@ public class RoomScript : MonoBehaviour
 		if (playerIsHere) 
 		{
 			player.room = this.gameObject.GetComponent<RoomScript> ();
-//			locater.checkFlowReceiver ();
 		}
     }
 
@@ -95,7 +94,6 @@ public class RoomScript : MonoBehaviour
 				runOnce = true;
 				playerIsHere = true;
 				roomStateCheck ();
-				locator.checkFlowReceiver ();
 				gameMngr.updateRoomUI(totalRoomSupply, totalRoomDemand, availableRoomSupply, currentRoomDemand);
 			}
 		}
@@ -110,7 +108,6 @@ public class RoomScript : MonoBehaviour
 		{
 			playerIsHere = true;
 			roomStateCheck ();
-			locator.checkFlowReceiver ();
 			gameMngr.updateRoomUI(totalRoomSupply, totalRoomDemand, availableRoomSupply, currentRoomDemand);
 
 			if (this.roomFuseBox.GetComponent<ObjectClass>().stateActive())
@@ -164,12 +161,14 @@ public class RoomScript : MonoBehaviour
 	}
 
 	/// Transfers the power supply in the designated direction.
-	/// Deucts that room's demand from the room with supply.
+	/// Deducts that room's demand from the room with supply.
 	public void transferPowerSupply(GameObject direction)
 	{
 		RoomScript directionScript = direction.GetComponent<RoomScript> ();
+
 		int requiredSupply = directionScript.totalRoomDemand;;
 		directionScript.availableRoomSupply += requiredSupply;
+
 		#pragma warning disable
 		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
 		{

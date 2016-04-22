@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
 	public List <GameObject> roomList = new List<GameObject>();
 	public List <GameObject> doorList = new List<GameObject>();
 	public List <GameObject> suppliers = new List<GameObject>();
+	public List <GameObject> chainLinks = new List<GameObject>();
 
 	DoorScript Door;
 	RoomScript Room;
@@ -165,3 +166,5 @@ public class GameManager : MonoBehaviour
 		availableLevelSupply += demand;
 	}
 }
+
+
