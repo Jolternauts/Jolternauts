@@ -10,7 +10,6 @@ public class FuseBox : ObjectClass
 	public List<GameObject> roomObjects = new List<GameObject>();
 
 	RoomScript room;
-	CompassScript compass;
 
 	Renderer boxRend;
 
@@ -24,7 +23,6 @@ public class FuseBox : ObjectClass
 		gameMngr = GameManager.instance;
 		room = this.gameObject.GetComponentInParent<RoomScript> ();		
 		boxRend = this.gameObject.GetComponent<Renderer> ();
-		compass = room.GetComponentInChildren<CompassScript> ();
 	}
 
 	void Update()
@@ -207,13 +205,36 @@ public class FuseBox : ObjectClass
 	{
 		Debug.Log ("Room Check Called");
 
+		// Turn off room.
+		// Remove it from Chain Links.
 		if (stateActive()) 
 		{
 			room.isPowered = false;
+			gameMngr.chainLinks.Remove (room.here);
 		}
 		else if (!stateActive()) 
 		{
+			// Turn room on.
+			// If chain links is empty, just add it.
+			// Otherwise check this room's doors.
+			// If one is a receiver, then add the room to chain links.
 			room.isPowered = true;
+			if (gameMngr.chainLinks.Count == 0) 
+			{
+				gameMngr.chainLinks.Add (room.here);
+			}
+
+			if (gameMngr.chainLinks.Count > 0)
+			{
+				for (int x = 0; x < room.doors.Count; x++)
+				{
+					DoorScript door = room.doors [x].GetComponent<DoorScript> ();
+					if (door.isDirectionalReceiver)
+					{
+						gameMngr.chainLinks.Add (room.here);
+					}
+				}
+			}
 		}
 		roomStateChange ();
 	}
