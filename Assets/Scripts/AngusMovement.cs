@@ -38,6 +38,7 @@ public class AngusMovement : MonoBehaviour
 
 	public RoomScript room;
 	GameManager gameMngr;
+	CompassScript compass;
 
     void Start () 
 	{
@@ -94,7 +95,7 @@ public class AngusMovement : MonoBehaviour
 			{
 				if (currentHitTarget.GetComponent<CompassScript> ())
 				{
-					CompassScript compass = currentHitTarget.GetComponent<CompassScript> ();
+					compass = currentHitTarget.GetComponent<CompassScript> ();
 					compass.turnDialRight ();
 				}
 			}
@@ -132,29 +133,6 @@ public class AngusMovement : MonoBehaviour
 					}
 				}
 
-				if (currentHitTarget.GetComponent<DoorScript> () && targetDistance <= maxRange) 
-				{
-					// If any doors are the receiver make them not.
-					for (int x = 0; x < room.doors.Count; x++) 
-					{
-						DoorScript door = room.doors [x].GetComponent<DoorScript> ();
-						if (door.isDirectionalReceiver) 
-						{
-							door.isDirectionalReceiver = false;
-						}
-					}
-
-					// Changes if target door is receiver or not.
-					DoorScript targetDoor = currentHitTarget.GetComponent<DoorScript> ();
-					if (targetDoor.isDirectionalReceiver) 
-					{
-						targetDoor.isDirectionalReceiver = false;
-					} 
-					else 
-						targetDoor.isDirectionalReceiver = true;
-
-				}
-
 				//If the object is activated by the mouse click.
 				if (currentHitTarget.GetComponent<ObjectClass> () &&
 					currentHitTarget.GetComponent<ObjectClass> ().stateActive()) 
@@ -165,7 +143,7 @@ public class AngusMovement : MonoBehaviour
 
 				if (currentHitTarget.GetComponent<CompassScript> ())
 				{
-					CompassScript compass = currentHitTarget.GetComponent<CompassScript> ();
+					compass = currentHitTarget.GetComponent<CompassScript> ();
 					compass.turnDialLeft ();
 				}
 			}
@@ -200,6 +178,10 @@ public class AngusMovement : MonoBehaviour
 					else if (hit.collider.gameObject.GetComponent<RoomScript>()) 
 					{
 						targetIn.GetComponent<Image> ().color = Color.cyan;
+					}
+					else if (hit.collider.gameObject.GetComponent<CompassScript>()) 
+					{
+						targetIn.GetComponent<Image> ().color = Color.red;
 					}
 					else 
 					{
