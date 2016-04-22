@@ -33,38 +33,8 @@ public class FuseBox : ObjectClass
 	// If there is available room supply, change the box's state.
 	public void changeState(GameObject reference)
 	{
-		if (room.availableRoomSupply > 0) 
-		{
-			roomStateCheck ();
-
-			if (stateActive () && !stateDamaged ()) 
-			{
-				Debug.Log ("Your box is a turn off");
-				changeRendColor (offColor);
-				stateActive (false);
-			}
-			else if (stateActive () && stateDamaged ()) 
-			{
-				Debug.Log ("Turning damaged box off");
-				changeRendColor (damagedColor);
-				stateActive (false);
-			}
-			else if (!stateActive () && !stateDamaged ()) 
-			{
-				Debug.Log ("Much turn on, Much WOW");
-				changeRendColor (activeColor);
-				stateActive (true);
-			}
-			else if (!stateActive () && stateDamaged ()) 
-			{
-				Debug.Log ("Damn, the box crashed it");
-				changeRendColor (damagedColor);
-				stateActive (true);
-				roomCrash ();
-			} 
-			else // Debug error with object's name.
-				Debug.Log ("ObjectScript ChangeState Error" + this.name);
-		}
+		roomStateCheck ();
+		boxStateChangeCriteria ();
 	}
 
 	// When player enters trigger:
@@ -88,7 +58,16 @@ public class FuseBox : ObjectClass
 			// If E is pressed turn it on.
 			if (Input.GetKeyDown (KeyCode.E) && !statePressed ()) 
 			{
-				changeState (this.gameObject);
+				if (!stateActive ()) 
+				{
+					if (room.availableRoomSupply > 0) 
+					{
+						changeState (this.gameObject);
+					}
+				}
+				else
+					changeState (this.gameObject);
+
 				statePressed (true);
 			}
 				
@@ -178,26 +157,6 @@ public class FuseBox : ObjectClass
 			besideBox = false;
 			machineStateMeterCheck ();
 		}
-	}
-
-	// Store power supply from the room to the suit. 
-	public void storePowerPackSupply()
-	{
-		int spareSupply = room.availableRoomSupply;
-		player.powerPack += spareSupply;
-		room.availableRoomSupply -= spareSupply;
-
-		Debug.Log ("Storing Power");
-	}
-
-	// Share power supply from the suit to the room. 
-	public void sharePowerPackSupply()
-	{
-		int requiredSupply = room.totalRoomDemand;
-		room.availableRoomSupply += requiredSupply;
-		player.powerPack -= requiredSupply;
-
-		Debug.Log ("Sharing Power");
 	}
 		
 	/// Checks and changes active state of a room.
@@ -368,6 +327,38 @@ public class FuseBox : ObjectClass
 		}
 	}
 
+	public void boxStateChangeCriteria ()
+	{
+		if (stateActive () && !stateDamaged ()) 
+		{
+			Debug.Log ("Your box is a turn off");
+			changeRendColor (offColor);
+			stateActive (false);
+		}
+		else if (stateActive () && stateDamaged ()) 
+		{
+			Debug.Log ("Turning damaged box off");
+			changeRendColor (damagedColor);
+			stateActive (false);
+		}
+		else if (!stateActive () && !stateDamaged ()) 
+		{
+			Debug.Log ("Much turn on, Much WOW");
+			changeRendColor (activeColor);
+			stateActive (true);
+		}
+		else if (!stateActive () && stateDamaged ()) 
+		{
+			Debug.Log ("Damn, the box crashed it");
+			changeRendColor (damagedColor);
+			stateActive (true);
+			roomCrash ();
+		} 
+		else // Debug error with object's name.
+			Debug.Log ("ObjectScript ChangeState Error" + this.name);		
+
+	}
+
 	/// Increases the active room power values by a single active objects' values.
 	public void roomSinglePowerUp(int demand)
 	{
@@ -416,5 +407,24 @@ public class FuseBox : ObjectClass
 		boxRend.material.color = colour;
 	}
 
+	// Store power supply from the room to the suit. 
+	public void storePowerPackSupply()
+	{
+		int spareSupply = room.availableRoomSupply;
+		player.powerPack += spareSupply;
+		room.availableRoomSupply -= spareSupply;
+
+		Debug.Log ("Storing Power");
+	}
+
+	// Share power supply from the suit to the room. 
+	public void sharePowerPackSupply()
+	{
+		int requiredSupply = room.totalRoomDemand;
+		room.availableRoomSupply += requiredSupply;
+		player.powerPack -= requiredSupply;
+
+		Debug.Log ("Sharing Power");
+	}
 
 }

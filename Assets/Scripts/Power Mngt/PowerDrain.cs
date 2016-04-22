@@ -39,40 +39,17 @@ public class PowerDrain : ObjectClass
 			// Change active / damaged states and elements.
 			if (room.availableRoomSupply > 0) 
 			{
-				if (stateActive () && !stateDamaged ()) 
+				if (!stateActive ()) 
 				{
-					Debug.Log ("Device de-activated");
-					changeRendColor (offColor);
-					stateActive (false);
-					box.roomSinglePowerDown (powerDemand);
-					gameMngr.availableLevelSupply += powerDemand;
-				}
-				else if (stateActive () && stateDamaged ()) 
-				{
-					Debug.Log ("Turning damaged device off");
-					changeRendColor (damagedColor);
-					stateActive (false);
-					box.roomSinglePowerDown (powerDemand);
-					gameMngr.availableLevelSupply += powerDemand;
-				}
-				else if (!stateActive () && !stateDamaged ()) 
-				{
-					Debug.Log ("Device activated");
-					changeRendColor (activeColor);
-					stateActive (true);
-					box.roomSinglePowerUp (powerDemand);
-					gameMngr.availableLevelSupply -= powerDemand;
-				}
-				else if (!stateActive () && stateDamaged ()) 
-				{
-					Debug.Log ("Device caused a crash");
-					changeRendColor (damagedColor);
-					stateActive (true);
-					box.roomCrash ();
+					if (room.availableRoomSupply > 0) 
+					{
+						drainerStateChangeCriteria ();
+						recharge ();
+					}
 				} 
-				else // Debug error with object's name.
-					Debug.Log ("ObjectScript ChangeState Error" + this.name);
 			}
+			else
+				drainerStateChangeCriteria ();
 		} 
 		else
 		{ // If the room isn't powered:
@@ -99,6 +76,8 @@ public class PowerDrain : ObjectClass
 			} 
 			else // Debug error with object's name.
 				Debug.Log ("ObjectScript ChangeState Error" + this.name);
+
+			machineStateMeterCheck ();
 		}
 	}
 
@@ -120,12 +99,6 @@ public class PowerDrain : ObjectClass
 		{
 			if (Input.GetKeyDown (KeyCode.E) && !statePressed ()) 
 			{
-				if (myName == "ChargeStation") 
-				{
-					player.changeHealth (100f);
-					player.changeEnergy (100f);
-					player.changeOxygen (100f);
-				}
 				changeState(this.gameObject);
 				statePressed (true);
 			}
@@ -159,6 +132,7 @@ public class PowerDrain : ObjectClass
 			changeRendColor (activeColor);
 			box.roomSinglePowerUp (powerDemand);
 			gameMngr.availableLevelSupply -= powerDemand;
+			recharge ();
 		}
 		else if (stateDamaged() && stateOn()) 
 		{
@@ -166,6 +140,26 @@ public class PowerDrain : ObjectClass
 			Debug.Log (myName + " is Damaged");
 			Debug.Log ("And now Fusebox is Damaged");
 		} 
+	}
+
+	/* If device group is turned on:
+	 * if any are damaged, changed to damaged criteria.
+	 * If true and others aren't make them inactive.	*/
+	public void massCrashCheckForDevice()
+	{
+		if (stateActive() && !stateDamaged() || stateOn() && !stateDamaged()) 
+		{
+			stateActive(false);
+			stateOn(false);
+			changeRendColor (offColor);
+		}
+		else if (stateActive() && stateDamaged() || stateOn() && stateDamaged()) 
+		{
+			stateDamaged (true);
+			stateActive(false);
+			stateOn(false);
+			changeRendColor (damagedColor);
+		}
 	}
 
 	public void machineStateMeterCheck()
@@ -189,7 +183,6 @@ public class PowerDrain : ObjectClass
 				player.changeStateMeterColors (damagedColor);
 			}
 		}
-
 		else 
 		{
 			player.changeStateMeterColors (Color.white);
@@ -200,24 +193,51 @@ public class PowerDrain : ObjectClass
 	{
 		deviceRend.material.color = colour;
 	}
-
-	/* If device group is turned on:
-	 * if any are damaged, changed to damaged criteria.
-	 * If true and others aren't make them inactive.	*/
-	public void massCrashCheckForDevice()
+		
+	public void drainerStateChangeCriteria ()
 	{
-		if (stateActive() && !stateDamaged() || stateOn() && !stateDamaged()) 
+		if (stateActive () && !stateDamaged ()) 
 		{
-			stateActive(false);
-			stateOn(false);
+			Debug.Log ("Device de-activated");
 			changeRendColor (offColor);
+			stateActive (false);
+			box.roomSinglePowerDown (powerDemand);
+			gameMngr.availableLevelSupply += powerDemand;
 		}
-		else if (stateActive() && stateDamaged() || stateOn() && stateDamaged()) 
+		else if (stateActive () && stateDamaged ()) 
 		{
-			stateDamaged (true);
-			stateActive(false);
-			stateOn(false);
+			Debug.Log ("Turning damaged device off");
 			changeRendColor (damagedColor);
+			stateActive (false);
+			box.roomSinglePowerDown (powerDemand);
+			gameMngr.availableLevelSupply += powerDemand;
+		}
+		else if (!stateActive () && !stateDamaged ()) 
+		{
+			Debug.Log ("Device activated");
+			changeRendColor (activeColor);
+			stateActive (true);
+			box.roomSinglePowerUp (powerDemand);
+			gameMngr.availableLevelSupply -= powerDemand;
+		}
+		else if (!stateActive () && stateDamaged ()) 
+		{
+			Debug.Log ("Device caused a crash");
+			changeRendColor (damagedColor);
+			stateActive (true);
+			box.roomCrash ();
+		} 
+		else // Debug error with object's name.
+			Debug.Log ("ObjectScript ChangeState Error" + this.name);
+	}
+
+	public void recharge ()
+	{
+		if (myName == "ChargeStation") 
+		{
+			player.changeHealth (100f);
+			player.changeEnergy (100f);
+			player.changeOxygen (100f);
 		}
 	}
 }
