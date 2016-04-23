@@ -38,6 +38,7 @@ public class AngusMovement : MonoBehaviour
 
 	public RoomScript room;
 	GameManager gameMngr;
+	CompassScript compass;
 
     void Start () 
 	{
@@ -94,7 +95,7 @@ public class AngusMovement : MonoBehaviour
 			{
 				if (currentHitTarget.GetComponent<CompassScript> ())
 				{
-					CompassScript compass = currentHitTarget.GetComponent<CompassScript> ();
+					compass = currentHitTarget.GetComponent<CompassScript> ();
 					compass.turnDialRight ();
 				}
 			}
@@ -108,7 +109,7 @@ public class AngusMovement : MonoBehaviour
 			if (Physics.Raycast (fpsCameraIn.transform.position, fpsCameraIn.transform.forward, out hit)) 
 			{
 				//If target contains the ObjectsList script and is within range.
-				if (currentHitTarget.GetComponent<ObjectClass> () && targetDistance <= maxRange) 
+				if (currentHitTarget.GetComponent<ObjectClass> ()) 
 				{
 					if (currentHitTarget.transform.tag == "FuseBox") 
 					{
@@ -132,29 +133,6 @@ public class AngusMovement : MonoBehaviour
 					}
 				}
 
-				if (currentHitTarget.GetComponent<DoorScript> () && targetDistance <= maxRange) 
-				{
-					// If any doors are the receiver make them not.
-					for (int x = 0; x < room.doors.Count; x++) 
-					{
-						DoorScript door = room.doors [x].GetComponent<DoorScript> ();
-						if (door.isDirectionalReceiver) 
-						{
-							door.isDirectionalReceiver = false;
-						}
-					}
-
-					// Changes if target door is receiver or not.
-					DoorScript targetDoor = currentHitTarget.GetComponent<DoorScript> ();
-					if (targetDoor.isDirectionalReceiver) 
-					{
-						targetDoor.isDirectionalReceiver = false;
-					} 
-					else 
-						targetDoor.isDirectionalReceiver = true;
-
-				}
-
 				//If the object is activated by the mouse click.
 				if (currentHitTarget.GetComponent<ObjectClass> () &&
 					currentHitTarget.GetComponent<ObjectClass> ().stateActive()) 
@@ -165,7 +143,7 @@ public class AngusMovement : MonoBehaviour
 
 				if (currentHitTarget.GetComponent<CompassScript> ())
 				{
-					CompassScript compass = currentHitTarget.GetComponent<CompassScript> ();
+					compass = currentHitTarget.GetComponent<CompassScript> ();
 					compass.turnDialLeft ();
 				}
 			}
@@ -177,34 +155,36 @@ public class AngusMovement : MonoBehaviour
 			*/
 			if (Physics.Raycast (fpsCameraIn.transform.position, fpsCameraIn.transform.forward, out hit)) 
 			{
-				targetDistance = Vector3.Distance (transform.position, hit.collider.gameObject.transform.position);
+				currentHitTarget = hit.collider.gameObject;
+				targetDistance = Vector3.Distance (transform.position, currentHitTarget.transform.position);
 
-				if (targetDistance <= maxRange) 
+				if (currentHitTarget.GetComponent<DoorScript>()) 
 				{
-					if (hit.collider.gameObject.GetComponent<DoorScript>()) 
-					{
-						targetIn.GetComponent<Image> ().color = Color.yellow;
-					}
-					else if (hit.collider.gameObject.GetComponent<FuseBox>()) 
-					{
-						targetIn.GetComponent<Image> ().color = Color.blue;
-					}
-					else if (hit.collider.gameObject.GetComponent<PowerGen>()) 
-					{
-						targetIn.GetComponent<Image> ().color = Color.green;
-					}
-					else if (hit.collider.gameObject.GetComponent<PowerDrain>()) 
-					{
-						targetIn.GetComponent<Image> ().color = Color.magenta;
-					}
-					else if (hit.collider.gameObject.GetComponent<RoomScript>()) 
-					{
-						targetIn.GetComponent<Image> ().color = Color.cyan;
-					}
-					else 
-					{
-						targetIn.GetComponent<Image> ().color = Color.white;
-					}
+					targetIn.GetComponent<Image> ().color = Color.yellow;
+				}
+				else if (currentHitTarget.GetComponent<FuseBox>()) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.blue;
+				}
+				else if (currentHitTarget.GetComponent<PowerGen>()) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.green;
+				}
+				else if (currentHitTarget.GetComponent<PowerDrain>()) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.magenta;
+				}
+				else if (currentHitTarget.GetComponent<RoomScript>()) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.cyan;
+				}
+				else if (currentHitTarget.GetComponent<CompassScript>()) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.red;
+				}
+				else 
+				{
+					targetIn.GetComponent<Image> ().color = Color.white;
 				}
 			}
 		}

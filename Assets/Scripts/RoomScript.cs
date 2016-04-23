@@ -21,11 +21,13 @@ public class RoomScript : MonoBehaviour
 
 	public bool isPowered = false;
 	public bool playerIsHere = false;
-
+	public bool receivedSourcePower = false;
 	bool runOnce = false;
 		
 	GameManager gameMngr;
 	AngusMovement player;
+	PowerGen supplyGen;
+	RoomScript supplyRoom;
 	public RoomScript northScript;
 	public RoomScript eastScript;
 	public RoomScript southScript;
@@ -164,18 +166,45 @@ public class RoomScript : MonoBehaviour
 	/// Deducts that room's demand from the room with supply.
 	public void transferPowerSupply(GameObject direction)
 	{
+		#pragma warning disable
 		RoomScript directionScript = direction.GetComponent<RoomScript> ();
-
 		int requiredSupply = directionScript.totalRoomDemand;;
 		directionScript.availableRoomSupply += requiredSupply;
 
-		#pragma warning disable
 		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
 		{
-			RoomScript supplyroom = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
-			supplyroom.availableRoomSupply -= requiredSupply;
-			break;
+			supplyRoom = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
 		}
+		supplyRoom.availableRoomSupply -= requiredSupply;
+		gameMngr.availableLevelSupply -= requiredSupply;
+		directionScript.receivedSourcePower = true;
+		#pragma warning restore
+	}
+
+	public void takeBackPowerSupply ()
+	{
+		#pragma warning disable
+//		RoomScript directionScript = direction.GetComponent<RoomScript> ();
+//		directionScript.availableRoomSupply -= requiredSupply;
+		int sharedSupply;
+
+		for (int x = 0; x < gameMngr.roomList.Count; x++) 
+		{
+			RoomScript listedRoom = gameMngr.roomList [x].GetComponent<RoomScript> (); 
+			if (listedRoom.receivedSourcePower)
+			{
+				for (int y = 0; y < listedRoom.roomItems.Count; y++) 
+				{
+					if (roomItems[y].tag == "Generator")
+					{
+						supplyRoom = listedRoom.roomItems[x].GetComponentInParent<RoomScript>();
+					}					
+				}
+			}
+//			break;
+		}
+//		supplyRoom.availableRoomSupply += requiredSupply;
+//		gameMngr.availableLevelSupply += requiredSupply;
 		#pragma warning restore
 	}
 }

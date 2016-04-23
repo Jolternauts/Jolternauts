@@ -14,7 +14,7 @@ public class DoorScript : MonoBehaviour
 	RoomScript connector;
 	RoomScript roomA;
 	RoomScript roomB;
-	GameManager gameMngr;
+//	GameManager gameMngr;
 
 //	public GameObject doorUpper;
 //	public GameObject doorLower;
@@ -42,7 +42,7 @@ public class DoorScript : MonoBehaviour
 		roomB = doorSideB.GetComponent<RoomScript> ();
 		compassA = roomA.compass.GetComponent<CompassScript> ();
 		compassB = roomB.compass.GetComponent<CompassScript> ();
-		gameMngr = GameManager.instance;
+//		gameMngr = GameManager.instance;
 		this.GetComponent<BoxCollider> ().isTrigger = true;
 
 		//Setting the local position of the door halves.
@@ -137,31 +137,22 @@ public class DoorScript : MonoBehaviour
 	/// If it isn't the target, the door isn't a receiver.
 	public void checkReceiver ()
 	{
-		GameObject link;
 		if (compassA.currentHitTarget == doorSideB) 
 		{
-			for (int x = 0; x < gameMngr.chainLinks.Count; x++)
+			if (roomA.isPowered)
 			{
-				link = gameMngr.chainLinks [x];
-				if (doorSideA ==  link)
-				{
-					isDirectionalReceiver = true;
-				} 
-			}
+				isDirectionalReceiver = true;
+			} 
 		}
 		else
 			isDirectionalReceiver = false;
 
 		if (compassB.currentHitTarget == doorSideA) 
 		{
-			for (int x = 0; x < gameMngr.chainLinks.Count; x++)
+			if (roomB.isPowered)
 			{
-				link = gameMngr.chainLinks [x];
-				if (doorSideB ==  link)
-				{
-					isDirectionalReceiver = true;
-				} 
-			}
+				isDirectionalReceiver = true;
+			} 
 		}
 		else
 			isDirectionalReceiver = false;
