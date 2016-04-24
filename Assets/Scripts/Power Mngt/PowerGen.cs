@@ -33,49 +33,7 @@ public class PowerGen : ObjectClass
 	// Changes the state of generator.
 	public void changeState(GameObject reference)
 	{
-		if (stateActive() && !stateDamaged()) 
-		{
-			Debug.Log ("Generator de-activated");
-			changeRendColor (offColor);
-			stateActive (false);
-			gameMngr.availableLevelSupply -= powerSupply;
-			room.availableRoomSupply -= powerSupply;
-			box.roomSinglePowerDown (powerDemand);
-			gameMngr.suppliers.Remove (this.gameObject);
-		}
-
-		else if (stateActive() && stateDamaged()) 
-		{
-			Debug.Log ("Turning damaged generator off");
-			changeRendColor (damagedColor);
-			stateActive (false);
-			gameMngr.availableLevelSupply -= powerSupply;
-			room.availableRoomSupply -= powerSupply;
-			box.roomSinglePowerDown (powerDemand);
-			gameMngr.suppliers.Remove (this.gameObject);
-		}
-
-		else if (!stateActive() && !stateDamaged()) 
-		{
-			Debug.Log ("Generator activated");
-			changeRendColor (activeColor);
-			stateActive (true);
-			gameMngr.availableLevelSupply += powerSupply;
-			gameMngr.availableLevelSupply -= powerDemand;
-			room.availableRoomSupply += powerSupply;
-			box.roomSinglePowerUp (powerDemand);
-			gameMngr.suppliers.Add (this.gameObject);
-		}
-
-		else if (!stateActive() && stateDamaged()) 
-		{
-			Debug.Log ("Damn, generator crashed it!");
-			changeRendColor (damagedColor);
-			stateActive (true);
-			box.roomCrash ();
-		}
-		else // Debug error with object's name.
-			Debug.Log ("ObjectScript ChangeState Error" + this.name);
+		genStateChangeCriteria ();
 	}
 
 	void OnTriggerEnter(Collider detector)
@@ -185,5 +143,53 @@ public class PowerGen : ObjectClass
 			stateOn (false);
 			changeRendColor (damagedColor);
 		}
+	}
+
+	public void genStateChangeCriteria()
+	{
+		if (stateActive() && !stateDamaged()) 
+		{
+			Debug.Log ("Generator de-activated");
+			changeRendColor (offColor);
+			stateActive (false);
+			gameMngr.availableLevelSupply -= powerSupply;
+			room.availableRoomSupply -= powerSupply;
+			box.roomSinglePowerDown (powerDemand);
+			gameMngr.suppliers.Remove (this.gameObject);
+		}
+
+		else if (stateActive() && stateDamaged()) 
+		{
+			Debug.Log ("Turning damaged generator off");
+			changeRendColor (damagedColor);
+			stateActive (false);
+			gameMngr.availableLevelSupply -= powerSupply;
+			room.availableRoomSupply -= powerSupply;
+			box.roomSinglePowerDown (powerDemand);
+			gameMngr.suppliers.Remove (this.gameObject);
+		}
+
+		else if (!stateActive() && !stateDamaged()) 
+		{
+			Debug.Log ("Generator activated");
+			changeRendColor (activeColor);
+			stateActive (true);
+			gameMngr.availableLevelSupply += powerSupply;
+			gameMngr.availableLevelSupply -= powerDemand;
+			room.availableRoomSupply += powerSupply;
+			box.roomSinglePowerUp (powerDemand);
+			gameMngr.suppliers.Add (this.gameObject);
+		}
+
+		else if (!stateActive() && stateDamaged()) 
+		{
+			Debug.Log ("Damn, generator crashed it!");
+			changeRendColor (damagedColor);
+			stateActive (true);
+			box.roomCrash ();
+		}
+		else // Debug error with object's name.
+			Debug.Log ("ObjectScript ChangeState Error" + this.name);
+		
 	}
 }

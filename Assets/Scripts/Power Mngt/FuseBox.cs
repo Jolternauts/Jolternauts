@@ -10,7 +10,7 @@ public class FuseBox : ObjectClass
 	public List<GameObject> roomObjects = new List<GameObject>();
 
 	RoomScript room;
-
+	DoorScript door;
 	Renderer boxRend;
 
 	public bool besideBox;
@@ -33,38 +33,8 @@ public class FuseBox : ObjectClass
 	// If there is available room supply, change the box's state.
 	public void changeState(GameObject reference)
 	{
-		if (room.availableRoomSupply > 0) 
-		{
-			roomStateCheck ();
-
-			if (stateActive () && !stateDamaged ()) 
-			{
-				Debug.Log ("Your box is a turn off");
-				changeRendColor (offColor);
-				stateActive (false);
-			}
-			else if (stateActive () && stateDamaged ()) 
-			{
-				Debug.Log ("Turning damaged box off");
-				changeRendColor (damagedColor);
-				stateActive (false);
-			}
-			else if (!stateActive () && !stateDamaged ()) 
-			{
-				Debug.Log ("Much turn on, Much WOW");
-				changeRendColor (activeColor);
-				stateActive (true);
-			}
-			else if (!stateActive () && stateDamaged ()) 
-			{
-				Debug.Log ("Damn, the box crashed it");
-				changeRendColor (damagedColor);
-				stateActive (true);
-				roomCrash ();
-			} 
-			else // Debug error with object's name.
-				Debug.Log ("ObjectScript ChangeState Error" + this.name);
-		}
+		roomStateCheck ();
+		boxStateChangeCriteria ();
 	}
 
 	// When player enters trigger:
@@ -88,7 +58,16 @@ public class FuseBox : ObjectClass
 			// If E is pressed turn it on.
 			if (Input.GetKeyDown (KeyCode.E) && !statePressed ()) 
 			{
-				changeState (this.gameObject);
+				if (!stateActive ()) 
+				{
+					if (room.availableRoomSupply > 0) 
+					{
+						changeState (this.gameObject);
+					}
+				}
+				else
+					changeState (this.gameObject);
+
 				statePressed (true);
 			}
 				
@@ -121,47 +100,6 @@ public class FuseBox : ObjectClass
 			{
 				statePressed (false);
 			}
-
-			if (stateActive())
-			{
-				// Press T: call transfer supply -> north.
-				if (Input.GetKeyDown (KeyCode.T) && room.north && !statePressed ()) 
-				{
-					room.transferPowerSupply(room.north);
-					Debug.Log ("Power moved north to " + room.north.name);
-					statePressed (true);
-				}
-
-				// Press H: call transfer supply -> east.
-				if (Input.GetKeyDown (KeyCode.H) && room.east && !statePressed ()) 
-				{
-					room.transferPowerSupply(room.east);
-					Debug.Log ("Power moved east to " + room.east.name);
-					statePressed (true);
-				}
-
-				// Press G: call transfer supply -> south.
-				if (Input.GetKeyDown (KeyCode.G) && room.south && !statePressed ()) 
-				{
-					room.transferPowerSupply(room.south);
-					Debug.Log ("Power moved south to " + room.south.name);
-					statePressed (true);
-				}
-
-				// Press F: call transfer supply -> west.
-				if (Input.GetKeyDown (KeyCode.F) && room.west && !statePressed ()) 
-				{
-					room.transferPowerSupply(room.west);
-					Debug.Log ("Power moved west to " + room.west.name);
-					statePressed (true);
-				}
-			}
-
-			if (Input.GetKeyUp (KeyCode.T) || Input.GetKeyUp (KeyCode.H) ||
-				Input.GetKeyUp (KeyCode.G) || Input.GetKeyUp (KeyCode.F)) 
-			{
-				statePressed (false);
-			}
 		}
 
 		// Check what color the statemeters should be.
@@ -178,26 +116,6 @@ public class FuseBox : ObjectClass
 			besideBox = false;
 			machineStateMeterCheck ();
 		}
-	}
-
-	// Store power supply from the room to the suit. 
-	public void storePowerPackSupply()
-	{
-		int spareSupply = room.availableRoomSupply;
-		player.powerPack += spareSupply;
-		room.availableRoomSupply -= spareSupply;
-
-		Debug.Log ("Storing Power");
-	}
-
-	// Share power supply from the suit to the room. 
-	public void sharePowerPackSupply()
-	{
-		int requiredSupply = room.totalRoomDemand;
-		room.availableRoomSupply += requiredSupply;
-		player.powerPack -= requiredSupply;
-
-		Debug.Log ("Sharing Power");
 	}
 		
 	/// Checks and changes active state of a room.
@@ -228,11 +146,23 @@ public class FuseBox : ObjectClass
 			{
 				for (int x = 0; x < room.doors.Count; x++)
 				{
-					DoorScript door = room.doors [x].GetComponent<DoorScript> ();
+					door = room.doors [x].GetComponent<DoorScript> ();
 					if (door.isDirectionalReceiver)
 					{
 						gameMngr.chainLinks.Add (room.here);
 					}
+				}
+			}
+
+			GameObject friend;
+			RoomScript friendScript;
+			for (int x = 0; x < room.neighbours.Count; x++) 
+			{
+				friend = room.neighbours [x];
+				friendScript = room.neighbours [x].GetComponent<RoomScript>();
+				if (!friendScript.isPowered)
+				{
+					room.transferPowerSupply (friend);
 				}
 			}
 		}
@@ -368,6 +298,38 @@ public class FuseBox : ObjectClass
 		}
 	}
 
+	public void boxStateChangeCriteria ()
+	{
+		if (stateActive () && !stateDamaged ()) 
+		{
+			Debug.Log ("Your box is a turn off");
+			changeRendColor (offColor);
+			stateActive (false);
+		}
+		else if (stateActive () && stateDamaged ()) 
+		{
+			Debug.Log ("Turning damaged box off");
+			changeRendColor (damagedColor);
+			stateActive (false);
+		}
+		else if (!stateActive () && !stateDamaged ()) 
+		{
+			Debug.Log ("Much turn on, Much WOW");
+			changeRendColor (activeColor);
+			stateActive (true);
+		}
+		else if (!stateActive () && stateDamaged ()) 
+		{
+			Debug.Log ("Damn, the box crashed it");
+			changeRendColor (damagedColor);
+			stateActive (true);
+			roomCrash ();
+		} 
+		else // Debug error with object's name.
+			Debug.Log ("ObjectScript ChangeState Error" + this.name);		
+
+	}
+
 	/// Increases the active room power values by a single active objects' values.
 	public void roomSinglePowerUp(int demand)
 	{
@@ -416,5 +378,24 @@ public class FuseBox : ObjectClass
 		boxRend.material.color = colour;
 	}
 
+	// Store power supply from the room to the suit. 
+	public void storePowerPackSupply()
+	{
+		int spareSupply = room.availableRoomSupply;
+		player.powerPack += spareSupply;
+		room.availableRoomSupply -= spareSupply;
+
+		Debug.Log ("Storing Power");
+	}
+
+	// Share power supply from the suit to the room. 
+	public void sharePowerPackSupply()
+	{
+		int requiredSupply = room.totalRoomDemand;
+		room.availableRoomSupply += requiredSupply;
+		player.powerPack -= requiredSupply;
+
+		Debug.Log ("Sharing Power");
+	}
 
 }

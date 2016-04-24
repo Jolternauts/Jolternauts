@@ -169,13 +169,15 @@ public class RoomScript : MonoBehaviour
 		int requiredSupply = directionScript.totalRoomDemand;;
 		directionScript.availableRoomSupply += requiredSupply;
 
+		RoomScript supplyroom;
 		#pragma warning disable
 		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
 		{
-			RoomScript supplyroom = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
+			supplyroom = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
 			supplyroom.availableRoomSupply -= requiredSupply;
 			break;
 		}
+//		gameMngr.availableLevelSupply -= requiredSupply;
 		#pragma warning restore
 	}
 }
