@@ -100,47 +100,6 @@ public class FuseBox : ObjectClass
 			{
 				statePressed (false);
 			}
-
-			if (stateActive())
-			{
-				// Press T: call transfer supply -> north.
-				if (Input.GetKeyDown (KeyCode.T) && room.north && !statePressed ()) 
-				{
-					room.transferPowerSupply(room.north);
-					Debug.Log ("Power moved north to " + room.north.name);
-					statePressed (true);
-				}
-
-				// Press H: call transfer supply -> east.
-				if (Input.GetKeyDown (KeyCode.H) && room.east && !statePressed ()) 
-				{
-					room.transferPowerSupply(room.east);
-					Debug.Log ("Power moved east to " + room.east.name);
-					statePressed (true);
-				}
-
-				// Press G: call transfer supply -> south.
-				if (Input.GetKeyDown (KeyCode.G) && room.south && !statePressed ()) 
-				{
-					room.transferPowerSupply(room.south);
-					Debug.Log ("Power moved south to " + room.south.name);
-					statePressed (true);
-				}
-
-				// Press F: call transfer supply -> west.
-				if (Input.GetKeyDown (KeyCode.F) && room.west && !statePressed ()) 
-				{
-					room.transferPowerSupply(room.west);
-					Debug.Log ("Power moved west to " + room.west.name);
-					statePressed (true);
-				}
-			}
-
-			if (Input.GetKeyUp (KeyCode.T) || Input.GetKeyUp (KeyCode.H) ||
-				Input.GetKeyUp (KeyCode.G) || Input.GetKeyUp (KeyCode.F)) 
-			{
-				statePressed (false);
-			}
 		}
 
 		// Check what color the statemeters should be.
@@ -169,31 +128,10 @@ public class FuseBox : ObjectClass
 		if (stateActive()) 
 		{
 			room.isPowered = false;
-			gameMngr.chainLinks.Remove (room.here);
 		}
 		else if (!stateActive()) 
 		{
-			// Turn room on.
-			// If chain links is empty, just add it.
-			// Otherwise check this room's doors.
-			// If one is a receiver, then add the room to chain links.
 			room.isPowered = true;
-			if (gameMngr.chainLinks.Count == 0) 
-			{
-				gameMngr.chainLinks.Add (room.here);
-			}
-
-			if (gameMngr.chainLinks.Count > 0)
-			{
-				for (int x = 0; x < room.doors.Count; x++)
-				{
-					DoorScript door = room.doors [x].GetComponent<DoorScript> ();
-					if (door.isDirectionalReceiver)
-					{
-						gameMngr.chainLinks.Add (room.here);
-					}
-				}
-			}
 		}
 		roomStateChange ();
 	}
@@ -207,25 +145,14 @@ public class FuseBox : ObjectClass
 
 		if (room.isPowered) 
 		{
+			powerChainIncrease ();
+			callPowerTransfer ();
 			roomActivate ();
 		} 
 		else
 		{
-			for (int x = 0; x < roomObjects.Count; x++) 
-			{
-				if (roomObjects [x].tag == "Device") 
-				{
-					PowerDrain device = roomObjects [x].GetComponent<PowerDrain> ();
-
-					for (int y = 0; y < roomObjects.Count; y++) 
-					{
-						if (device.stateActive ()) 
-						{
-							roomSleep ();
-						}
-					}
-				}
-			}
+			gameMngr.chainLinks.Remove (room.here);
+			roomSleep ();
 		}
 	}
 
@@ -241,9 +168,10 @@ public class FuseBox : ObjectClass
 			{
 				PowerDrain device = roomObjects [x].GetComponent<PowerDrain> ();
 
-				device.stateActive (false);
-				device.changeRendColor (offColor);
-				roomSinglePowerDown (device.powerDemand);
+				if (device.stateActive ()) 
+				{
+					device.changeState (device.gameObject);
+				}
 			}
 		}
 	}
@@ -294,12 +222,12 @@ public class FuseBox : ObjectClass
 	{
 		for (int x = 0; x < roomObjects.Count; x++) 
 		{
-			ObjectClass massScript = roomObjects [x].GetComponent<ObjectClass> ();
+			PowerDrain drainer = roomObjects [x].GetComponent<PowerDrain> ();
 
-			if (massScript.stateActive()) 
+			if (drainer.stateActive()) 
 			{
-				room.availableRoomSupply -= massScript.powerDemand;
-				gameMngr.availableLevelSupply -= massScript.powerDemand;
+				room.availableRoomSupply -= drainer.powerDemand;
+				gameMngr.availableLevelSupply -= drainer.powerDemand;
 			}
 		}
 	}
@@ -311,18 +239,11 @@ public class FuseBox : ObjectClass
 		for (int x = 0; x < roomObjects.Count; x++) 
 		{
 			PowerDrain drainer = roomObjects [x].GetComponent<PowerDrain> ();
-			PowerGen generator = roomObjects [x].GetComponent<PowerGen> ();
 
 			if (drainer.stateActive()) 
 			{
 				room.availableRoomSupply += drainer.powerDemand;
 				gameMngr.availableLevelSupply += drainer.powerDemand;
-			}
-
-			if (generator.stateActive()) 
-			{
-				room.availableRoomSupply += generator.powerDemand;
-				room.availableRoomSupply -= generator.powerSupply;
 			}
 		}
 	}
@@ -427,4 +348,51 @@ public class FuseBox : ObjectClass
 		Debug.Log ("Sharing Power");
 	}
 
+	public void powerChainIncrease ()
+	{
+		if (gameMngr.chainLinks.Count == 0) 
+		{
+			gameMngr.chainLinks.Add (room.here);
+		}
+
+		if (gameMngr.chainLinks.Count > 0)
+		{
+			#pragma warning disable
+			for (int x = 0; x < room.doors.Count; x++)
+			{
+				DoorScript door;
+				door = room.doors [x].GetComponent<DoorScript> ();
+				if (door.isDirectionalReceiver)
+				{
+					gameMngr.chainLinks.Add (room.here);
+				}
+				break;
+			}
+			#pragma warning restore
+		}
+	}
+
+	public void callPowerTransfer ()
+	{
+		#pragma warning disable
+		for (int x= 0; x < room.neighbours.Count; x++)
+		{
+			GameObject friend;
+			RoomScript friendScript;
+			friend = room.neighbours [x];
+			friendScript = room.neighbours [x].GetComponent<RoomScript> ();
+			for (int y = 0; y < friendScript.doors.Count; y++)
+			{
+				DoorScript door;
+				door = friendScript.doors [y].GetComponent<DoorScript> ();
+				if (door.isDirectionalReceiver && !friendScript.hasReceivedSourcePower)
+				{
+					room.transferPowerSupply (friend);
+					friendScript.hasReceivedSourcePower = true;
+				}
+				break;
+			}
+		}
+		#pragma warning restore
+	}
 }

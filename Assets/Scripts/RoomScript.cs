@@ -21,6 +21,7 @@ public class RoomScript : MonoBehaviour
 
 	public bool isPowered = false;
 	public bool playerIsHere = false;
+	public bool hasReceivedSourcePower = false;
 
 	bool runOnce = false;
 		
@@ -30,6 +31,7 @@ public class RoomScript : MonoBehaviour
 	public RoomScript eastScript;
 	public RoomScript southScript;
 	public RoomScript westScript;
+	RoomScript supplyroomScript;
 
 	public int totalRoomSupply;
 	public int availableRoomSupply;
@@ -151,10 +153,10 @@ public class RoomScript : MonoBehaviour
 	public void tallyTotalRoomPower()
 	{
 		FuseBox box = roomFuseBox.GetComponent<FuseBox> ();
-
+		ObjectClass machine;
 		for (int x = 0; x < box.roomObjects.Count; x++) 
 		{
-			ObjectClass machine = box.roomObjects [x].GetComponent<ObjectClass> ();
+			machine = box.roomObjects [x].GetComponent<ObjectClass> ();
 			totalRoomSupply += machine.powerSupply;
 			totalRoomDemand += machine.powerDemand;
 		}
@@ -166,18 +168,43 @@ public class RoomScript : MonoBehaviour
 	{
 		RoomScript directionScript = direction.GetComponent<RoomScript> ();
 
-		int requiredSupply = directionScript.totalRoomDemand;;
+		int requiredSupply = directionScript.totalRoomDemand;
 		directionScript.availableRoomSupply += requiredSupply;
 
-		#pragma warning disable
 		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
 		{
-			RoomScript supplyroom = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
-			supplyroom.availableRoomSupply -= requiredSupply;
-			break;
+			supplyroomScript = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
 		}
-		#pragma warning restore
+		supplyroomScript.availableRoomSupply -= requiredSupply;
 	}
+
+	public void redirectPowerTransfer (GameObject victim)
+	{
+		RoomScript victimScript = victim.GetComponent<RoomScript> ();
+		GameObject victimBox = victimScript.roomFuseBox;
+		FuseBox victimBoxScript = victimBox.GetComponent<FuseBox> ();
+
+		int supplyToTake = victimScript.availableRoomSupply;
+
+		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
+		{
+			supplyroomScript = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
+		}
+
+		if (victimScript.isPowered)
+		{
+			victimBoxScript.changeState (victimBox);
+			supplyroomScript.availableRoomSupply += supplyToTake;
+			victimScript.availableRoomSupply -= supplyToTake;
+		}
+		else if (!victimScript.isPowered)
+		{
+			supplyroomScript.availableRoomSupply += supplyToTake;
+			victimScript.availableRoomSupply -= supplyToTake;
+		} 
+	}
+
+
 }
 
 

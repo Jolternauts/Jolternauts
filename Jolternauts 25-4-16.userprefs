@@ -1,0 +1,17 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\CompassScript.cs">
+    <Files>
+      <File FileName="Assets\Scripts\RoomScript.cs" Line="197" Column="1" />
+      <File FileName="Assets\Scripts\CompassScript.cs" Line="58" Column="1" />
+      <File FileName="Assets\Scripts\DoorScript.cs" Line="17" Column="3" />
+      <File FileName="Assets\Scripts\Power Mngt\FuseBox.cs" Line="175" Column="1" />
+      <File FileName="Assets\Scripts\AngusMovement.cs" Line="186" Column="1" />
+      <File FileName="Assets\Scripts\GameManager.cs" Line="15" Column="18" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

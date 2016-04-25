@@ -20,6 +20,11 @@ public class CompassScript : MonoBehaviour
 	public GameObject arrow;
 	public List<GameObject> arrows = new List<GameObject>();
 
+	GameObject currentReceiver;
+	GameObject newReceiver;
+	RoomScript targetRoom;
+
+
 	void Start () 
 	{
 		room = this.gameObject.GetComponentInParent<RoomScript> ();
@@ -46,124 +51,13 @@ public class CompassScript : MonoBehaviour
 	}
 
 	// Wait function.
-	public IEnumerator WaitAMinute()
+	public IEnumerator Wait(float seconds)
 	{
-		yield return new WaitForSeconds (3);
+		yield return new WaitForSeconds (seconds);
 		Debug.Log (currentHitTarget.name);
+		room.transferPowerSupply (currentHitTarget);
 	}
-
-	/// Checks the flow receiver (the complicated first attempt way).
-	/// The crteria it checks are as follows:
-
-	/// Is the room the compass is in powered.
-	/// Does the room have which ever direction.
-	/// Is the direction the target.
-	/// Go through this room's door list.
-	/// Go through that room's door list.
-	/// If both lists have the same door, it is a receiver.
-
-	/// If the direction is not the target, it's not a receiver.
-	/// To be sure, if the room isn't pwoered, no doors here are receivers.
-	public void checkFlowReceiver ()
-	{
-//		#pragma warning disable
-
-		if (room.isPowered) 
-		{
-			if (room.north) 
-			{
-				if (currentHitTarget == room.north) 
-				{
-					for (int x = 0; x < room.doors.Count; x++) 
-					{
-						thisRoomDoor = room.doors [x];
-						thisRoomDoorScript = thisRoomDoor.GetComponent<DoorScript> ();
-					}
-					for (int y = 0; y < room.northScript.doors.Count; y++) 
-					{
-						if (room.northScript.doors.Contains (thisRoomDoor)) 
-						{
-							thisRoomDoorScript.isDirectionalReceiver = true;
-						}
-					}
-				}
-				else
-					thisRoomDoorScript.isDirectionalReceiver = false;
-			}
-
-			if (room.east) 
-			{
-				if (currentHitTarget == room.east) 
-				{
-					for (int x = 0; x < room.doors.Count; x++) 
-					{
-						thisRoomDoor = room.doors [x];
-						thisRoomDoorScript = thisRoomDoor.GetComponent<DoorScript> ();
-					}
-					for (int y = 0; y < room.eastScript.doors.Count; y++) 
-					{
-						if (room.eastScript.doors.Contains (thisRoomDoor)) 
-						{
-							thisRoomDoorScript.isDirectionalReceiver = true;
-						}
-					}
-				}
-				else
-					thisRoomDoorScript.isDirectionalReceiver = false;
-			}
-
-			if (room.south) 
-			{
-				if (currentHitTarget == room.south) 
-				{
-					for (int x = 0; x < room.doors.Count; x++) 
-					{
-						thisRoomDoor = room.doors [x];
-						thisRoomDoorScript = thisRoomDoor.GetComponent<DoorScript> ();
-					}
-					for (int y = 0; y < room.southScript.doors.Count; y++) 
-					{
-						if (room.southScript.doors.Contains (thisRoomDoor)) 
-						{
-							thisRoomDoorScript.isDirectionalReceiver = true;
-						}
-					}
-				}
-				else
-					thisRoomDoorScript.isDirectionalReceiver = false;
-			}
-
-			if (room.west) 
-			{
-				if (currentHitTarget == room.west) 
-				{
-					for (int x = 0; x < room.doors.Count; x++) 
-					{
-						thisRoomDoor = room.doors [x];
-						thisRoomDoorScript = thisRoomDoor.GetComponent<DoorScript> ();
-					}
-					for (int y = 0; y < room.westScript.doors.Count; y++) 
-					{
-						if (room.westScript.doors.Contains (thisRoomDoor)) 
-						{
-							thisRoomDoorScript.isDirectionalReceiver = true;
-						}
-					}
-				} 
-				else
-					thisRoomDoorScript.isDirectionalReceiver = false;
-			}
-		} 
-		else
-			for (int x = 0; x < room.doors.Count; x++) 
-			{
-				thisRoomDoor = room.doors [x];
-				thisRoomDoorScript = thisRoomDoor.GetComponent<DoorScript> ();
-				thisRoomDoorScript.isDirectionalReceiver = false;
-			}
-//		#pragma warning restore
-	}
-
+		
 	// If player is colliding and Q is pressed, turn compass to the right. 
 	void OnTriggerStay(Collider detector)
 	{
@@ -187,26 +81,45 @@ public class CompassScript : MonoBehaviour
 	/// Debug what it hits.
 	public void turnDialLeft ()
 	{
+		if (room.isPowered) 
+		{
+			room.redirectPowerTransfer (currentHitTarget);  
+			Debug.Log (currentHitTarget.name);
+		}
+			
 		transform.Rotate (0, -90, 0, Space.Self);
 		RaycastHit hit;
 		if (Physics.Raycast (transform.position, transform.forward, out hit)) 
 		{
 			currentHitTarget = hit.collider.gameObject;
 		}
-		Debug.Log (currentHitTarget.name);
+
+		if (room.isPowered) 
+		{
+			StartCoroutine (Wait (0.5f));
+		}
 	}
 
 	// Same as above but turn right.
 	public void turnDialRight ()
 	{
+		if (room.isPowered) 
+		{
+			room.redirectPowerTransfer (currentHitTarget);  
+			Debug.Log (currentHitTarget.name);
+		}
+
 		transform.Rotate (0, 90, 0, Space.Self);
-		transform.Rotate (0, -90, 0, Space.Self);
 		RaycastHit hit;
 		if (Physics.Raycast (transform.position, transform.forward, out hit)) 
 		{
 			currentHitTarget = hit.collider.gameObject;
 		}
-		Debug.Log (currentHitTarget.name);
+
+		if (room.isPowered) 
+		{
+			StartCoroutine (Wait (0.5f));
+		}
 	}
 
 	// Sets bool state.
