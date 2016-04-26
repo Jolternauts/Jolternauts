@@ -178,6 +178,7 @@ public class RoomScript : MonoBehaviour
 		supplyroomScript.availableRoomSupply -= requiredSupply;
 	}
 
+<<<<<<< HEAD
 	public void callPowerTransfer ()
 	{
 		#pragma warning disable
@@ -198,11 +199,36 @@ public class RoomScript : MonoBehaviour
 				}
 				break;
 			}
+=======
+	public void redirectPowerTransfer (GameObject victim)
+	{
+		RoomScript victimScript = victim.GetComponent<RoomScript> ();
+		GameObject victimBox = victimScript.roomFuseBox;
+		FuseBox victimBoxScript = victimBox.GetComponent<FuseBox> ();
+
+		int supplyToTake = victimScript.availableRoomSupply;
+
+		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
+		{
+			supplyroomScript = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
 		}
-		#pragma warning restore
+
+		if (victimScript.isPowered)
+		{
+			victimBoxScript.changeState (victimBox);
+			supplyroomScript.availableRoomSupply += supplyToTake;
+			victimScript.availableRoomSupply -= supplyToTake;
+>>>>>>> origin/master
+		}
+		else if (!victimScript.isPowered)
+		{
+			supplyroomScript.availableRoomSupply += supplyToTake;
+			victimScript.availableRoomSupply -= supplyToTake;
+		} 
 	}
 
 
+<<<<<<< HEAD
 	public void redirectPowerTransfer (GameObject victim)
 	{
 		RoomScript victimScript = victim.GetComponent<RoomScript> ();
@@ -227,6 +253,8 @@ public class RoomScript : MonoBehaviour
 	}
 
 
+=======
+>>>>>>> origin/master
 }
 
 

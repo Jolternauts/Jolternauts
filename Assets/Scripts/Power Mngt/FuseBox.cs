@@ -146,7 +146,11 @@ public class FuseBox : ObjectClass
 		if (room.isPowered) 
 		{
 			powerChainIncrease ();
+<<<<<<< HEAD
 			room.callPowerTransfer ();
+=======
+			callPowerTransfer ();
+>>>>>>> origin/master
 			roomActivate ();
 		} 
 		else
@@ -170,10 +174,14 @@ public class FuseBox : ObjectClass
 
 				if (device.stateActive ()) 
 				{
+<<<<<<< HEAD
 					device.stateActive (false);
 					device.changeRendColor (offColor);
 					roomSinglePowerDown (device.powerDemand);
 					gameMngr.levelObjectPowerDown (device.powerDemand);
+=======
+					device.changeState (device.gameObject);
+>>>>>>> origin/master
 				}
 			}
 		}
@@ -358,7 +366,11 @@ public class FuseBox : ObjectClass
 			gameMngr.chainLinks.Add (room.here);
 		}
 
+<<<<<<< HEAD
 		 else if (gameMngr.chainLinks.Count > 0)
+=======
+		if (gameMngr.chainLinks.Count > 0)
+>>>>>>> origin/master
 		{
 			#pragma warning disable
 			for (int x = 0; x < room.doors.Count; x++)
@@ -375,4 +387,30 @@ public class FuseBox : ObjectClass
 		}
 	}
 
+<<<<<<< HEAD
+=======
+	public void callPowerTransfer ()
+	{
+		#pragma warning disable
+		for (int x= 0; x < room.neighbours.Count; x++)
+		{
+			GameObject friend;
+			RoomScript friendScript;
+			friend = room.neighbours [x];
+			friendScript = room.neighbours [x].GetComponent<RoomScript> ();
+			for (int y = 0; y < friendScript.doors.Count; y++)
+			{
+				DoorScript door;
+				door = friendScript.doors [y].GetComponent<DoorScript> ();
+				if (door.isDirectionalReceiver && !friendScript.hasReceivedSourcePower)
+				{
+					room.transferPowerSupply (friend);
+					friendScript.hasReceivedSourcePower = true;
+				}
+				break;
+			}
+		}
+		#pragma warning restore
+	}
+>>>>>>> origin/master
 }
