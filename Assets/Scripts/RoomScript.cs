@@ -21,6 +21,7 @@ public class RoomScript : MonoBehaviour
 
 	public bool isPowered = false;
 	public bool playerIsHere = false;
+	public bool hasReceivedSourcePower = false;
 
 	bool runOnce = false;
 		
@@ -30,6 +31,7 @@ public class RoomScript : MonoBehaviour
 	public RoomScript eastScript;
 	public RoomScript southScript;
 	public RoomScript westScript;
+	RoomScript supplyroomScript;
 
 	public int totalRoomSupply;
 	public int availableRoomSupply;
@@ -151,10 +153,10 @@ public class RoomScript : MonoBehaviour
 	public void tallyTotalRoomPower()
 	{
 		FuseBox box = roomFuseBox.GetComponent<FuseBox> ();
-
+		ObjectClass machine;
 		for (int x = 0; x < box.roomObjects.Count; x++) 
 		{
-			ObjectClass machine = box.roomObjects [x].GetComponent<ObjectClass> ();
+			machine = box.roomObjects [x].GetComponent<ObjectClass> ();
 			totalRoomSupply += machine.powerSupply;
 			totalRoomDemand += machine.powerDemand;
 		}
@@ -166,18 +168,65 @@ public class RoomScript : MonoBehaviour
 	{
 		RoomScript directionScript = direction.GetComponent<RoomScript> ();
 
-		int requiredSupply = directionScript.totalRoomDemand;;
+		int requiredSupply = directionScript.totalRoomDemand;
 		directionScript.availableRoomSupply += requiredSupply;
 
-		#pragma warning disable
 		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
 		{
-			RoomScript supplyroom = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
-			supplyroom.availableRoomSupply -= requiredSupply;
-			break;
+			supplyroomScript = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
+		}
+		supplyroomScript.availableRoomSupply -= requiredSupply;
+	}
+
+	public void callPowerTransfer ()
+	{
+		#pragma warning disable
+		for (int x= 0; x < neighbours.Count; x++)
+		{
+			GameObject friend;
+			RoomScript friendScript;
+			friend = neighbours [x];
+			friendScript = neighbours [x].GetComponent<RoomScript> ();
+			for (int y = 0; y < friendScript.doors.Count; y++)
+			{
+				DoorScript door;
+				door = friendScript.doors [y].GetComponent<DoorScript> ();
+				if (door.isDirectionalReceiver && !friendScript.hasReceivedSourcePower)
+				{
+					transferPowerSupply (friend);
+					friendScript.hasReceivedSourcePower = true;
+				}
+				break;
+			}
 		}
 		#pragma warning restore
 	}
+
+
+	public void redirectPowerTransfer (GameObject victim)
+	{
+		RoomScript victimScript = victim.GetComponent<RoomScript> ();
+		GameObject victimBox = victimScript.roomFuseBox;
+		FuseBox victimBoxScript = victimBox.GetComponent<FuseBox> ();
+
+		if (victimScript.isPowered)
+		{
+			victimBoxScript.changeState (victimBox);
+		}
+
+		int supplyToTake = victimScript.availableRoomSupply;
+
+		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
+		{
+			supplyroomScript = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
+		}
+
+		supplyroomScript.availableRoomSupply += supplyToTake;
+		victimScript.availableRoomSupply -= supplyToTake;
+		victimScript.hasReceivedSourcePower = false;
+	}
+
+
 }
 
 
