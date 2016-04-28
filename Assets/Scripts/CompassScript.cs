@@ -55,10 +55,38 @@ public class CompassScript : MonoBehaviour
 	public IEnumerator Wait(float seconds)
 	{
 		yield return new WaitForSeconds (seconds);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
 
 		if (targetRoom && currentHitTarget != room.here)
 		{
 			room.callPowerTransfer ();
+<<<<<<< HEAD
+=======
+=======
+		Debug.Log (currentHitTarget.name);
+		room.transferPowerSupply (currentHitTarget);
+	}
+		
+	// If player is colliding and Q is pressed, turn compass to the right. 
+	void OnTriggerStay(Collider detector)
+	{
+		if (detector.transform.tag == "Player") 
+		{
+			if (Input.GetKeyDown (KeyCode.Q) && !statePressed ()) 
+			{
+				turnDialRight ();
+				statePressed (true);
+			}
+
+			if (Input.GetKeyUp (KeyCode.Q)) 
+			{
+				statePressed (false);
+			}
+>>>>>>> origin/master
+>>>>>>> origin/master
 		}
 		Debug.Log (currentHitTarget.name);
 	}
@@ -70,10 +98,20 @@ public class CompassScript : MonoBehaviour
 	{
 		if (room.isPowered) 
 		{
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
 			if (targetRoom && currentHitTarget != room.here)
 			{
 				room.redirectPowerTransfer (currentHitTarget);  
 			}
+<<<<<<< HEAD
+=======
+=======
+			room.redirectPowerTransfer (currentHitTarget);  
+>>>>>>> origin/master
+>>>>>>> origin/master
 			Debug.Log (currentHitTarget.name);
 		}
 			
@@ -95,10 +133,20 @@ public class CompassScript : MonoBehaviour
 	{
 		if (room.isPowered) 
 		{
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
 			if (targetRoom && currentHitTarget != room.here)
 			{
 				room.redirectPowerTransfer (currentHitTarget);  
 			}
+<<<<<<< HEAD
+=======
+=======
+			room.redirectPowerTransfer (currentHitTarget);  
+>>>>>>> origin/master
+>>>>>>> origin/master
 			Debug.Log (currentHitTarget.name);
 		}
 
