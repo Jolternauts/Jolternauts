@@ -105,23 +105,18 @@ public class GameManager : MonoBehaviour
 	/// Summed up by the total room values.
 	public void tallyTotalLevelPower()
 	{
-		foreach (GameObject room in roomList) 
+		for (int x = 0; x < roomList.Count; x++) 
 		{
-			RoomScript currentRoom = room.GetComponent<RoomScript> ();
-			totalLevelSupply += currentRoom.totalRoomSupply;
-			totalLevelDemand += currentRoom.totalRoomDemand;
+			GameObject section = roomList[x];
+			RoomScript sectionScript = section.GetComponent<RoomScript> ();
+			FuseBox sectionBox = sectionScript.roomFuseBox.GetComponent<FuseBox> ();
+			for (int y = 0; y < sectionBox.roomObjects.Count; y++) 
+			{
+				ObjectClass machine = sectionBox.roomObjects[y].GetComponent<ObjectClass> ();
+				totalLevelSupply += machine.powerSupply;
+				totalLevelDemand += machine.powerDemand;
+			}
 		}
-
-//		#pragma warning disable
-/*		for (int x = 0; x < roomList.Count; x++) 
-		{
-			RoomScript currentRoom = roomList[x].GetComponent<RoomScript> ();
-			totalLevelSupply += currentRoom.totalRoomSupply;
-			totalLevelDemand += currentRoom.totalRoomDemand;
-//			break;
-		}
-//		#pragma warning restore
-*/
 	}
 
 	/// Updates the room power UI.

@@ -41,9 +41,9 @@ public class PowerDrain : ObjectClass
 			{
 				if (!stateActive ()) 
 				{
-					if (room.availableRoomSupply > 0) 
+					drainerStateChangeCriteria ();
+					if (myName == "ChargeStation") 
 					{
-						drainerStateChangeCriteria ();
 						recharge ();
 					}
 				} 
@@ -233,11 +233,8 @@ public class PowerDrain : ObjectClass
 
 	public void recharge ()
 	{
-		if (myName == "ChargeStation") 
-		{
-			player.changeHealth (100f);
-			player.changeEnergy (100f);
-			player.changeOxygen (100f);
-		}
+		player.changeHealth (100f);
+		player.changeEnergy (100f);
+		player.changeOxygen (100f);
 	}
 }
