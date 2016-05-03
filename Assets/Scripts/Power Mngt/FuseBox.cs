@@ -128,12 +128,18 @@ public class FuseBox : ObjectClass
 		if (stateActive()) 
 		{
 			room.isPowered = false;
+<<<<<<< HEAD
 			Debug.Log ("Room not Powered ");
+=======
+>>>>>>> origin/master
 		}
 		else if (!stateActive()) 
 		{
 			room.isPowered = true;
+<<<<<<< HEAD
 			Debug.Log ("Room Powered ");
+=======
+>>>>>>> origin/master
 		}
 		roomStateChange ();
 	}
@@ -147,15 +153,35 @@ public class FuseBox : ObjectClass
 
 		if (room.isPowered) 
 		{
+<<<<<<< HEAD
 			Debug.Log ("Doing the power up stuff");
 //			powerChainIncrease ();
 			gameMngr.chainLinks.Add (room.here);
 			room.callPowerTransfer ();
+=======
+			powerChainIncrease ();
+<<<<<<< HEAD
+			room.callPowerTransfer ();
+=======
+<<<<<<< HEAD
+			room.callPowerTransfer ();
+=======
+<<<<<<< HEAD
+			room.callPowerTransfer ();
+=======
+			callPowerTransfer ();
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 			roomActivate ();
 		} 
 		else if (!room.isPowered)
 		{
+<<<<<<< HEAD
 			Debug.Log ("Doing the power down stuff");
+=======
+>>>>>>> origin/master
 			gameMngr.chainLinks.Remove (room.here);
 			roomSleep ();
 		}
@@ -175,10 +201,32 @@ public class FuseBox : ObjectClass
 
 				if (device.stateActive ()) 
 				{
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 					device.stateActive (false);
 					device.changeRendColor (offColor);
 					roomSinglePowerDown (device.powerDemand);
 					gameMngr.levelObjectPowerDown (device.powerDemand);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+					device.changeState (device.gameObject);
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 				}
 			}
 		}
@@ -363,6 +411,7 @@ public class FuseBox : ObjectClass
 			gameMngr.chainLinks.Add (room.here);
 		}
 
+<<<<<<< HEAD
 		 else if (gameMngr.chainLinks.Count > 0)
 		{
 			for (int x = 0; x < room.neighbours.Count; x++) 
@@ -379,4 +428,67 @@ public class FuseBox : ObjectClass
 			}
 		}
 	}
+=======
+<<<<<<< HEAD
+		 else if (gameMngr.chainLinks.Count > 0)
+=======
+<<<<<<< HEAD
+		 else if (gameMngr.chainLinks.Count > 0)
+=======
+<<<<<<< HEAD
+		 else if (gameMngr.chainLinks.Count > 0)
+=======
+		if (gameMngr.chainLinks.Count > 0)
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+		{
+			#pragma warning disable
+			for (int x = 0; x < room.doors.Count; x++)
+			{
+				DoorScript door;
+				door = room.doors [x].GetComponent<DoorScript> ();
+				if (door.isDirectionalReceiver)
+				{
+					gameMngr.chainLinks.Add (room.here);
+				}
+				break;
+			}
+			#pragma warning restore
+		}
+	}
+
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+	public void callPowerTransfer ()
+	{
+		#pragma warning disable
+		for (int x= 0; x < room.neighbours.Count; x++)
+		{
+			GameObject friend;
+			RoomScript friendScript;
+			friend = room.neighbours [x];
+			friendScript = room.neighbours [x].GetComponent<RoomScript> ();
+			for (int y = 0; y < friendScript.doors.Count; y++)
+			{
+				DoorScript door;
+				door = friendScript.doors [y].GetComponent<DoorScript> ();
+				if (door.isDirectionalReceiver && !friendScript.hasReceivedSourcePower)
+				{
+					room.transferPowerSupply (friend);
+					friendScript.hasReceivedSourcePower = true;
+				}
+				break;
+			}
+		}
+		#pragma warning restore
+	}
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 }

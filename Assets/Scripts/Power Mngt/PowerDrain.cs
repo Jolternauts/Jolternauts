@@ -42,7 +42,11 @@ public class PowerDrain : ObjectClass
 				if (!stateActive ()) 
 				{
 					drainerStateChangeCriteria ();
+<<<<<<< HEAD
 					if (myName == "Health_Console") 
+=======
+					if (myName == "ChargeStation") 
+>>>>>>> origin/master
 					{
 						recharge ();
 					}
