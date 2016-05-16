@@ -15,38 +15,47 @@ public class RoomScript : MonoBehaviour
 	public GameObject compass;
 	public GameObject here;
 
+	GameObject supplier;
+
+	public GameObject powerSource;
+
 	public List<GameObject> roomItems = new List<GameObject>();
 	public List<GameObject> doors = new List<GameObject>();
 	public List<GameObject> neighbours = new List<GameObject>();
 
 	public bool isPowered = false;
 	public bool playerIsHere = false;
+	public bool hasReceivedSourcePower = false;
 
 	bool runOnce = false;
-		
+
 	GameManager gameMngr;
 	AngusMovement player;
 	public RoomScript northScript;
 	public RoomScript eastScript;
 	public RoomScript southScript;
 	public RoomScript westScript;
+	RoomScript supplyroomScript;
+
+	CompassScript locator;
 
 	public int totalRoomSupply;
 	public int availableRoomSupply;
 
 	public int totalRoomDemand;
 	public int currentRoomDemand;
-
+	public int chainPos = 0;
 
 	//These are here for shortcutted reference to initiate functions or set values on Start-up.
 	void Start()
 	{	
 		gameMngr = GameManager.instance;
 		player = GameObject.FindWithTag ("Player").GetComponent<AngusMovement>();
+		locator = compass.GetComponent<CompassScript> ();
 		this.GetComponent<BoxCollider> ().isTrigger = true;
+		here = this.gameObject;
 		tallyTotalRoomPower ();
 		directionSetup ();
-		here = this.gameObject;
     }
 
 	void Update ()
@@ -61,6 +70,13 @@ public class RoomScript : MonoBehaviour
 		{
 			player.room = this.gameObject.GetComponent<RoomScript> ();
 		}
+
+		if (gameMngr.chainLinks.Contains (this.gameObject)) 
+		{
+			chainPos = gameMngr.chainLinks.IndexOf (this.gameObject) + 1;
+		} 
+		else
+			chainPos = 0;
     }
 
 	// Checks what direction a neighbouring room is in and accesses their script.
@@ -151,10 +167,10 @@ public class RoomScript : MonoBehaviour
 	public void tallyTotalRoomPower()
 	{
 		FuseBox box = roomFuseBox.GetComponent<FuseBox> ();
-
+		ObjectClass machine;
 		for (int x = 0; x < box.roomObjects.Count; x++) 
 		{
-			ObjectClass machine = box.roomObjects [x].GetComponent<ObjectClass> ();
+			machine = box.roomObjects [x].GetComponent<ObjectClass> ();
 			totalRoomSupply += machine.powerSupply;
 			totalRoomDemand += machine.powerDemand;
 		}
@@ -166,17 +182,102 @@ public class RoomScript : MonoBehaviour
 	{
 		RoomScript directionScript = direction.GetComponent<RoomScript> ();
 
-		int requiredSupply = directionScript.totalRoomDemand;;
+		int requiredSupply = directionScript.totalRoomDemand;
 		directionScript.availableRoomSupply += requiredSupply;
 
-		#pragma warning disable
+		gameMngr.availableLevelSupply -= requiredSupply;
+	}
+
+	/// If x direction exists:
+	/// If this room's compass' target is that direction:
+	/// If that room has not received power from the source;
+	/// Call the power transfer on that room.
+	public void callPowerTransfer ()
+	{
+		if (north)
+		{
+			northScript = north.GetComponent<RoomScript> ();
+			if (locator.currentHitTarget == north)
+			{				
+				if (!northScript.hasReceivedSourcePower)
+				{
+					transferPowerSupply (north);
+					hasReceivedSourcePower = true;
+				}
+			}
+		}
+
+		if (east)
+		{
+			eastScript = east.GetComponent<RoomScript> ();
+			if (locator.currentHitTarget == east)
+			{
+				if (!eastScript.hasReceivedSourcePower)
+				{
+					transferPowerSupply (east);
+					eastScript.hasReceivedSourcePower = true;
+				}
+			}
+		}
+
+		if (south)
+		{
+			southScript = south.GetComponent<RoomScript> ();
+			if (locator.currentHitTarget == south)
+			{
+				if (!southScript.hasReceivedSourcePower)
+				{
+					transferPowerSupply (south);
+					southScript.hasReceivedSourcePower = true;
+				}
+			}
+		}
+
+		if (west)
+		{
+			westScript = west.GetComponent<RoomScript> ();
+			if (locator.currentHitTarget == west)
+			{
+				if (!westScript.hasReceivedSourcePower)
+				{
+					transferPowerSupply (west);
+					westScript.hasReceivedSourcePower = true;
+				}
+			}
+		}
+	}
+
+	/// If the room the compass here is targeting is on:
+	/// Turn it off and reverse the power transfer.
+	public void redirectPowerTransfer (GameObject victim)
+	{
+		RoomScript victimScript = victim.GetComponent<RoomScript> ();
+		GameObject victimBox = victimScript.roomFuseBox;
+		FuseBox victimBoxScript = victimBox.GetComponent<FuseBox> ();
+
+		if (victimScript.isPowered)
+		{
+			victimBoxScript.changeState (victimBox);
+		}
+
+		int supplyToTake = victimScript.availableRoomSupply;
+
 		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
 		{
-			RoomScript supplyroom = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
-			supplyroom.availableRoomSupply -= requiredSupply;
-			break;
+			supplyroomScript = gameMngr.suppliers[0].GetComponentInParent<RoomScript>();
 		}
-		#pragma warning restore
+
+		supplyroomScript.availableRoomSupply += supplyToTake;
+		victimScript.availableRoomSupply -= supplyToTake;
+		victimScript.hasReceivedSourcePower = false;
+	}
+
+	public void killMe ()
+	{
+//		if ()
+		{
+			
+		}
 	}
 }
 

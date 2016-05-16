@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class AngusMovement : MonoBehaviour 
 {
-	public int powerPack = 0;
-
     public float startHealth = 100.0f;
     public float currentHealth;
 
@@ -38,7 +36,17 @@ public class AngusMovement : MonoBehaviour
 
 	public RoomScript room;
 	GameManager gameMngr;
-	CompassScript compass;
+	FuseBox targetBox;
+	CompassScript targetCompass;
+	PowerDrain targetDevice;
+	PowerGen targetGen;
+	MagnetScript targetMag;
+	ObjectClass targetObject;
+	RoomScript targetRoom;
+
+	GameObject link;
+	RoomScript thisRoom;
+	GameObject friend;
 
     void Start () 
 	{
@@ -47,16 +55,14 @@ public class AngusMovement : MonoBehaviour
 		currentOxygen = startOxygen;
 		rigBod = transform.GetComponent<Rigidbody> ();
 		gameMngr = GameManager.instance;
-
     }
 		
-		void Update()
+	void Update()
 	{	
 		//Press spacebar to jump.
 		if (Input.GetKeyDown (KeyCode.Space) && !isJumping && isGrounded) 
 		{
 			isJumping = true;
-			Debug.Log ("Jump around");
 		}
 
 		//Press spacebar again to double jump.
@@ -70,13 +76,6 @@ public class AngusMovement : MonoBehaviour
 		else if (Input.GetKeyDown (KeyCode.Space) && isOnCeiling == true) 
 		{
 			rigBod.AddForce (new Vector3 (0, -1000, 0));
-			Debug.Log ("& Get Down");
-		}
-
-		//Me having some fun with debugging.
-		if (Input.GetKeyDown (KeyCode.J))
-		{
-			Debug.Log ("Jump up");
 		}
 
 		//Hide cursor to aid targeting.
@@ -90,13 +89,13 @@ public class AngusMovement : MonoBehaviour
 		if (Input.GetMouseButtonDown (1)) 
 		{
 			currentHitTarget = hit.collider.gameObject;
+			targetCompass = currentHitTarget.GetComponent<CompassScript> ();
 
 			if (Physics.Raycast (fpsCameraIn.transform.position, fpsCameraIn.transform.forward, out hit)) 
 			{
-				if (currentHitTarget.GetComponent<CompassScript> ())
+				if (targetCompass)
 				{
-					compass = currentHitTarget.GetComponent<CompassScript> ();
-					compass.turnDialRight ();
+					targetCompass.turnDialRight ();
 				}
 			}
 		}
@@ -105,20 +104,26 @@ public class AngusMovement : MonoBehaviour
 		if (Input.GetMouseButtonDown (0)) 
 		{
 			currentHitTarget = hit.collider.gameObject;
+			targetBox = currentHitTarget.GetComponent<FuseBox> ();
+			targetCompass = currentHitTarget.GetComponent<CompassScript> ();
+			targetDevice = currentHitTarget.GetComponent<PowerDrain> ();
+			targetGen = currentHitTarget.GetComponent<PowerGen> ();
+			targetObject = currentHitTarget.GetComponent<ObjectClass> ();
+			targetMag = currentHitTarget.GetComponent<MagnetScript> ();
 
 			if (Physics.Raycast (fpsCameraIn.transform.position, fpsCameraIn.transform.forward, out hit)) 
 			{
 				//If target contains the ObjectsList script and is within range.
-				if (currentHitTarget.GetComponent<ObjectClass> () && targetDistance <= maxRange) 
+				if (targetObject) 
 				{
-					if (currentHitTarget.transform.tag == "FuseBox") 
+					if (targetBox) 
 					{
-						currentHitTarget.GetComponent<FuseBox>().changeState(currentHitTarget);
+						// Too many conditions for here so see function for details.
+						targetBox.fuseBoxRules ();
 					}
 
-					if (currentHitTarget.transform.tag == "Generator") 
+					if (targetGen) 
 					{
-						PowerGen targetGen = currentHitTarget.GetComponent<PowerGen>();
 						if (!targetGen.stateActive ()) 
 						{
 							targetGen.powerUp ();
@@ -127,24 +132,28 @@ public class AngusMovement : MonoBehaviour
 							targetGen.changeState (targetGen.gameObject);
 					}
 
-					if (currentHitTarget.transform.tag == "Device") 
+					if (targetDevice) 
 					{
-						currentHitTarget.GetComponent<PowerDrain>().changeState(currentHitTarget);
+						targetDevice.changeState(currentHitTarget);
 					}
 				}
 
 				//If the object is activated by the mouse click.
-				if (currentHitTarget.GetComponent<ObjectClass> () &&
-					currentHitTarget.GetComponent<ObjectClass> ().stateActive()) 
+				if (targetObject && targetObject.stateActive()) 
 				{
 					//Do this function saps some of the suit's power.
 					useSuitPower ();
 				}
 
-				if (currentHitTarget.GetComponent<CompassScript> ())
+				if (targetCompass)
 				{
-					compass = currentHitTarget.GetComponent<CompassScript> ();
-					compass.turnDialLeft ();
+					targetCompass.turnDialLeft ();
+				}
+
+
+				if (targetMag) 
+				{
+					targetMag.magRules ();
 				}
 			}
 		} 
@@ -155,38 +164,41 @@ public class AngusMovement : MonoBehaviour
 			*/
 			if (Physics.Raycast (fpsCameraIn.transform.position, fpsCameraIn.transform.forward, out hit)) 
 			{
-				targetDistance = Vector3.Distance (transform.position, hit.collider.gameObject.transform.position);
+				targetBox = hit.collider.gameObject.GetComponent<FuseBox> ();
+				targetCompass = hit.collider.gameObject.GetComponent<CompassScript> ();
+				targetDevice = hit.collider.gameObject.GetComponent<PowerDrain> ();
+				targetGen = hit.collider.gameObject.GetComponent<PowerGen> ();
+				targetMag = hit.collider.gameObject.GetComponent<MagnetScript> ();
+				targetObject = hit.collider.gameObject.GetComponent<ObjectClass> ();
+				targetRoom = hit.collider.gameObject.GetComponent<RoomScript> ();
 
-				if (targetDistance <= maxRange) 
+				if (targetMag) 
 				{
-					if (hit.collider.gameObject.GetComponent<DoorScript>()) 
-					{
-						targetIn.GetComponent<Image> ().color = Color.yellow;
-					}
-					else if (hit.collider.gameObject.GetComponent<FuseBox>()) 
-					{
-						targetIn.GetComponent<Image> ().color = Color.blue;
-					}
-					else if (hit.collider.gameObject.GetComponent<PowerGen>()) 
-					{
-						targetIn.GetComponent<Image> ().color = Color.green;
-					}
-					else if (hit.collider.gameObject.GetComponent<PowerDrain>()) 
-					{
-						targetIn.GetComponent<Image> ().color = Color.magenta;
-					}
-					else if (hit.collider.gameObject.GetComponent<RoomScript>()) 
-					{
-						targetIn.GetComponent<Image> ().color = Color.cyan;
-					}
-					else if (hit.collider.gameObject.GetComponent<CompassScript>()) 
-					{
-						targetIn.GetComponent<Image> ().color = Color.red;
-					}
-					else 
-					{
-						targetIn.GetComponent<Image> ().color = Color.white;
-					}
+					targetIn.GetComponent<Image> ().color = Color.yellow;
+				}
+				else if (targetBox) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.blue;
+				}
+				else if (targetGen) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.green;
+				}
+				else if (targetDevice) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.magenta;
+				}
+				else if (targetRoom) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.cyan;
+				}
+				else if (targetCompass) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.red;
+				}
+				else 
+				{
+					targetIn.GetComponent<Image> ().color = Color.white;
 				}
 			}
 		}
@@ -299,4 +311,5 @@ public class AngusMovement : MonoBehaviour
 		gameMngr.machineStateMeter1.color = colour;
 		gameMngr.machineStateMeter2.color = colour;
 	}
+
 }

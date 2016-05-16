@@ -126,7 +126,7 @@ public class ObjectsList : MonoBehaviour
 				{
 					if (Room.availableRoomSupply > 0) 
 					{
-						Room.roomFuseBox.GetComponent<FuseBox>().storePowerPackSupply ();
+//						Room.roomFuseBox.GetComponent<FuseBox>().storePowerPackSupply ();
 					}
 				}
 			} 
@@ -141,7 +141,7 @@ public class ObjectsList : MonoBehaviour
 				{
 					if (Room.availableRoomSupply == 0)
 					{
-						Room.roomFuseBox.GetComponent<FuseBox>().sharePowerPackSupply ();
+//						Room.roomFuseBox.GetComponent<FuseBox>().sharePowerPackSupply ();
 					}
 				}
 			} 

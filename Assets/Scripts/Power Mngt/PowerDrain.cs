@@ -30,7 +30,7 @@ public class PowerDrain : ObjectClass
 	}
 
 	// Change state of device.
-	public void changeState(GameObject reference)
+	public void changeState (GameObject reference)
 	{
 		// If fusebox is active.
 		if (box.stateActive ()) 
@@ -41,9 +41,9 @@ public class PowerDrain : ObjectClass
 			{
 				if (!stateActive ()) 
 				{
-					if (room.availableRoomSupply > 0) 
+					drainerStateChangeCriteria ();
+					if (myName == "Health_Console") 
 					{
-						drainerStateChangeCriteria ();
 						recharge ();
 					}
 				} 
@@ -99,20 +99,20 @@ public class PowerDrain : ObjectClass
 		{
 			if (Input.GetKeyDown (KeyCode.E) && !statePressed ()) 
 			{
-				changeState(this.gameObject);
+				changeState (this.gameObject);
 				statePressed (true);
 			}
 
 			if (Input.GetKeyUp (KeyCode.E)) 
 			{
-				statePressed(false);
+				statePressed (false);
 			}
 		}
 
 		machineStateMeterCheck ();
 	}
 
-	void OnTriggerExit(Collider detector)
+	void OnTriggerExit (Collider detector)
 	{
 		if (detector.transform.tag == "Player") 
 		{
@@ -122,16 +122,17 @@ public class PowerDrain : ObjectClass
 	}
 
 	// Checks if device group is damaged or not and A.R.S is enough to turn on.
-	public void massActivationCheck()
+	public void massActivationCheck ()
 	{
 		if (!stateDamaged() && stateOn() && room.availableRoomSupply - powerDemand >= 0)
 		{
 			Debug.Log ("Safe Activation for " + myName);
-			stateActive(true);
-			stateOn(false);
+			stateActive (true);
+			stateOn (false);
 			changeRendColor (activeColor);
 			box.roomSinglePowerUp (powerDemand);
-			gameMngr.availableLevelSupply -= powerDemand;
+			gameMngr.levelObjectPowerUp (powerDemand);
+//			gameMngr.availableLevelSupply -= powerDemand;
 			recharge ();
 		}
 		else if (stateDamaged() && stateOn()) 
@@ -145,24 +146,24 @@ public class PowerDrain : ObjectClass
 	/* If device group is turned on:
 	 * if any are damaged, changed to damaged criteria.
 	 * If true and others aren't make them inactive.	*/
-	public void massCrashCheckForDevice()
+	public void massCrashCheckForDevice ()
 	{
-		if (stateActive() && !stateDamaged() || stateOn() && !stateDamaged()) 
+		if (stateActive () && !stateDamaged () || stateOn () && !stateDamaged ()) 
 		{
 			stateActive(false);
 			stateOn(false);
 			changeRendColor (offColor);
 		}
-		else if (stateActive() && stateDamaged() || stateOn() && stateDamaged()) 
+		else if (stateActive () && stateDamaged () || stateOn () && stateDamaged ()) 
 		{
 			stateDamaged (true);
 			stateActive(false);
-			stateOn(false);
+			stateOn (false);
 			changeRendColor (damagedColor);
 		}
 	}
 
-	public void machineStateMeterCheck()
+	public void machineStateMeterCheck ()
 	{
 		if (besideDevice) 
 		{
@@ -189,7 +190,7 @@ public class PowerDrain : ObjectClass
 		}
 	}
 
-	public void changeRendColor(Color32 colour)
+	public void changeRendColor (Color32 colour)
 	{
 		deviceRend.material.color = colour;
 	}
@@ -202,7 +203,8 @@ public class PowerDrain : ObjectClass
 			changeRendColor (offColor);
 			stateActive (false);
 			box.roomSinglePowerDown (powerDemand);
-			gameMngr.availableLevelSupply += powerDemand;
+			gameMngr.levelObjectPowerDown (powerDemand);
+//			gameMngr.availableLevelSupply += powerDemand;
 		}
 		else if (stateActive () && stateDamaged ()) 
 		{
@@ -210,7 +212,8 @@ public class PowerDrain : ObjectClass
 			changeRendColor (damagedColor);
 			stateActive (false);
 			box.roomSinglePowerDown (powerDemand);
-			gameMngr.availableLevelSupply += powerDemand;
+			gameMngr.levelObjectPowerDown (powerDemand);
+//			gameMngr.availableLevelSupply += powerDemand;
 		}
 		else if (!stateActive () && !stateDamaged ()) 
 		{
@@ -218,7 +221,8 @@ public class PowerDrain : ObjectClass
 			changeRendColor (activeColor);
 			stateActive (true);
 			box.roomSinglePowerUp (powerDemand);
-			gameMngr.availableLevelSupply -= powerDemand;
+			gameMngr.levelObjectPowerUp (powerDemand);
+//			gameMngr.availableLevelSupply -= powerDemand;
 		}
 		else if (!stateActive () && stateDamaged ()) 
 		{
@@ -233,11 +237,8 @@ public class PowerDrain : ObjectClass
 
 	public void recharge ()
 	{
-		if (myName == "ChargeStation") 
-		{
-			player.changeHealth (100f);
-			player.changeEnergy (100f);
-			player.changeOxygen (100f);
-		}
+		player.changeHealth (100f);
+		player.changeEnergy (100f);
+		player.changeOxygen (100f);
 	}
 }
