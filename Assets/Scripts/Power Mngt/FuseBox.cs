@@ -10,6 +10,10 @@ public class FuseBox : ObjectClass
 	public List<GameObject> roomObjects = new List<GameObject>();
 
 	public RoomScript room;
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
 	Renderer boxRend;
 
 	public bool besideBox;
@@ -178,6 +182,34 @@ public class FuseBox : ObjectClass
 			{
 				statePressed (false);
 			}
+<<<<<<< HEAD
+=======
+
+			// If A.R.S > 0, store power supply from the room in the suit. 
+			if (Input.GetKeyDown (KeyCode.P) && !statePressed ()) 
+			{
+				if (room.availableRoomSupply > 0) 
+				{
+					storePowerPackSupply ();
+					statePressed (true);
+				}
+			}
+
+			// If A.R.S is 0, share power supply from the suit to the room. 
+			if (Input.GetKey (KeyCode.LeftShift) && Input.GetKeyDown (KeyCode.P) && !statePressed ()) 
+			{
+				if (room.availableRoomSupply == 0) 
+				{
+					sharePowerPackSupply ();
+					statePressed (true);
+				}
+			}
+
+			if (Input.GetKeyUp (KeyCode.LeftShift) || Input.GetKeyUp (KeyCode.P)) 
+			{
+				statePressed (false);
+			}
+>>>>>>> origin/master
 		}
 
 		// Check what color the statemeters should be.
@@ -206,12 +238,26 @@ public class FuseBox : ObjectClass
 		if (stateActive()) 
 		{
 			room.isPowered = false;
+<<<<<<< HEAD
 			Debug.Log ("Room not Powered ");
+=======
+<<<<<<< HEAD
+			Debug.Log ("Room not Powered ");
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
 		}
 		else if (!stateActive()) 
 		{
 			room.isPowered = true;
+<<<<<<< HEAD
 			Debug.Log ("Room Powered ");
+=======
+<<<<<<< HEAD
+			Debug.Log ("Room Powered ");
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
 		}
 		roomStateChange ();
 	}
@@ -225,17 +271,49 @@ public class FuseBox : ObjectClass
 
 		if (room.isPowered) 
 		{
+<<<<<<< HEAD
 			Debug.Log ("Doing the power up stuff");
 			gameMngr.chainLinks.Add (room.here);
 			room.callPowerTransfer ();
+=======
+<<<<<<< HEAD
+			Debug.Log ("Doing the power up stuff");
+//			powerChainIncrease ();
+			gameMngr.chainLinks.Add (room.here);
+			room.callPowerTransfer ();
+=======
+			powerChainIncrease ();
+<<<<<<< HEAD
+			room.callPowerTransfer ();
+=======
+<<<<<<< HEAD
+			room.callPowerTransfer ();
+=======
+<<<<<<< HEAD
+			room.callPowerTransfer ();
+=======
+			callPowerTransfer ();
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 			roomActivate ();
 		} 
 		else if (!room.isPowered)
 		{
+<<<<<<< HEAD
 			Debug.Log ("Doing the power down stuff");
 			breakChain ();
 			gameMngr.chainLinks.Remove (room.here);
 			room.hasReceivedSourcePower = false;
+=======
+<<<<<<< HEAD
+			Debug.Log ("Doing the power down stuff");
+=======
+>>>>>>> origin/master
+			gameMngr.chainLinks.Remove (room.here);
+>>>>>>> origin/master
 			roomSleep ();
 		}
 	}
@@ -273,6 +351,7 @@ public class FuseBox : ObjectClass
 				}
 			}
 
+<<<<<<< HEAD
 			if (device.tag == "ServerCon") 
 			{
 				PowerDrain serverCon = device.GetComponent<PowerDrain> ();
@@ -282,6 +361,36 @@ public class FuseBox : ObjectClass
 					serverCon.changeRendColor (offColor);
 					roomSinglePowerDown (serverCon.powerDemand);
 					gameMngr.levelObjectPowerDown (serverCon.powerDemand);
+=======
+				if (device.stateActive ()) 
+				{
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+					device.stateActive (false);
+					device.changeRendColor (offColor);
+					roomSinglePowerDown (device.powerDemand);
+					gameMngr.levelObjectPowerDown (device.powerDemand);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+					device.changeState (device.gameObject);
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 				}
 			}
 		}
@@ -345,12 +454,19 @@ public class FuseBox : ObjectClass
 		{
 			PowerDrain drainer = roomObjects [x].GetComponent<PowerDrain> ();
 
+<<<<<<< HEAD
 			if (drainer.stateActive ()) 
 			{
 				roomSinglePowerUp (drainer.powerDemand);
 				gameMngr.levelObjectPowerUp (drainer.powerDemand);
 //				room.availableRoomSupply -= drainer.powerDemand;
 //				gameMngr.availableLevelSupply -= drainer.powerDemand;
+=======
+			if (drainer.stateActive()) 
+			{
+				room.availableRoomSupply -= drainer.powerDemand;
+				gameMngr.availableLevelSupply -= drainer.powerDemand;
+>>>>>>> origin/master
 			}
 		}
 	}
@@ -365,10 +481,15 @@ public class FuseBox : ObjectClass
 
 			if (drainer.stateActive ()) 
 			{
+<<<<<<< HEAD
 				roomSinglePowerDown (drainer.powerDemand);
 				gameMngr.levelObjectPowerDown (drainer.powerDemand);
 //				room.availableRoomSupply += drainer.powerDemand;
 //				gameMngr.availableLevelSupply += drainer.powerDemand;
+=======
+				room.availableRoomSupply += drainer.powerDemand;
+				gameMngr.availableLevelSupply += drainer.powerDemand;
+>>>>>>> origin/master
 			}
 		}
 	}
@@ -414,6 +535,10 @@ public class FuseBox : ObjectClass
 	}
 
 	/// Decreases the active room power values by a single active objects' values.
+<<<<<<< HEAD
+=======
+	/// Also constrains the values to not fall below 0.
+>>>>>>> origin/master
 	public void roomSinglePowerDown (int demand)
 	{
 		room.availableRoomSupply += demand;
@@ -455,11 +580,16 @@ public class FuseBox : ObjectClass
 		boxRend.material.color = colour;
 	}
 
+<<<<<<< HEAD
 	/// Increases/creates the chain.
 	/// If there is no chain, just add a link.
 	/// Else go thorugh this room's neighbours and the chain.
 	/// If a neghbour is in the chain, add link.
 	public void powerChainIncrease ()
+=======
+	// Store power supply from the room to the suit. 
+	public void storePowerPackSupply ()
+>>>>>>> origin/master
 	{
 		if (gameMngr.chainLinks.Count == 0) 
 		{
@@ -483,11 +613,16 @@ public class FuseBox : ObjectClass
 		}
 	}
 
+<<<<<<< HEAD
 	/// Breaks the chain.
 	/// Go thorugh the chain.
 	/// If a room has a higher position.
 	/// Turn it off too. 
 	public void breakChain ()
+=======
+	// Share power supply from the suit to the room. 
+	public void sharePowerPackSupply ()
+>>>>>>> origin/master
 	{
 		for (int x = 0; x < gameMngr.chainLinks.Count; x++)
 		{
@@ -501,4 +636,95 @@ public class FuseBox : ObjectClass
 			}
 		}
 	}
+<<<<<<< HEAD
+=======
+
+	public void powerChainIncrease ()
+	{
+		if (gameMngr.chainLinks.Count == 0) 
+		{
+			gameMngr.chainLinks.Add (room.here);
+		}
+
+<<<<<<< HEAD
+		 else if (gameMngr.chainLinks.Count > 0)
+		{
+			for (int x = 0; x < room.neighbours.Count; x++) 
+			{
+				GameObject friend = room.neighbours [x];
+				for (int y = 0; y < gameMngr.chainLinks.Count; y++)
+				{
+					GameObject link = gameMngr.chainLinks [y];
+					if (link == friend)
+					{
+						gameMngr.chainLinks.Add (room.here);
+					}
+				}
+			}
+		}
+	}
+=======
+<<<<<<< HEAD
+		 else if (gameMngr.chainLinks.Count > 0)
+=======
+<<<<<<< HEAD
+		 else if (gameMngr.chainLinks.Count > 0)
+=======
+<<<<<<< HEAD
+		 else if (gameMngr.chainLinks.Count > 0)
+=======
+		if (gameMngr.chainLinks.Count > 0)
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+		{
+			#pragma warning disable
+			for (int x = 0; x < room.doors.Count; x++)
+			{
+				DoorScript door;
+				door = room.doors [x].GetComponent<DoorScript> ();
+				if (door.isDirectionalReceiver)
+				{
+					gameMngr.chainLinks.Add (room.here);
+				}
+				break;
+			}
+			#pragma warning restore
+		}
+	}
+
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+	public void callPowerTransfer ()
+	{
+		#pragma warning disable
+		for (int x= 0; x < room.neighbours.Count; x++)
+		{
+			GameObject friend;
+			RoomScript friendScript;
+			friend = room.neighbours [x];
+			friendScript = room.neighbours [x].GetComponent<RoomScript> ();
+			for (int y = 0; y < friendScript.doors.Count; y++)
+			{
+				DoorScript door;
+				door = friendScript.doors [y].GetComponent<DoorScript> ();
+				if (door.isDirectionalReceiver && !friendScript.hasReceivedSourcePower)
+				{
+					room.transferPowerSupply (friend);
+					friendScript.hasReceivedSourcePower = true;
+				}
+				break;
+			}
+		}
+		#pragma warning restore
+	}
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 }

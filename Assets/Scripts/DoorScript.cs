@@ -12,6 +12,13 @@ public class DoorScript : MonoBehaviour
 	CompassScript compassB;
 	RoomScript roomA;
 	RoomScript roomB;
+<<<<<<< HEAD
+=======
+//	GameManager gameMngr;
+
+//	public GameObject doorUpper;
+//	public GameObject doorLower;
+>>>>>>> origin/master
 
 	public GameObject lightSideA;
 	public GameObject lightSideB;
@@ -28,6 +35,10 @@ public class DoorScript : MonoBehaviour
 		roomB = doorSideB.GetComponent<RoomScript> ();
 		compassA = roomA.compass.GetComponent<CompassScript> ();
 		compassB = roomB.compass.GetComponent<CompassScript> ();
+<<<<<<< HEAD
+=======
+//		gameMngr = GameManager.instance;
+>>>>>>> origin/master
 		this.GetComponent<BoxCollider> ().isTrigger = true;
 	}
 

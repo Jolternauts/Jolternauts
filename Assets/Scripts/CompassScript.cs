@@ -10,8 +10,14 @@ public class CompassScript : MonoBehaviour
 	public GameObject arrow;
 	public List<GameObject> arrows = new List<GameObject>();
 
+<<<<<<< HEAD
 	RoomScript targetRoom;
 	RoomScript room;
+=======
+	GameObject currentReceiver;
+	GameObject newReceiver;
+	RoomScript targetRoom;
+>>>>>>> origin/master
 
 
 	void Start () 
@@ -41,6 +47,7 @@ public class CompassScript : MonoBehaviour
 	}
 
 	// Wait function.
+<<<<<<< HEAD
 	public IEnumerator Wait (float seconds)
 	{
 		yield return new WaitForSeconds (seconds);
@@ -48,6 +55,55 @@ public class CompassScript : MonoBehaviour
 		if (targetRoom && currentHitTarget != room.here)
 		{
 			room.callPowerTransfer ();
+=======
+	public IEnumerator Wait(float seconds)
+	{
+		yield return new WaitForSeconds (seconds);
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+
+		if (targetRoom && currentHitTarget != room.here)
+		{
+			room.callPowerTransfer ();
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+		Debug.Log (currentHitTarget.name);
+		room.transferPowerSupply (currentHitTarget);
+	}
+		
+	// If player is colliding and Q is pressed, turn compass to the right. 
+	void OnTriggerStay(Collider detector)
+	{
+		if (detector.transform.tag == "Player") 
+		{
+			if (Input.GetKeyDown (KeyCode.Q) && !statePressed ()) 
+			{
+				turnDialRight ();
+				statePressed (true);
+			}
+
+			if (Input.GetKeyUp (KeyCode.Q)) 
+			{
+				statePressed (false);
+			}
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 		}
 		Debug.Log (currentHitTarget.name);
 	}
@@ -59,6 +115,7 @@ public class CompassScript : MonoBehaviour
 	/// Debug what it hits.
 	public void turnDialLeft ()
 	{
+<<<<<<< HEAD
 		targetRoom = currentHitTarget.GetComponent<RoomScript> ();
 		if (room.isPowered) 
 		{
@@ -69,6 +126,36 @@ public class CompassScript : MonoBehaviour
 					room.redirectPowerTransfer (currentHitTarget);  
 				}
 			}
+=======
+		if (room.isPowered) 
+		{
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+			if (targetRoom && currentHitTarget != room.here)
+			{
+				room.redirectPowerTransfer (currentHitTarget);  
+			}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+			room.redirectPowerTransfer (currentHitTarget);  
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 			Debug.Log (currentHitTarget.name);
 		}
 			
@@ -88,6 +175,7 @@ public class CompassScript : MonoBehaviour
 	// Same as above but turn right.
 	public void turnDialRight ()
 	{
+<<<<<<< HEAD
 		targetRoom = currentHitTarget.GetComponent<RoomScript> ();
 		if (room.isPowered) 
 		{
@@ -98,6 +186,36 @@ public class CompassScript : MonoBehaviour
 					room.redirectPowerTransfer (currentHitTarget);  
 				}
 			}
+=======
+		if (room.isPowered) 
+		{
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+			if (targetRoom && currentHitTarget != room.here)
+			{
+				room.redirectPowerTransfer (currentHitTarget);  
+			}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+			room.redirectPowerTransfer (currentHitTarget);  
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 			Debug.Log (currentHitTarget.name);
 		}
 
@@ -107,6 +225,15 @@ public class CompassScript : MonoBehaviour
 		{
 			currentHitTarget = hit.collider.gameObject;
 		}
+<<<<<<< HEAD
+=======
+
+		if (room.isPowered) 
+		{
+			StartCoroutine (Wait (0.5f));
+		}
+	}
+>>>>>>> origin/master
 
 		if (room.isPowered) 
 		{
@@ -114,5 +241,18 @@ public class CompassScript : MonoBehaviour
 		}
 	}
 
+<<<<<<< HEAD
 
+=======
+	// Returns bool state.
+	public bool statePressed()
+	{
+		return keyPressed;
+	}
+
+	public void callPowerRedirection ()
+	{
+		
+	}
+>>>>>>> origin/master
 }

@@ -6,7 +6,19 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
+<<<<<<< HEAD
     <ProjectGuid>{439F3BDE-7981-F5E1-329B-97C9CC89FF90}</ProjectGuid>
+=======
+<<<<<<< HEAD
+    <ProjectGuid>{D93B6F32-1D33-3184-F897-71FE7FF799E2}</ProjectGuid>
+=======
+<<<<<<< HEAD
+    <ProjectGuid>{DA1F9C12-E05E-95F1-541A-9CDD2A8D355D}</ProjectGuid>
+=======
+    <ProjectGuid>{2CC5CAFC-DDE3-5900-4530-2550B367471E}</ProjectGuid>
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
