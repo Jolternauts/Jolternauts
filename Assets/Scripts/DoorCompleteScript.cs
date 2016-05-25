@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class DoorCompleteScript : MonoBehaviour 
 {
+<<<<<<< HEAD
 	public RoomScript roomA;
 	public RoomScript roomB;
 	public GameObject doorSideA;
@@ -11,12 +12,33 @@ public class DoorCompleteScript : MonoBehaviour
 
 	CompassScript compassA;
 	CompassScript compassB;
+=======
+	public List<GameObject> connectedRooms = new List<GameObject> ();
+	public GameObject doorSideA;
+	public GameObject doorSideB;
+
+<<<<<<< HEAD
+	CompassScript compassA;
+	CompassScript compassB;
+=======
+	GameObject connectorsDoor;
+	CompassScript compassA;
+	CompassScript compassB;
+	RoomScript connector;
+>>>>>>> origin/master
+	public RoomScript roomA;
+	public RoomScript roomB;
+>>>>>>> origin/master
 
 	public GameObject lightSideA;
 	public GameObject lightSideB;
 
 	public GameObject doorUpper;
 	public GameObject doorLower;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
 	public GameObject doorMagnet;
 
 	Vector3 positionUpperStart;
@@ -38,12 +60,38 @@ public class DoorCompleteScript : MonoBehaviour
 
 	public List<MagnetScript> magListA = new List<MagnetScript>();
 	public List<MagnetScript> magListB = new List<MagnetScript>();
+<<<<<<< HEAD
 
 	Renderer lightARend;
 	Renderer lightBRend;
 
 	GameManager gameMngr;
 
+=======
+=======
+
+	Vector3 positionUpperStart;
+	Vector3 positionLowerStart;
+
+	public int powerDemand = 1;
+
+	float startTime;
+	float moveDistance;
+
+	public bool Open = false;
+	public bool isActive = false;
+	public bool isDirectionalReceiver = false;
+	public bool manualOverrideEnabled = false;
+
+	AngusMovement player;
+
+	public bool doorOn;
+	public List<GameObject> aMagnets = new List<GameObject>();
+	public List<GameObject> bMagnets = new List<GameObject>();
+	public List<bool> truthList = new List<bool>();
+
+>>>>>>> origin/master
+>>>>>>> origin/master
 
 	void Start ()
 	{
@@ -51,8 +99,13 @@ public class DoorCompleteScript : MonoBehaviour
 		roomB = doorSideB.GetComponent<RoomScript> ();
 		compassA = roomA.compass.GetComponent<CompassScript> ();
 		compassB = roomB.compass.GetComponent<CompassScript> ();
+<<<<<<< HEAD
 		this.GetComponent<BoxCollider> ().isTrigger = true;
 		gameMngr = GameManager.instance;
+=======
+<<<<<<< HEAD
+		this.GetComponent<BoxCollider> ().isTrigger = true;
+>>>>>>> origin/master
 
 		//Setting the local position of the door halves and door magnet.
 		positionUpperStart = doorUpper.transform.localPosition;
@@ -64,9 +117,21 @@ public class DoorCompleteScript : MonoBehaviour
 			magListA.Add(aMagnets [x].GetComponent<MagnetScript> ());
 			magListB.Add(bMagnets [x].GetComponent<MagnetScript> ());
 		}
+<<<<<<< HEAD
 
 		lightARend = lightSideA.GetComponent<Renderer> ();
 		lightBRend = lightSideB.GetComponent<Renderer> ();
+=======
+=======
+		player = GameObject.FindWithTag ("Player").GetComponent<AngusMovement>();
+		this.GetComponent<BoxCollider> ().isTrigger = true;
+
+		//Setting the local position of the door halves.
+		positionUpperStart = doorUpper.transform.localPosition;
+		positionLowerStart = doorLower.transform.localPosition;
+
+>>>>>>> origin/master
+>>>>>>> origin/master
 	}
 
 	void Update ()
@@ -85,30 +150,51 @@ public class DoorCompleteScript : MonoBehaviour
 	}
 
 	/// Changes the active state of the door.
+<<<<<<< HEAD
 	public void changeActiveState ()
+=======
+	public void changeActiveState()
+>>>>>>> origin/master
 	{
 		if (isActive)
 		{
 			isActive = false;
+<<<<<<< HEAD
 			lightARend.material.color = Color.red;
 			lightBRend.material.color = Color.red;
 			gameMngr.levelDoorPowerDown (powerDemand);
+=======
+>>>>>>> origin/master
 		} 
 		else  
 		{
 			isActive = true;
+<<<<<<< HEAD
 			lightARend.material.color = Color.green;
 			lightBRend.material.color = Color.green;
 			gameMngr.levelDoorPowerUp (powerDemand);
+=======
+>>>>>>> origin/master
 		}
 	}
 
 	/// Opens the door smoothly.
 	void openDoor ()
 	{
+<<<<<<< HEAD
 		doorUpper.transform.localPosition = Vector3.Lerp (doorUpper.transform.localPosition, new Vector3 (0, 1.1f, 0), .01f);
 		doorLower.transform.localPosition = Vector3.Lerp (doorLower.transform.localPosition, new Vector3 (0, 2.1f, 0), .01f);
 		doorMagnet.transform.localPosition = Vector3.Lerp (doorMagnet.transform.localPosition, new Vector3 (0, .00005f, 0), .00006f);
+=======
+<<<<<<< HEAD
+		doorUpper.transform.localPosition = Vector3.Lerp (doorUpper.transform.localPosition, new Vector3 (0, 1.1f, 0), .01f);
+		doorLower.transform.localPosition = Vector3.Lerp (doorLower.transform.localPosition, new Vector3 (0, 2.1f, 0), .01f);
+		doorMagnet.transform.localPosition = Vector3.Lerp (doorMagnet.transform.localPosition, new Vector3 (0, .00005f, 0), .00006f);
+=======
+		doorUpper.transform.localPosition = Vector3.Lerp (doorUpper.transform.localPosition, new Vector3 (0, 1f, 0), .01f);
+		doorLower.transform.localPosition = Vector3.Lerp (doorLower.transform.localPosition, new Vector3 (0, 2f, 0), .01f);
+>>>>>>> origin/master
+>>>>>>> origin/master
 	}
 
 	/// Closes the door smoothly.
@@ -116,9 +202,31 @@ public class DoorCompleteScript : MonoBehaviour
 	{
 		doorUpper.transform.localPosition = Vector3.Lerp (doorUpper.transform.localPosition, positionUpperStart, .01f);
 		doorLower.transform.localPosition = Vector3.Lerp (doorLower.transform.localPosition, positionLowerStart, .01f);
+<<<<<<< HEAD
 		doorMagnet.transform.localPosition = Vector3.Lerp (doorMagnet.transform.localPosition, positionDoorMagStart, .01f);
 	}
 		
+=======
+<<<<<<< HEAD
+		doorMagnet.transform.localPosition = Vector3.Lerp (doorMagnet.transform.localPosition, positionDoorMagStart, .01f);
+	}
+		
+=======
+	}
+
+	public void bottomDoorUp ()
+	{
+		doorLower.transform.localPosition = Vector3.Lerp (doorLower.transform.localPosition, new Vector3 (0, 1.3f, 0), .001f);
+	}
+		
+	public void bothDoorsUp ()
+	{
+		doorUpper.transform.localPosition = Vector3.Lerp (doorLower.transform.localPosition, new Vector3 (0, 1f, 0), .0005f);
+		doorLower.transform.localPosition = Vector3.Lerp (doorLower.transform.localPosition, new Vector3 (0, 6f, 0), .0008f);
+	}
+
+>>>>>>> origin/master
+>>>>>>> origin/master
 	/// Detects Player entering door collider.
 	void OnTriggerStay (Collider detector)
 	{		
@@ -127,16 +235,45 @@ public class DoorCompleteScript : MonoBehaviour
 			//If the player is in the room in either of the door side variables.
 			//Open bool is true and the light box for that side turns green. 
 			if (roomA.playerIsHere && roomA.roomFuseBox.GetComponent<FuseBox> ().stateActive() || 
+<<<<<<< HEAD
 				roomA.playerIsHere && manualOverrideAEnabled) 
 			{
 				Open = true;
+=======
+<<<<<<< HEAD
+				roomA.playerIsHere && manualOverrideAEnabled) 
+			{
+				Open = true;
+				lightSideA.GetComponent<Renderer> ().material.color = Color.green;
+
+>>>>>>> origin/master
 			} 
 
 			if (roomB.playerIsHere && roomB.roomFuseBox.GetComponent<FuseBox> ().stateActive() || 
 				roomB.playerIsHere && manualOverrideBEnabled) 
+<<<<<<< HEAD
 			{
 				Open = true;
 			}
+=======
+=======
+				roomA.playerIsHere && manualOverrideEnabled) 
+			{
+				Open = true;
+				lightSideA.GetComponent<Renderer> ().material.color = Color.green;
+			} 
+			else if (roomB.playerIsHere && roomB.roomFuseBox.GetComponent<FuseBox> ().stateActive() || 
+					 roomB.playerIsHere && manualOverrideEnabled) 
+>>>>>>> origin/master
+			{
+				Open = true;
+				lightSideB.GetComponent<Renderer> ().material.color = Color.green;
+			}
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
+>>>>>>> origin/master
 		}	
 	}
 
@@ -160,6 +297,15 @@ public class DoorCompleteScript : MonoBehaviour
 
 	/// Checks for a receiver.
 	/// If x side's compass' target is the opposite room:
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+	/// Go through Chain Links.
+	/// If x side is a chain link, the door is a receiver.
+	/// If it isn't the target, the door isn't a receiver.
+>>>>>>> origin/master
+>>>>>>> origin/master
 	public void checkReceiver ()
 	{
 		if (compassA.currentHitTarget == doorSideB) 
@@ -178,13 +324,32 @@ public class DoorCompleteScript : MonoBehaviour
 	}
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
+>>>>>>> origin/master
 	public bool areAllTrue (List<bool> truthListIn)
 	{
 		bool returnValue = true;
 
+<<<<<<< HEAD
 		foreach (bool charge in chargedList) 
 		{
 			if (charge == false) 
+=======
+<<<<<<< HEAD
+		foreach (bool charge in chargedList) 
+		{
+			if (charge == false) 
+=======
+		foreach (bool truth in truthList) 
+		{
+			if (truth == false) 
+>>>>>>> origin/master
+>>>>>>> origin/master
 			{
 				returnValue = false;
 			}

@@ -43,7 +43,19 @@ public class PowerDrain : ObjectClass
 				if ((room.availableRoomSupply - powerDemand) >= 0)
 				{
 					drainerStateChangeCriteria ();
+<<<<<<< HEAD
 					if (myName == "Health_Console") 
+=======
+<<<<<<< HEAD
+					if (myName == "Health_Console") 
+=======
+<<<<<<< HEAD
+					if (myName == "Health_Console") 
+=======
+					if (myName == "ChargeStation") 
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 					{
 						recharge ();
 					}
@@ -98,6 +110,7 @@ public class PowerDrain : ObjectClass
 			if (Input.GetKeyUp (KeyCode.E)) 
 			{
 				statePressed (false);
+<<<<<<< HEAD
 			}
 
 			if (Input.GetKeyDown (KeyCode.U) && !statePressed ()) 
@@ -120,6 +133,8 @@ public class PowerDrain : ObjectClass
 			if (Input.GetKeyUp (KeyCode.U)) 
 			{
 				statePressed (false);
+=======
+>>>>>>> origin/master
 			}
 		}
 
@@ -145,6 +160,7 @@ public class PowerDrain : ObjectClass
 	// Checks if device group is damaged or not and A.R.S is enough to turn on.
 	public void massActivationCheck ()
 	{
+<<<<<<< HEAD
 		if ((room.availableRoomSupply - powerDemand) >= 0) 
 		{				
 			if (!stateDamaged () && stateOn ())
@@ -167,6 +183,18 @@ public class PowerDrain : ObjectClass
 				Debug.Log (myName + " is Damaged");
 				Debug.Log ("And now Fusebox is Damaged");
 			} 
+=======
+		if (!stateDamaged() && stateOn() && room.availableRoomSupply - powerDemand >= 0)
+		{
+			Debug.Log ("Safe Activation for " + myName);
+			stateActive (true);
+			stateOn (false);
+			changeRendColor (activeColor);
+			box.roomSinglePowerUp (powerDemand);
+			gameMngr.levelObjectPowerUp (powerDemand);
+//			gameMngr.availableLevelSupply -= powerDemand;
+			recharge ();
+>>>>>>> origin/master
 		}
 	}
 
@@ -235,6 +263,10 @@ public class PowerDrain : ObjectClass
 			stateActive (false);
 			box.roomSinglePowerDown (powerDemand);
 			gameMngr.levelObjectPowerDown (powerDemand);
+<<<<<<< HEAD
+=======
+//			gameMngr.availableLevelSupply += powerDemand;
+>>>>>>> origin/master
 		}
 		else if (stateActive () && stateDamaged ()) 
 		{
@@ -243,6 +275,10 @@ public class PowerDrain : ObjectClass
 			stateActive (false);
 			box.roomSinglePowerDown (powerDemand);
 			gameMngr.levelObjectPowerDown (powerDemand);
+<<<<<<< HEAD
+=======
+//			gameMngr.availableLevelSupply += powerDemand;
+>>>>>>> origin/master
 		}
 		else if (!stateActive () && !stateDamaged ()) 
 		{
@@ -251,7 +287,11 @@ public class PowerDrain : ObjectClass
 			stateActive (true);
 			box.roomSinglePowerUp (powerDemand);
 			gameMngr.levelObjectPowerUp (powerDemand);
+<<<<<<< HEAD
 			gameMngr.objectsToCut.Add (this.gameObject);
+=======
+//			gameMngr.availableLevelSupply -= powerDemand;
+>>>>>>> origin/master
 		}
 		else if (!stateActive () && stateDamaged ()) 
 		{

@@ -7,19 +7,40 @@ public class PowerGen : ObjectClass
 {
 	//this is for anything that supplies power
 
+	List <GameObject> objectsToCut = new List <GameObject> ();
+
 	public bool poweringUp;
 	public bool besideGen;
+
+	public int genListPos;
+	int supplyToCut;
 
 	RoomScript room;
 	FuseBox box;
 	Renderer genRend;
 
+<<<<<<< HEAD
 	int trackedSupply;
 
 	GameObject victim;
 	LoopScript vicLoop;
 
 	void Start ()
+=======
+	GameObject victim;
+	GameObject victimBox;
+	FuseBox victimBoxScript;
+	RoomScript victimScript;
+
+	PowerGen priLoopReactor;
+	PowerDrain priLoopGoal;
+	DoorScript secLoopDoor;
+	PowerGen secLoopGen;
+	PowerDrain terLoopDevice;
+
+
+	void Start()
+>>>>>>> origin/master
 	{
 		myName = this.gameObject.transform.name;
 		myTag = this.gameObject.transform.tag;
@@ -32,6 +53,15 @@ public class PowerGen : ObjectClass
 
 	void Update ()
 	{
+<<<<<<< HEAD
+=======
+		if (gameMngr.suppliers.Contains (this.gameObject)) 
+		{
+			genListPos = gameMngr.chainLinks.IndexOf (this.gameObject) + 1;
+		} 
+		else
+			genListPos = 0;
+>>>>>>> origin/master
 		
 	}
 
@@ -158,12 +188,21 @@ public class PowerGen : ObjectClass
 			Debug.Log ("Generator de-activated");
 			changeRendColor (offColor);
 			stateActive (false);
+<<<<<<< HEAD
+=======
+			gameMngr.availableLevelSupply -= powerSupply;
+			gameMngr.activeLevelDemand -= powerDemand;
+>>>>>>> origin/master
 			room.availableRoomSupply -= powerSupply;
 			box.roomSinglePowerDown (powerDemand);
 			gameMngr.availableLevelSupply -= powerSupply;
 			gameMngr.activeLevelDemand -= powerDemand;
 			gameMngr.suppliers.Remove (this.gameObject);
+<<<<<<< HEAD
 			killEmAll ();
+=======
+//			killEmAll ();
+>>>>>>> origin/master
 		}
 
 		else if (stateActive () && stateDamaged ()) 
@@ -171,12 +210,21 @@ public class PowerGen : ObjectClass
 			Debug.Log ("Turning damaged generator off");
 			changeRendColor (damagedColor);
 			stateActive (false);
+<<<<<<< HEAD
+=======
+			gameMngr.availableLevelSupply -= powerSupply;
+			gameMngr.activeLevelDemand -= powerDemand;
+>>>>>>> origin/master
 			room.availableRoomSupply -= powerSupply;
 			box.roomSinglePowerDown (powerDemand);
 			gameMngr.availableLevelSupply -= powerSupply;
 			gameMngr.activeLevelDemand -= powerDemand;
 			gameMngr.suppliers.Remove (this.gameObject);
+<<<<<<< HEAD
 			killEmAll ();
+=======
+//			killEmAll ();
+>>>>>>> origin/master
 		}
 
 		else if (!stateActive () && !stateDamaged ()) 
@@ -184,6 +232,12 @@ public class PowerGen : ObjectClass
 			Debug.Log ("Generator activated");
 			changeRendColor (activeColor);
 			stateActive (true);
+<<<<<<< HEAD
+=======
+			gameMngr.availableLevelSupply += powerSupply;
+			gameMngr.availableLevelSupply -= powerDemand;
+			gameMngr.activeLevelDemand += powerDemand;
+>>>>>>> origin/master
 			room.availableRoomSupply += powerSupply;
 			box.roomSinglePowerUp (powerDemand);
 			gameMngr.availableLevelSupply += powerSupply;
@@ -203,6 +257,7 @@ public class PowerGen : ObjectClass
 			Debug.Log ("ObjectScript ChangeState Error" + this.name);		
 	}
 
+<<<<<<< HEAD
 
 	public void killEmAll ()
 	{		
@@ -303,5 +358,21 @@ public class PowerGen : ObjectClass
 			}
 		}
 		gameMngr.supplyToCut -= trackedSupply;
+=======
+	public void killEmAll ()
+	{
+		if (powerSupply > supplyToCut)
+		{
+			for (int x = 0; x < gameMngr.tier3.Count; x++)
+			{
+				terLoopDevice = gameMngr.tier3 [x].GetComponent<PowerDrain> ();
+				if (terLoopDevice.stateActive())
+				{
+					objectsToCut.Add (terLoopDevice.gameObject);
+					supplyToCut += terLoopDevice.powerDemand;
+				}
+			}
+		}
+>>>>>>> origin/master
 	}
 }

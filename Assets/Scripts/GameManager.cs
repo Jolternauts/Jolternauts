@@ -14,12 +14,19 @@ public class GameManager : MonoBehaviour
 	public List <GameObject> tier1 = new List<GameObject> (); 
 	public List <GameObject> tier2 = new List<GameObject> (); 
 	public List <GameObject> tier3 = new List<GameObject> ();
+<<<<<<< HEAD
 	public List <GameObject> objectsToCut = new List <GameObject> ();
 	public List <GameObject> uploadedDevices = new List <GameObject> ();
+=======
+>>>>>>> origin/master
 
 	AngusMovement player;
 
 	int oxygenAmount;
+<<<<<<< HEAD
+=======
+	public int levelTimer;
+>>>>>>> origin/master
 
 	private GUIStyle style = new GUIStyle ();
 
@@ -48,8 +55,11 @@ public class GameManager : MonoBehaviour
 	public Color oxygen;
 	public Color health;
 
+<<<<<<< HEAD
 	public int levelTimer;
 
+=======
+>>>>>>> origin/master
 	public int totalLevelSupply;
 	public int totalLevelDemand;
 
@@ -74,6 +84,10 @@ public class GameManager : MonoBehaviour
 		updateAllSupplyDemand (totalLevelSupply, totalLevelDemand, availableLevelSupply, activeLevelDemand);
 		tallyTotalLevelPower();
 		InvokeRepeating ("countdown", 1f, 1f);
+<<<<<<< HEAD
+=======
+//		tallyActiveRoomDemands ();
+>>>>>>> origin/master
 	}
 
 	/// Update Player UI and power figures.
@@ -132,6 +146,7 @@ public class GameManager : MonoBehaviour
 				ObjectClass machine = sectionBox.roomObjects[y].GetComponent<ObjectClass> ();
 				totalLevelSupply += machine.powerSupply;
 				totalLevelDemand += machine.powerDemand;
+<<<<<<< HEAD
 				numberOfDevices += 1;
 			}
 		}
@@ -150,6 +165,10 @@ public class GameManager : MonoBehaviour
 				totalLevelDemand += doorWayComp.powerDemand;
 			}
 		}
+=======
+			}
+		}
+>>>>>>> origin/master
 	}
 
 	/// Updates the room power UI.
@@ -198,6 +217,7 @@ public class GameManager : MonoBehaviour
 		activeLevelDemand -= demand;
 	}
 
+<<<<<<< HEAD
 	/// Increases active global supply by the value of a single door.
 	public void levelDoorPowerUp (int demand)
 	{
@@ -212,12 +232,17 @@ public class GameManager : MonoBehaviour
 		activeLevelDemand -= demand;
 	}
 		
+=======
+>>>>>>> origin/master
 	public void countdown ()
 	{
 		levelTimer -= 1;
 	}
 
+<<<<<<< HEAD
 	// Converts timer int to real time & displays it in UI.
+=======
+>>>>>>> origin/master
 	void OnGUI () 
 	{
 		style.fontSize = 20;
@@ -227,6 +252,26 @@ public class GameManager : MonoBehaviour
 		int seconds = Mathf.FloorToInt (levelTimer - minutes * 60);
 		string niceTime = string.Format ("{0:0}:{1:00}", minutes, seconds);
 		GUI.Label (new Rect (10, 10, 250, 100), niceTime, style);
+<<<<<<< HEAD
+=======
+	}
+
+//	public void tallyActiveRoomDemands ()
+//	{
+//		foreach (GameObject zone in roomList)
+//		{
+//			RoomScript zoneScript = zone.GetComponent<RoomScript> ();
+//			activeRoomDemands.Add (zoneScript.currentRoomDemand);
+//		}
+//	}
+
+	public void trackActiveRoomDemands ()
+	{
+//		for (int a; a < activeRoomDemands.Count; a++)
+//		{
+//			a = a;
+//		}
+>>>>>>> origin/master
 	}
 }
 

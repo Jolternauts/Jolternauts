@@ -56,4 +56,54 @@ public class DoorMagnet : MonoBehaviour
 			rend.material.color = Color.gray;
 		}
 	}
+<<<<<<< HEAD
+=======
+
+
+/*	void FixedUpdate() 
+	{
+		averageAttractiveHeight = 0;
+		int counter = 0;
+
+		foreach (GameObject mag in allMagnets) 
+		{
+//			GameObject mag = allMagnets [x];
+			MagnetScript magScript = mag.GetComponent<MagnetScript> ();
+			if (magScript.polarity != polarity && magScript.charged) 
+			{
+				averageAttractiveHeight += (mag.transform.position.y * (magScript.magnetStrength / 100));
+				counter++;
+				transform.localPosition = Vector3.Lerp (transform.position, new Vector3 (transform.position.x, averageAttractiveHeight, transform.position.z), 0.1f);
+			}
+
+		}
+
+		if (counter > 0) 
+		{
+			averageAttractiveHeight = averageAttractiveHeight / counter;
+		}
+		Debug.Log (averageAttractiveHeight);
+
+	}
+
+	void OnTriggerStay(Collider col) 
+	{
+
+		if (col.gameObject.tag == "Magnet" && !magnetsTouching.Contains (col.gameObject)) 
+		{
+			currentStage = col.gameObject.GetComponent<MagnetScript>().stage;
+			magnetsTouching.Add(col.gameObject);
+		}
+
+	}
+
+	void OnTriggerExit(Collider col) 
+	{
+		if (col.gameObject.tag == "Magnet" && magnetsTouching.Contains (col.gameObject)) 
+		{
+			magnetsTouching.Remove(col.gameObject);
+		}
+	}
+*/
+>>>>>>> origin/master
 }

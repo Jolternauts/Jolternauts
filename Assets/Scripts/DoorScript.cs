@@ -12,11 +12,25 @@ public class DoorScript : MonoBehaviour
 	CompassScript compassB;
 	RoomScript roomA;
 	RoomScript roomB;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+//	GameManager gameMngr;
+
+//	public GameObject doorUpper;
+//	public GameObject doorLower;
+>>>>>>> origin/master
+>>>>>>> origin/master
 
 	public GameObject lightSideA;
 	public GameObject lightSideB;
 
+<<<<<<< HEAD
 	public int powerDemand = 5;
+=======
+	public int powerDemand = 1;
+>>>>>>> origin/master
 
 	public bool isActive = false;
 	public bool isDirectionalReceiver = false;
@@ -36,16 +50,28 @@ public class DoorScript : MonoBehaviour
 		roomB = doorSideB.GetComponent<RoomScript> ();
 		compassA = roomA.compass.GetComponent<CompassScript> ();
 		compassB = roomB.compass.GetComponent<CompassScript> ();
+<<<<<<< HEAD
 		this.GetComponent<BoxCollider> ().isTrigger = true;
 		lightARend = lightSideA.GetComponent<Renderer> ();
 		lightBRend = lightSideB.GetComponent<Renderer> ();
 		player = GameObject.FindWithTag ("Player").GetComponent<AngusMovement>();
 		gameMngr = GameManager.instance;
+=======
+<<<<<<< HEAD
+=======
+//		gameMngr = GameManager.instance;
+>>>>>>> origin/master
+		this.GetComponent<BoxCollider> ().isTrigger = true;
+>>>>>>> origin/master
 	}
 
 	void Update ()
 	{	
+<<<<<<< HEAD
 		checkReceiver ();
+=======
+
+>>>>>>> origin/master
 	}
 		
 	/// Changes the active state of the door.
@@ -70,6 +96,7 @@ public class DoorScript : MonoBehaviour
 		}
 	}
 
+<<<<<<< HEAD
 	void OnTriggerEnter (Collider detector)
 	{
 		if (detector.transform.tag == "Player") 
@@ -166,6 +193,8 @@ public class DoorScript : MonoBehaviour
 		return isActive;
 	}
 
+=======
+>>>>>>> origin/master
 	/// Checks for a receiver.
 	/// If x side's compass' target is the opposite room:
 	public void checkReceiver ()

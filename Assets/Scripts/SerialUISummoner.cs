@@ -18,6 +18,7 @@ public class SerialUISummoner : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
 	{
+<<<<<<< HEAD
 		if (console.stateActive())
 		{
 			if (console.besideDevice) 
@@ -30,6 +31,17 @@ public class SerialUISummoner : MonoBehaviour
 				if (!showing) return;
 				StartCoroutine (deactivateInTurn ());
 			}
+=======
+		if (console.besideDevice) 
+		{
+			if (showing) return;
+			StartCoroutine (activateInTurn ());
+		}
+		else 
+		{
+			if (!showing) return;
+			StartCoroutine (deactivateInTurn ());
+>>>>>>> origin/master
 		}
 	}
 

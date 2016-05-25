@@ -39,6 +39,13 @@ public class AngusMovement : MonoBehaviour
 	FuseBox targetBox;
 	CompassScript targetCompass;
 	PowerDrain targetDevice;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+>>>>>>> origin/master
 	PowerGen targetGen;
 	MagnetScript targetMag;
 	ObjectClass targetObject;
@@ -47,6 +54,18 @@ public class AngusMovement : MonoBehaviour
 	GameObject link;
 	RoomScript thisRoom;
 	GameObject friend;
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+	DoorScript targetDoor;
+	PowerGen targetGen;
+	ObjectClass targetObject;
+	RoomScript targetRoom;
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 
     void Start () 
 	{
@@ -57,7 +76,11 @@ public class AngusMovement : MonoBehaviour
 		gameMngr = GameManager.instance;
     }
 		
+<<<<<<< HEAD
 	void Update ()
+=======
+	void Update()
+>>>>>>> origin/master
 	{	
 		//Press spacebar to jump.
 		if (Input.GetKeyDown (KeyCode.Space) && !isJumping && isGrounded) 
@@ -109,17 +132,74 @@ public class AngusMovement : MonoBehaviour
 			targetDevice = currentHitTarget.GetComponent<PowerDrain> ();
 			targetGen = currentHitTarget.GetComponent<PowerGen> ();
 			targetObject = currentHitTarget.GetComponent<ObjectClass> ();
+<<<<<<< HEAD
 			targetMag = currentHitTarget.GetComponent<MagnetScript> ();
+=======
+<<<<<<< HEAD
+			targetMag = currentHitTarget.GetComponent<MagnetScript> ();
+=======
+<<<<<<< HEAD
+			targetMag = currentHitTarget.GetComponent<MagnetScript> ();
+=======
+
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 
 			if (Physics.Raycast (fpsCameraIn.transform.position, fpsCameraIn.transform.forward, out hit)) 
 			{
 				//If target contains the ObjectsList script and is within range.
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+				if (targetObject) 
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
 				if (targetObject) 
 				{
 					if (targetBox) 
 					{
 						// Too many conditions for here so see function for details.
+<<<<<<< HEAD
 						targetBox.fuseBoxRules ();
+=======
+						fuseBoxRules ();
+=======
+<<<<<<< HEAD
+				if (targetObject) 
+=======
+<<<<<<< HEAD
+				if (targetObject) 
+=======
+<<<<<<< HEAD
+				if (targetObject) 
+=======
+				if (targetObject && targetDistance <= maxRange) 
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+				{
+					if (targetBox) 
+					{
+<<<<<<< HEAD
+						// Too many conditions for here so see function for details.
+						targetBox.fuseBoxRules ();
+=======
+						if (!targetBox.stateActive ()) 
+						{
+							if (room.availableRoomSupply > 0) 
+							{
+								targetBox.changeState(currentHitTarget);
+							}
+						}
+						else
+							targetBox.changeState(currentHitTarget);
+
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 					}
 
 					if (targetGen) 
@@ -135,39 +215,77 @@ public class AngusMovement : MonoBehaviour
 					if (targetDevice) 
 					{
 						targetDevice.changeState(currentHitTarget);
+<<<<<<< HEAD
 						if (!targetDevice.stateActive())
 						{
 							gameMngr.objectsToCut.Remove (targetDevice.gameObject);
 						}
+=======
+>>>>>>> origin/master
 					}
 				}
 
 				//If the object is activated by the mouse click.
+<<<<<<< HEAD
 				if (targetObject && targetObject.stateActive ()) 
+=======
+				if (targetObject && targetObject.stateActive()) 
+>>>>>>> origin/master
 				{
 					//Do this function saps some of the suit's power.
 					useSuitPower ();
 				}
 
 				if (targetCompass)
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+>>>>>>> origin/master
 				{
 					targetCompass.turnDialLeft ();
 				}
 
 
 				if (targetMag) 
+<<<<<<< HEAD
 				{
 					targetMag.magRules ();
+=======
+				{
+					targetMag.magRules ();
+<<<<<<< HEAD
+=======
+=======
+				{
+					targetCompass.turnDialLeft ();
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 				}
 			}
 		} 
 		else 
 		{
+<<<<<<< HEAD
+=======
+//			currentHitTarget = hit.collider.gameObject;
+>>>>>>> origin/master
+
 			/*Commands for when target reticle is just aimed at an object.
 			 * Basically depending on what your aiming at change the color of the reticle.
 			*/
 			if (Physics.Raycast (fpsCameraIn.transform.position, fpsCameraIn.transform.forward, out hit)) 
 			{
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+>>>>>>> origin/master
 				targetBox = hit.collider.gameObject.GetComponent<FuseBox> ();
 				targetCompass = hit.collider.gameObject.GetComponent<CompassScript> ();
 				targetDevice = hit.collider.gameObject.GetComponent<PowerDrain> ();
@@ -177,6 +295,14 @@ public class AngusMovement : MonoBehaviour
 				targetRoom = hit.collider.gameObject.GetComponent<RoomScript> ();
 
 				if (targetMag) 
+<<<<<<< HEAD
+				{
+					targetIn.GetComponent<Image> ().color = Color.yellow;
+=======
+<<<<<<< HEAD
+				{
+					targetIn.GetComponent<Image> ().color = Color.yellow;
+=======
 				{
 					targetIn.GetComponent<Image> ().color = Color.yellow;
 				}
@@ -203,7 +329,129 @@ public class AngusMovement : MonoBehaviour
 				else 
 				{
 					targetIn.GetComponent<Image> ().color = Color.white;
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+//				targetDistance = Vector3.Distance (transform.position, hit.collider.gameObject.transform.position);
+=======
+<<<<<<< HEAD
+//				targetDistance = Vector3.Distance (transform.position, hit.collider.gameObject.transform.position);
+=======
+				targetDistance = Vector3.Distance (transform.position, hit.collider.gameObject.transform.position);
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+				targetBox = hit.collider.gameObject.GetComponent<FuseBox> ();
+				targetCompass = hit.collider.gameObject.GetComponent<CompassScript> ();
+				targetDevice = hit.collider.gameObject.GetComponent<PowerDrain> ();
+				targetDoor = hit.collider.gameObject.GetComponent<DoorScript> ();
+				targetGen = hit.collider.gameObject.GetComponent<PowerGen> ();
+				targetObject = hit.collider.gameObject.GetComponent<ObjectClass> ();
+				targetRoom = hit.collider.gameObject.GetComponent<RoomScript> ();
+
+<<<<<<< HEAD
+				if (targetDoor) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.yellow;
 				}
+				else if (targetBox) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.blue;
+				}
+=======
+<<<<<<< HEAD
+				if (targetDoor) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.yellow;
+=======
+<<<<<<< HEAD
+				if (targetDoor) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.yellow;
+=======
+				if (targetDistance <= maxRange) 
+				{
+					if (targetDoor) 
+					{
+						targetIn.GetComponent<Image> ().color = Color.yellow;
+					}
+					else if (targetBox) 
+					{
+						targetIn.GetComponent<Image> ().color = Color.blue;
+					}
+					else if (targetGen) 
+					{
+						targetIn.GetComponent<Image> ().color = Color.green;
+					}
+					else if (targetDevice) 
+					{
+						targetIn.GetComponent<Image> ().color = Color.magenta;
+					}
+					else if (targetRoom) 
+					{
+						targetIn.GetComponent<Image> ().color = Color.cyan;
+					}
+					else if (targetCompass) 
+					{
+						targetIn.GetComponent<Image> ().color = Color.red;
+					}
+					else 
+					{
+						targetIn.GetComponent<Image> ().color = Color.white;
+					}
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+				}
+				else if (targetBox) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.blue;
+				}
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+				else if (targetGen) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.green;
+				}
+				else if (targetDevice) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.magenta;
+				}
+				else if (targetRoom) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.cyan;
+<<<<<<< HEAD
+				}
+				else if (targetCompass) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.red;
+				}
+				else 
+				{
+					targetIn.GetComponent<Image> ().color = Color.white;
+=======
+>>>>>>> origin/master
+				}
+				else if (targetCompass) 
+				{
+					targetIn.GetComponent<Image> ().color = Color.red;
+				}
+				else 
+				{
+					targetIn.GetComponent<Image> ().color = Color.white;
+				}
+
+//				if (targetDistance <= maxRange) 
+//				{
+//				}
 			}
 		}
 
@@ -316,4 +564,109 @@ public class AngusMovement : MonoBehaviour
 		gameMngr.machineStateMeter2.color = colour;
 	}
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+	/// Conditioning to basically force:
+	/// Having to continue the power chain to turn on rooms, except with the first link.
+	/// And being able to turn on empty rooms.
+	public void fuseBoxRules ()
+	{
+		if (!targetBox.stateActive ()) 
+		{
+			if (gameMngr.chainLinks.Count == 0) 
+			{
+				if (targetBox.roomObjects.Count > 0)
+				{
+					if (room.availableRoomSupply > 0) 
+					{
+						targetBox.changeState(currentHitTarget);
+					}
+				}
+				else
+					targetBox.changeState(currentHitTarget);
+			}
+			else if (gameMngr.chainLinks.Count > 0)
+			{
+				multipleLinkRules ();
+			}
+		}
+		else
+			targetBox.changeState(currentHitTarget);
+	}
+
+	public void multipleLinkRules ()
+	{
+		thisRoom = targetBox.GetComponentInParent<RoomScript> ();
+
+		if (thisRoom.neighbours.Count == 1)
+		{
+			if (gameMngr.chainLinks.Contains(thisRoom.neighbours [0]))
+			{
+				if (targetBox.roomObjects.Count > 0)
+				{
+					if (room.availableRoomSupply > 0) 
+					{
+						targetBox.changeState(currentHitTarget);
+					}
+				}
+				else
+					targetBox.changeState(currentHitTarget);
+			}						
+		}
+		else if (thisRoom.neighbours.Count == 2)
+		{
+			if (gameMngr.chainLinks.Contains(thisRoom.neighbours [0]) || 
+				gameMngr.chainLinks.Contains(thisRoom.neighbours [1]))
+			{
+				if (targetBox.roomObjects.Count > 0)
+				{
+					if (room.availableRoomSupply > 0) 
+					{
+						targetBox.changeState(currentHitTarget);
+					}
+				}
+				else
+					targetBox.changeState(currentHitTarget);
+			}						
+		}
+		else if (thisRoom.neighbours.Count == 3)
+		{
+			if (gameMngr.chainLinks.Contains(thisRoom.neighbours [0]) || 
+				gameMngr.chainLinks.Contains(thisRoom.neighbours [1]) || 
+				gameMngr.chainLinks.Contains(thisRoom.neighbours [2]))
+			{
+				if (targetBox.roomObjects.Count > 0)
+				{
+					if (room.availableRoomSupply > 0) 
+					{
+						targetBox.changeState(currentHitTarget);
+					}
+				}
+				else
+					targetBox.changeState(currentHitTarget);
+			}						
+		}
+		else if (thisRoom.neighbours.Count == 4)
+		{
+			if (gameMngr.chainLinks.Contains(thisRoom.neighbours [0]) || 
+				gameMngr.chainLinks.Contains(thisRoom.neighbours [1]) || 
+				gameMngr.chainLinks.Contains(thisRoom.neighbours [2]) || 
+				gameMngr.chainLinks.Contains(thisRoom.neighbours [3]))
+			{
+				if (targetBox.roomObjects.Count > 0)
+				{
+					if (room.availableRoomSupply > 0) 
+					{
+						targetBox.changeState(currentHitTarget);
+					}
+				}
+				else
+					targetBox.changeState(currentHitTarget);
+			}						
+		}
+	}
+>>>>>>> origin/master
+>>>>>>> origin/master
 }

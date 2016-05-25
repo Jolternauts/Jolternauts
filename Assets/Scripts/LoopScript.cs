@@ -4,7 +4,10 @@ using System.Collections.Generic;
 
 public class LoopScript : MonoBehaviour 
 {
+<<<<<<< HEAD
 	public int cuttersPos;
+=======
+>>>>>>> origin/master
 	public string loop;
 	private string[] loopType = new string[3]; 
 	GameObject me;
@@ -23,12 +26,16 @@ public class LoopScript : MonoBehaviour
 	
 	void Update () 
 	{
+<<<<<<< HEAD
 		if (gameMngr.objectsToCut.Contains (this.gameObject)) 
 		{
 			cuttersPos = gameMngr.objectsToCut.IndexOf (this.gameObject) + 1;
 		} 
 		else
 			cuttersPos = 0;
+=======
+		
+>>>>>>> origin/master
 	}
 
 	public void loopAssign ()
@@ -37,7 +44,11 @@ public class LoopScript : MonoBehaviour
 		{
 			loop = loopType [0];
 		}
+<<<<<<< HEAD
 		else if (me.tag == "Door"/* || me.tag == "Generator"*/)
+=======
+		else if (me.tag == "Door" || me.tag == "Generator")
+>>>>>>> origin/master
 		{
 			loop = loopType [1];
 		}

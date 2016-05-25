@@ -21,6 +21,11 @@ public class RoomScript : MonoBehaviour
 
 	GameObject supplier;
 
+<<<<<<< HEAD
+=======
+	public GameObject powerSource;
+
+>>>>>>> origin/master
 	public List<GameObject> roomItems = new List<GameObject>();
 	public List<GameObject> doors = new List<GameObject>();
 	public List<GameObject> neighbours = new List<GameObject>();
@@ -37,12 +42,21 @@ public class RoomScript : MonoBehaviour
 	public RoomScript eastScript;
 	public RoomScript southScript;
 	public RoomScript westScript;
+<<<<<<< HEAD
 	public DoorScript northDoorScript;
 	public DoorScript eastDoorScript;
 	public DoorScript southDoorScript;
 	public DoorScript westDoorScript;
 
 	CompassScript locator;
+=======
+	RoomScript supplyroomScript;
+<<<<<<< HEAD
+
+	CompassScript locator;
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
 
 	public int totalRoomSupply;
 	public int availableRoomSupply;
@@ -83,7 +97,10 @@ public class RoomScript : MonoBehaviour
 		} 
 		else
 			chainPos = 0;
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
     }
 
 	// Checks what direction a neighbouring room is in and accesses their script.
@@ -194,6 +211,7 @@ public class RoomScript : MonoBehaviour
 		RoomScript directionScript = direction.GetComponent<RoomScript> ();
 
 		int requiredSupply = directionScript.totalRoomDemand;
+<<<<<<< HEAD
 		if (gameMngr.availableLevelSupply > 0) 
 		{
 			if (gameMngr.availableLevelSupply >= directionScript.totalRoomDemand)
@@ -261,6 +279,74 @@ public class RoomScript : MonoBehaviour
 
 	/// If the room the compass here is targeting is on:
 	/// Turn it off and reverse the power transfer.
+=======
+		directionScript.availableRoomSupply += requiredSupply;
+
+<<<<<<< HEAD
+		gameMngr.availableLevelSupply -= requiredSupply;
+	}
+
+	/// If x direction exists:
+	/// If this room's compass' target is that direction:
+	/// If that room has not received power from the source;
+	/// Call the power transfer on that room.
+	public void callPowerTransfer ()
+	{
+		if (north)
+		{
+			northScript = north.GetComponent<RoomScript> ();
+			if (locator.currentHitTarget == north)
+			{				
+				if (!northScript.hasReceivedSourcePower)
+				{
+					transferPowerSupply (north);
+					hasReceivedSourcePower = true;
+				}
+			}
+		}
+
+		if (east)
+		{
+			eastScript = east.GetComponent<RoomScript> ();
+			if (locator.currentHitTarget == east)
+			{
+				if (!eastScript.hasReceivedSourcePower)
+				{
+					transferPowerSupply (east);
+					eastScript.hasReceivedSourcePower = true;
+				}
+			}
+		}
+
+		if (south)
+		{
+			southScript = south.GetComponent<RoomScript> ();
+			if (locator.currentHitTarget == south)
+			{
+				if (!southScript.hasReceivedSourcePower)
+				{
+					transferPowerSupply (south);
+					southScript.hasReceivedSourcePower = true;
+				}
+			}
+		}
+
+		if (west)
+		{
+			westScript = west.GetComponent<RoomScript> ();
+			if (locator.currentHitTarget == west)
+			{
+				if (!westScript.hasReceivedSourcePower)
+				{
+					transferPowerSupply (west);
+					westScript.hasReceivedSourcePower = true;
+				}
+			}
+		}
+	}
+
+	/// If the room the compass here is targeting is on:
+	/// Turn it off and reverse the power transfer.
 	public void redirectPowerTransfer (GameObject victim)
 	{
 		RoomScript victimScript = victim.GetComponent<RoomScript> ();
@@ -274,10 +360,202 @@ public class RoomScript : MonoBehaviour
 
 		int supplyToTake = victimScript.availableRoomSupply;
 
+		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
+		{
+			supplyroomScript = gameMngr.suppliers[0].GetComponentInParent<RoomScript>();
+		}
+
+		supplyroomScript.availableRoomSupply += supplyToTake;
 		victimScript.availableRoomSupply -= supplyToTake;
 		victimScript.hasReceivedSourcePower = false;
 	}
 
+	public void killMe ()
+	{
+//		if ()
+		{
+			
+		}
+=======
+<<<<<<< HEAD
+		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
+		{
+			supplyroomScript = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
+		}
+		supplyroomScript.availableRoomSupply -= requiredSupply;
+	}
+
+	public void callPowerTransfer ()
+	{
+		#pragma warning disable
+		for (int x= 0; x < neighbours.Count; x++)
+		{
+			GameObject friend;
+			RoomScript friendScript;
+			friend = neighbours [x];
+			friendScript = neighbours [x].GetComponent<RoomScript> ();
+			for (int y = 0; y < friendScript.doors.Count; y++)
+			{
+				DoorScript door;
+				door = friendScript.doors [y].GetComponent<DoorScript> ();
+				if (door.isDirectionalReceiver && !friendScript.hasReceivedSourcePower)
+				{
+					transferPowerSupply (friend);
+					friendScript.hasReceivedSourcePower = true;
+				}
+				break;
+			}
+=======
+<<<<<<< HEAD
+		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
+		{
+			supplyroomScript = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
+		}
+		supplyroomScript.availableRoomSupply -= requiredSupply;
+>>>>>>> origin/master
+	}
+
+	public void callPowerTransfer ()
+	{
+		#pragma warning disable
+		for (int x= 0; x < neighbours.Count; x++)
+		{
+			GameObject friend;
+			RoomScript friendScript;
+			friend = neighbours [x];
+			friendScript = neighbours [x].GetComponent<RoomScript> ();
+			for (int y = 0; y < friendScript.doors.Count; y++)
+			{
+				DoorScript door;
+				door = friendScript.doors [y].GetComponent<DoorScript> ();
+				if (door.isDirectionalReceiver && !friendScript.hasReceivedSourcePower)
+				{
+					transferPowerSupply (friend);
+					friendScript.hasReceivedSourcePower = true;
+				}
+				break;
+			}
+=======
+<<<<<<< HEAD
+		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
+		{
+			supplyroomScript = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
+		}
+		supplyroomScript.availableRoomSupply -= requiredSupply;
+	}
+
+	public void callPowerTransfer ()
+	{
+		#pragma warning disable
+		for (int x= 0; x < neighbours.Count; x++)
+		{
+			GameObject friend;
+			RoomScript friendScript;
+			friend = neighbours [x];
+			friendScript = neighbours [x].GetComponent<RoomScript> ();
+			for (int y = 0; y < friendScript.doors.Count; y++)
+			{
+				DoorScript door;
+				door = friendScript.doors [y].GetComponent<DoorScript> ();
+				if (door.isDirectionalReceiver && !friendScript.hasReceivedSourcePower)
+				{
+					transferPowerSupply (friend);
+					friendScript.hasReceivedSourcePower = true;
+				}
+				break;
+			}
+=======
+		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
+		{
+			supplyroomScript = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
+		}
+		supplyroomScript.availableRoomSupply -= requiredSupply;
+	}
+
+<<<<<<< HEAD
+	public void callPowerTransfer ()
+	{
+		#pragma warning disable
+		for (int x= 0; x < neighbours.Count; x++)
+		{
+			GameObject friend;
+			RoomScript friendScript;
+			friend = neighbours [x];
+			friendScript = neighbours [x].GetComponent<RoomScript> ();
+			for (int y = 0; y < friendScript.doors.Count; y++)
+			{
+				DoorScript door;
+				door = friendScript.doors [y].GetComponent<DoorScript> ();
+				if (door.isDirectionalReceiver && !friendScript.hasReceivedSourcePower)
+				{
+					transferPowerSupply (friend);
+					friendScript.hasReceivedSourcePower = true;
+				}
+				break;
+			}
+=======
+	public void redirectPowerTransfer (GameObject victim)
+	{
+		RoomScript victimScript = victim.GetComponent<RoomScript> ();
+		GameObject victimBox = victimScript.roomFuseBox;
+		FuseBox victimBoxScript = victimBox.GetComponent<FuseBox> ();
+
+		int supplyToTake = victimScript.availableRoomSupply;
+
+		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
+		{
+			supplyroomScript = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
+>>>>>>> origin/master
+		}
+
+		if (victimScript.isPowered)
+		{
+			victimBoxScript.changeState (victimBox);
+			supplyroomScript.availableRoomSupply += supplyToTake;
+			victimScript.availableRoomSupply -= supplyToTake;
+>>>>>>> origin/master
+>>>>>>> origin/master
+		}
+		else if (!victimScript.isPowered)
+		{
+			supplyroomScript.availableRoomSupply += supplyToTake;
+			victimScript.availableRoomSupply -= supplyToTake;
+		} 
+	}
+
+
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+>>>>>>> origin/master
+	public void redirectPowerTransfer (GameObject victim)
+	{
+		RoomScript victimScript = victim.GetComponent<RoomScript> ();
+		GameObject victimBox = victimScript.roomFuseBox;
+		FuseBox victimBoxScript = victimBox.GetComponent<FuseBox> ();
+
+		if (victimScript.isPowered)
+		{
+			victimBoxScript.changeState (victimBox);
+		}
+
+		int supplyToTake = victimScript.availableRoomSupply;
+
+<<<<<<< HEAD
+=======
+		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
+		{
+			supplyroomScript = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
+		}
+
+		supplyroomScript.availableRoomSupply += supplyToTake;
+>>>>>>> origin/master
+		victimScript.availableRoomSupply -= supplyToTake;
+		victimScript.hasReceivedSourcePower = false;
+	}
+
+<<<<<<< HEAD
 	/// Reverses the power transfer.
 	public void reversePowerTransfer (GameObject returner) 
 	{
@@ -289,6 +567,69 @@ public class RoomScript : MonoBehaviour
 	}
 
 
+=======
+
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+	public void redirectPowerTransfer (GameObject victim)
+	{
+		RoomScript victimScript = victim.GetComponent<RoomScript> ();
+		GameObject victimBox = victimScript.roomFuseBox;
+		FuseBox victimBoxScript = victimBox.GetComponent<FuseBox> ();
+
+		if (victimScript.isPowered)
+		{
+			victimBoxScript.changeState (victimBox);
+		}
+
+		int supplyToTake = victimScript.availableRoomSupply;
+
+		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
+		{
+			supplyroomScript = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
+>>>>>>> origin/master
+		}
+
+		supplyroomScript.availableRoomSupply += supplyToTake;
+		victimScript.availableRoomSupply -= supplyToTake;
+		victimScript.hasReceivedSourcePower = false;
+	}
+
+
+<<<<<<< HEAD
+	public void redirectPowerTransfer (GameObject victim)
+	{
+		RoomScript victimScript = victim.GetComponent<RoomScript> ();
+		GameObject victimBox = victimScript.roomFuseBox;
+		FuseBox victimBoxScript = victimBox.GetComponent<FuseBox> ();
+
+		if (victimScript.isPowered)
+		{
+			victimBoxScript.changeState (victimBox);
+		}
+
+		int supplyToTake = victimScript.availableRoomSupply;
+
+		for (int x = 0; x < gameMngr.suppliers.Count; x++) 
+		{
+			supplyroomScript = gameMngr.suppliers[x].GetComponentInParent<RoomScript>();
+		}
+
+		supplyroomScript.availableRoomSupply += supplyToTake;
+		victimScript.availableRoomSupply -= supplyToTake;
+		victimScript.hasReceivedSourcePower = false;
+	}
+
+
+=======
+=======
+=======
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 }
 
 
