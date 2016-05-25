@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jolternauts 28-4-16.CSharp.Plugins", "Jolternauts 28-4-16.CSharp.Plugins.csproj", "{86A00EC8-ED1C-9EEB-86BA-368E6135BF47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jolternauts 28-4-16.CSharp", "Jolternauts 28-4-16.CSharp.csproj", "{F42ED795-0EF9-E71C-5DF2-253F8133B664}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jolternauts 28-4-16.CSharp.Editor", "Jolternauts 28-4-16.CSharp.Editor.csproj", "{3F84B98F-B989-31BF-91CD-16A7DE3BAEC1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{86A00EC8-ED1C-9EEB-86BA-368E6135BF47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86A00EC8-ED1C-9EEB-86BA-368E6135BF47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86A00EC8-ED1C-9EEB-86BA-368E6135BF47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86A00EC8-ED1C-9EEB-86BA-368E6135BF47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F42ED795-0EF9-E71C-5DF2-253F8133B664}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F42ED795-0EF9-E71C-5DF2-253F8133B664}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F42ED795-0EF9-E71C-5DF2-253F8133B664}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F42ED795-0EF9-E71C-5DF2-253F8133B664}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F84B98F-B989-31BF-91CD-16A7DE3BAEC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F84B98F-B989-31BF-91CD-16A7DE3BAEC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F84B98F-B989-31BF-91CD-16A7DE3BAEC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F84B98F-B989-31BF-91CD-16A7DE3BAEC1}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -14,7 +14,12 @@ public class PowerGen : ObjectClass
 	FuseBox box;
 	Renderer genRend;
 
-	void Start()
+	int trackedSupply;
+
+	GameObject victim;
+	LoopScript vicLoop;
+
+	void Start ()
 	{
 		myName = this.gameObject.transform.name;
 		myTag = this.gameObject.transform.tag;
@@ -25,18 +30,18 @@ public class PowerGen : ObjectClass
 		genRend = this.gameObject.GetComponent<Renderer> ();
 	}
 
-	void Update()
+	void Update ()
 	{
-
+		
 	}
 
 	// Changes the state of generator.
-	public void changeState(GameObject reference)
+	public void changeState (GameObject reference)
 	{
 		genStateChangeCriteria ();
 	}
 
-	void OnTriggerEnter(Collider detector)
+	void OnTriggerEnter (Collider detector)
 	{
 		if (detector.transform.tag == "Player") 
 		{
@@ -45,7 +50,7 @@ public class PowerGen : ObjectClass
 		}
 	}
 
-	void OnTriggerStay(Collider detector)
+	void OnTriggerStay (Collider detector)
 	{
 		// Detect player at object and turn it on by pressing E.
 		// If it's a charge station: replenish health, suit power and oxygen.
@@ -72,7 +77,7 @@ public class PowerGen : ObjectClass
 		machineStateMeterCheck ();
 	}
 		
-	void OnTriggerExit(Collider detector)
+	void OnTriggerExit (Collider detector)
 	{
 		if (detector.transform.tag == "Player") 
 		{
@@ -82,20 +87,20 @@ public class PowerGen : ObjectClass
 	}
 
 	/// Wait function.
-	public IEnumerator Stall()
+	public IEnumerator Stall ()
 	{
 		Debug.Log ("Buffering");
 		yield return new WaitForSeconds (repairTime);
 		changeState (this.gameObject);
 	}
 
-	public void powerUp()
+	public void powerUp ()
 	{
 		changeRendColor (neutralColor);
 		StartCoroutine (Stall ());
 	}
 
-	public void machineStateMeterCheck()
+	public void machineStateMeterCheck ()
 	{
 		if (besideGen) 
 		{
@@ -130,13 +135,13 @@ public class PowerGen : ObjectClass
 
 	public void massCrashCheckForGen ()
 	{
-		if (stateActive() && !stateDamaged() || stateOn() && !stateDamaged()) 
+		if (stateActive () && !stateDamaged () || stateOn () && !stateDamaged ()) 
 		{
 			stateActive (false);
 			stateOn (false);
 			changeRendColor (offColor);
 		}
-		else if (stateActive() && stateDamaged() || stateOn() && stateDamaged()) 
+		else if (stateActive () && stateDamaged () || stateOn () && stateDamaged ()) 
 		{
 			stateDamaged (true);
 			stateActive (false);
@@ -145,43 +150,49 @@ public class PowerGen : ObjectClass
 		}
 	}
 
-	public void genStateChangeCriteria()
+	/// Depending on the state of the generator, change its factors accordingly.
+	public void genStateChangeCriteria ()
 	{
-		if (stateActive() && !stateDamaged()) 
+		if (stateActive () && !stateDamaged ()) 
 		{
 			Debug.Log ("Generator de-activated");
 			changeRendColor (offColor);
 			stateActive (false);
-			gameMngr.availableLevelSupply -= powerSupply;
 			room.availableRoomSupply -= powerSupply;
 			box.roomSinglePowerDown (powerDemand);
+			gameMngr.availableLevelSupply -= powerSupply;
+			gameMngr.activeLevelDemand -= powerDemand;
 			gameMngr.suppliers.Remove (this.gameObject);
+			killEmAll ();
 		}
 
-		else if (stateActive() && stateDamaged()) 
+		else if (stateActive () && stateDamaged ()) 
 		{
 			Debug.Log ("Turning damaged generator off");
 			changeRendColor (damagedColor);
 			stateActive (false);
-			gameMngr.availableLevelSupply -= powerSupply;
 			room.availableRoomSupply -= powerSupply;
 			box.roomSinglePowerDown (powerDemand);
+			gameMngr.availableLevelSupply -= powerSupply;
+			gameMngr.activeLevelDemand -= powerDemand;
 			gameMngr.suppliers.Remove (this.gameObject);
+			killEmAll ();
 		}
 
-		else if (!stateActive() && !stateDamaged()) 
+		else if (!stateActive () && !stateDamaged ()) 
 		{
 			Debug.Log ("Generator activated");
 			changeRendColor (activeColor);
 			stateActive (true);
-			gameMngr.availableLevelSupply += powerSupply;
-			gameMngr.availableLevelSupply -= powerDemand;
 			room.availableRoomSupply += powerSupply;
 			box.roomSinglePowerUp (powerDemand);
+			gameMngr.availableLevelSupply += powerSupply;
+			gameMngr.availableLevelSupply -= powerDemand;
+			gameMngr.activeLevelDemand += powerDemand;
 			gameMngr.suppliers.Add (this.gameObject);
 		}
 
-		else if (!stateActive() && stateDamaged()) 
+		else if (!stateActive () && stateDamaged ()) 
 		{
 			Debug.Log ("Damn, generator crashed it!");
 			changeRendColor (damagedColor);
@@ -189,7 +200,108 @@ public class PowerGen : ObjectClass
 			box.roomCrash ();
 		}
 		else // Debug error with object's name.
-			Debug.Log ("ObjectScript ChangeState Error" + this.name);
-		
+			Debug.Log ("ObjectScript ChangeState Error" + this.name);		
+	}
+
+
+	public void killEmAll ()
+	{		
+		for (int a = 0; a < gameMngr.objectsToCut.Count; a++) 
+		{
+			victim = gameMngr.objectsToCut [a];
+			vicLoop = victim.GetComponent<LoopScript> ();
+			if (vicLoop.loop == "Tertiary")
+			{
+				if (victim.GetComponent<PowerDrain> ())
+				{
+					PowerDrain vicDev = victim.GetComponent<PowerDrain> ();
+					if (gameMngr.objectsToCut.Count > 1) 
+					{
+						if ((gameMngr.supplyToCut + vicDev.powerDemand) <= powerSupply)
+						{
+							vicDev.changeState (vicDev.gameObject);
+							gameMngr.objectsToCut.RemoveAt (a--);
+							gameMngr.supplyToCut += vicDev.powerDemand;
+							trackedSupply += vicDev.powerDemand;
+						}
+					}
+					else
+					{
+						if ((gameMngr.supplyToCut + vicDev.powerDemand) <= powerSupply)
+						{
+							vicDev.changeState (vicDev.gameObject);
+							gameMngr.objectsToCut.RemoveAt (a);
+							gameMngr.supplyToCut += vicDev.powerDemand;
+							trackedSupply += vicDev.powerDemand;
+						}
+					}
+				}
+			}
+		}
+		for (int b = 0; b < gameMngr.objectsToCut.Count; b++) 
+		{
+			victim = gameMngr.objectsToCut [b];
+			vicLoop = victim.GetComponent<LoopScript> ();
+			if (vicLoop.loop == "Secondary")
+			{
+				if (victim.GetComponent<DoorScript> ())
+				{
+					DoorScript vicDoor = victim.GetComponent<DoorScript> ();
+					if (gameMngr.objectsToCut.Count > 1) 
+					{
+						if ((gameMngr.supplyToCut + vicDoor.powerDemand) <= powerSupply)
+						{
+							vicDoor.changeActiveState (vicDoor.gameObject);
+							gameMngr.objectsToCut.RemoveAt (b--);
+							gameMngr.supplyToCut += vicDoor.powerDemand;
+							trackedSupply += vicDoor.powerDemand;
+						}
+					}
+					else
+					{
+						if ((gameMngr.supplyToCut + vicDoor.powerDemand) <= powerSupply)
+						{
+							vicDoor.changeActiveState (vicDoor.gameObject);
+							gameMngr.objectsToCut.RemoveAt (b);
+							gameMngr.supplyToCut += vicDoor.powerDemand;
+							trackedSupply += vicDoor.powerDemand;
+						}
+					}
+				}
+			}
+		}
+		for (int c = 0; c < gameMngr.objectsToCut.Count; c++) 
+		{
+			victim = gameMngr.objectsToCut [c];
+			vicLoop = victim.GetComponent<LoopScript> ();
+			if (vicLoop.loop == "Primary")
+			{
+				if (victim.GetComponent<PowerDrain> ())
+				{
+					PowerDrain vicGoal = victim.GetComponent<PowerDrain> ();
+					if (gameMngr.objectsToCut.Count > 1) 
+					{
+						if ((gameMngr.supplyToCut + vicGoal.powerDemand) <= powerSupply)
+						{
+							vicGoal.changeState (vicGoal.gameObject);
+							gameMngr.objectsToCut.RemoveAt (c--);
+							gameMngr.supplyToCut += vicGoal.powerDemand;
+							trackedSupply += vicGoal.powerDemand;
+						}
+					}
+					else
+					{
+						if ((gameMngr.supplyToCut + vicGoal.powerDemand) <= powerSupply)
+						{
+							vicGoal.changeState (vicGoal.gameObject);
+							gameMngr.objectsToCut.RemoveAt (c);
+							gameMngr.supplyToCut += vicGoal.powerDemand;
+							trackedSupply += vicGoal.powerDemand;
+						}
+					}
+				}
+			}
+		}
+		gameMngr.supplyToCut -= trackedSupply;
 	}
 }

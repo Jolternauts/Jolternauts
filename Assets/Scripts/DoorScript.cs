@@ -8,32 +8,26 @@ public class DoorScript : MonoBehaviour
 	public GameObject doorSideA;
 	public GameObject doorSideB;
 
-	GameObject connectorsDoor;
 	CompassScript compassA;
 	CompassScript compassB;
-	RoomScript connector;
 	RoomScript roomA;
 	RoomScript roomB;
-	GameManager gameMngr;
-
-//	public GameObject doorUpper;
-//	public GameObject doorLower;
 
 	public GameObject lightSideA;
 	public GameObject lightSideB;
 
-	Vector3 positionUpperStart;
-	Vector3 positionLowerStart;
-	public Vector3 lerpTarget;
+	public int powerDemand = 5;
 
-	public int powerDemand = 1;
-
-	float startTime;
-	float moveDistance;
-
-	public bool Open = false;
 	public bool isActive = false;
 	public bool isDirectionalReceiver = false;
+	bool keyPressed;
+	bool inDoorway;
+
+	AngusMovement player;
+	GameManager gameMngr;
+
+	Renderer lightARend;
+	Renderer lightBRend;
 
 
 	void Start ()
@@ -42,126 +36,150 @@ public class DoorScript : MonoBehaviour
 		roomB = doorSideB.GetComponent<RoomScript> ();
 		compassA = roomA.compass.GetComponent<CompassScript> ();
 		compassB = roomB.compass.GetComponent<CompassScript> ();
-		gameMngr = GameManager.instance;
 		this.GetComponent<BoxCollider> ().isTrigger = true;
-
-		//Setting the local position of the door halves.
-//		positionUpperStart = doorUpper.transform.localPosition;
-//		positionLowerStart = doorLower.transform.localPosition;
+		lightARend = lightSideA.GetComponent<Renderer> ();
+		lightBRend = lightSideB.GetComponent<Renderer> ();
+		player = GameObject.FindWithTag ("Player").GetComponent<AngusMovement>();
+		gameMngr = GameManager.instance;
 	}
 
 	void Update ()
 	{	
-		//If the bool Open is true, call openDoor function.
-		//Else call closeDoor function.
-		if (Open) 
-		{
-			openDoor ();
-		}
-		else
-			closeDoor ();
-
 		checkReceiver ();
 	}
 		
 	/// Changes the active state of the door.
-	public void changeActiveState()
+	public void changeActiveState (GameObject reference)
 	{
 		if (isActive)
 		{
-			isActive = false;
+			stateActive (false);
+			lightARend.material.color = Color.red;
+			lightBRend.material.color = Color.red;
+			gameMngr.levelDoorPowerDown (powerDemand);
+			Debug.Log ("Turning " + this.gameObject.name + " off");
 		} 
 		else  
 		{
-			isActive = true;
+			stateActive (true);
+			lightARend.material.color = Color.green;
+			lightBRend.material.color = Color.green;
+			gameMngr.levelDoorPowerUp (powerDemand);
+			gameMngr.objectsToCut.Add (this.gameObject);
+			Debug.Log ("Turning " + this.gameObject.name + " on");
 		}
 	}
 
-	/// Opens the door smoothly.
-    void openDoor()
-    {
-//		doorUpper.transform.localPosition = Vector3.Lerp (doorUpper.transform.localPosition, new Vector3 (0,0,.24f ), .01f);
-//		doorLower.transform.localPosition = Vector3.Lerp (doorLower.transform.localPosition, new Vector3 (0, 0, 0), .01f);
-    }
-
-	/// Closes the door smoothly.
-	void closeDoor()
+	void OnTriggerEnter (Collider detector)
 	{
-//		doorUpper.transform.localPosition = Vector3.Lerp (doorUpper.transform.localPosition, positionUpperStart, .01f);
-//		doorLower.transform.localPosition = Vector3.Lerp (doorLower.transform.localPosition, positionLowerStart, .01f);
-	}
-
-	/// Detects Player entering door collider.
-    void OnTriggerEnter(Collider detector)
-    {		
 		if (detector.transform.tag == "Player") 
 		{
-			//If the player is in the room in either of the door side variables.
-			//Open bool is true and the light box for that side turns green. 
-/*			if (roomA.playerIsHere && roomA.roomFuseBox.GetComponent<ObjectsList> ().isActive) 
-			{
-				Open = true;
-				lightSideA.GetComponent<Renderer> ().material.color = Color.green;
-			} 
-			else if (roomB.playerIsHere && roomB.roomFuseBox.GetComponent<ObjectsList> ().isActive) 
-			{
-				Open = true;
-				lightSideB.GetComponent<Renderer> ().material.color = Color.green;
-			}
-*/
-		}	
-    }
+			inDoorway = true;
+			machineStateMeterCheck ();
+		}
+	}
 
-	/// Detects Player exiting door collider
-	void OnTriggerExit(Collider detector)
+	// While inside trigger.
+	void OnTriggerStay (Collider detector)
 	{
+		// Detect player in doorway.
 		if (detector.transform.tag == "Player")
 		{
-			//Opposite of previous function.
-			//Open bool is false.
-			if (roomA.playerIsHere) 
+			// If E is pressed turn it on/off.
+			if (Input.GetKeyDown (KeyCode.E) && !statePressed ()) 
 			{
-				Open = false;
-			} 
-			else if (roomB.playerIsHere) 
+				if (!stateActive ()) 
+				{
+					changeActiveState (this.gameObject);
+				}
+				else
+				{
+					changeActiveState (this.gameObject);
+					gameMngr.objectsToCut.Remove (this.gameObject);
+				}
+				statePressed (true);
+			}
+
+			if (Input.GetKeyUp (KeyCode.E)) 
 			{
-				Open = false;
+				statePressed (false);
 			}
 		}
+
+		// Check what color the statemeters should be.
+		machineStateMeterCheck ();
+	}
+
+	// When player leaves trigger:
+	// Player is not beside.
+	// Check what color the statemeters should be.
+	void OnTriggerExit (Collider detector)
+	{
+		if (detector.transform.tag == "Player") 
+		{
+			inDoorway = false;
+			machineStateMeterCheck ();
+		}
+	}
+
+	public void machineStateMeterCheck ()
+	{
+		if (inDoorway) 
+		{
+			if (!stateActive ()) 
+			{
+				player.changeStateMeterColors (Color.red);
+			}
+			else if (stateActive ()) 
+			{
+				player.changeStateMeterColors (Color.green);
+			}
+		}
+
+		else 
+		{
+			player.changeStateMeterColors (Color.white);
+		}
+	}
+
+	// Sets bool state.
+	public void statePressed (bool setPress)
+	{
+		keyPressed = setPress;
+	}
+
+	// Returns bool state.
+	public bool statePressed ()
+	{
+		return keyPressed;
+	}
+
+	// Sets bool state.
+	public void stateActive (bool setActive)
+	{
+		isActive = setActive;
+	}
+
+	// Returns bool state.
+	public bool stateActive ()
+	{
+		return isActive;
 	}
 
 	/// Checks for a receiver.
 	/// If x side's compass' target is the opposite room:
-	/// Go through Chain Links.
-	/// If x side is a chain link, the door is a receiver.
-	/// If it isn't the target, the door isn't a receiver.
 	public void checkReceiver ()
 	{
-		GameObject link;
 		if (compassA.currentHitTarget == doorSideB) 
 		{
-			for (int x = 0; x < gameMngr.chainLinks.Count; x++)
-			{
-				link = gameMngr.chainLinks [x];
-				if (doorSideA ==  link)
-				{
-					isDirectionalReceiver = true;
-				} 
-			}
+			isDirectionalReceiver = true;
 		}
 		else
 			isDirectionalReceiver = false;
 
 		if (compassB.currentHitTarget == doorSideA) 
 		{
-			for (int x = 0; x < gameMngr.chainLinks.Count; x++)
-			{
-				link = gameMngr.chainLinks [x];
-				if (doorSideB ==  link)
-				{
-					isDirectionalReceiver = true;
-				} 
-			}
+			isDirectionalReceiver = true;
 		}
 		else
 			isDirectionalReceiver = false;

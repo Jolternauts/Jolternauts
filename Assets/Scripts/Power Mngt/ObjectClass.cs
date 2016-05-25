@@ -5,13 +5,8 @@ using UnityEngine.UI;
 
 public class ObjectClass : MonoBehaviour
 {
-	//isOn defines if the device is on.
 	public bool isOn;
-
-	//isActive defines if it's able to function.
 	public bool isActive;
-
-	//isActive defines if it's damaged.
 	public bool isDamaged;
 
 	bool keyPressed;
@@ -35,7 +30,8 @@ public class ObjectClass : MonoBehaviour
 	BoxCollider boxColl;
 	Renderer rend;
 
-	void Start()
+
+	void Start ()
 	{
 		myName = this.gameObject.transform.name;
 		myTag = this.gameObject.transform.tag;
@@ -46,13 +42,13 @@ public class ObjectClass : MonoBehaviour
 		objectStartup ();
 	}
 
-	void Update()
+	void Update ()
 	{
 		
 	}
 		
 	// While player is colliding and R is held down repair object:
-	void OnTriggerStay(Collider detector)
+	void OnTriggerStay (Collider detector)
 	{
 		if (detector.transform.tag == "Player") 
 		{
@@ -64,14 +60,14 @@ public class ObjectClass : MonoBehaviour
 	}
 
 	/// Wait function.
-	IEnumerator Stall()
+	IEnumerator Stall ()
 	{
 		Debug.Log ("Buffering");
 		yield return new WaitForSeconds (repairTime);
 	}
 
 	/// Repairs the object.
-	public void repairObject(GameObject device)
+	public void repairObject (GameObject device)
 	{
 		StartCoroutine (Stall ());
 		Renderer deviceRend = device.GetComponent<Renderer> ();
@@ -83,7 +79,7 @@ public class ObjectClass : MonoBehaviour
 
 	/// This detects if an object has a box collider or a renderer.
 	/// And changes their color and trigger status.
-	void objectStartup()
+	void objectStartup ()
 	{
 		if (boxColl && rend) 
 		{
@@ -101,10 +97,10 @@ public class ObjectClass : MonoBehaviour
 	}
 
 	/// Initializes a new instance of the <see cref="ObjectClass"/> class.
-	public ObjectClass(){}
+	public ObjectClass (){}
 
 	/// Initializes a new instance of the <see cref="ObjectClass"/> class.
-	public ObjectClass(bool setOn, bool setActive, bool setDamage)
+	public ObjectClass (bool setOn, bool setActive, bool setDamage)
 	{
 		isOn = setOn;
 		isActive = setActive;
@@ -112,71 +108,71 @@ public class ObjectClass : MonoBehaviour
 	}
 
 	// Sets bool state.
-	public void stateOn(bool setOn)
+	public void stateOn (bool setOn)
 	{
 		isOn = setOn;
 	}
 
 	// Returns bool state.
-	public bool stateOn()
+	public bool stateOn ()
 	{
 		return isOn;
 	}
 		
 	// Sets bool state.
-	public void stateActive(bool setActive)
+	public void stateActive (bool setActive)
 	{
 		isActive = setActive;
 	}
 
 	// Returns bool state.
-	public bool stateActive()
+	public bool stateActive ()
 	{
 		return isActive;
 	}
 
 	// Sets bool state.
-	public void stateDamaged(bool setDamage)
+	public void stateDamaged (bool setDamage)
 	{
 		isDamaged = setDamage;
 	}
 
 	// Returns bool state.
-	public bool stateDamaged()
+	public bool stateDamaged ()
 	{
 		return isDamaged;
 	}
 
 	// Sets bool state.
-	public void statePressed(bool setPress)
+	public void statePressed (bool setPress)
 	{
 		keyPressed = setPress;
 	}
 
 	// Returns bool state.
-	public bool statePressed()
+	public bool statePressed ()
 	{
 		return keyPressed;
 	}
 
 	/// Checks if any machines are damaged and affects the rest accordingly.
-	public void massCrashCheck()
+	public void massCrashCheck ()
 	{
 		PowerGen gen = this.gameObject.GetComponent<PowerGen> ();
 		PowerDrain drain = this.gameObject.GetComponent<PowerDrain> ();
 
-		if (stateActive() && !stateDamaged() || stateOn() && !stateDamaged()) 
+		if (stateActive () && !stateDamaged () || stateOn () && !stateDamaged ()) 
 		{
-			stateActive(false);
-			stateOn(false);
+			stateActive (false);
+			stateOn (false);
 			gen.changeRendColor (offColor);
 			drain.changeRendColor (offColor);
 		}
-		else if (stateActive() && stateDamaged() || stateOn() && stateDamaged()) 
+		else if (stateActive () && stateDamaged () || stateOn () && stateDamaged ()) 
 		{
 			stateDamaged (true);
-			stateActive(false);
-			stateOn(false);
+			stateActive (false);
+			stateOn (false);
 			gen.changeRendColor (offColor);
 			drain.changeRendColor (offColor);		
 		}

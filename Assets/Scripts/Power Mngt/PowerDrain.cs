@@ -12,6 +12,7 @@ public class PowerDrain : ObjectClass
 	Renderer deviceRend;
 
 	public bool besideDevice;
+	public bool uploadComplete;
 
 	void Start()
 	{
@@ -26,51 +27,43 @@ public class PowerDrain : ObjectClass
 
 	void Update()
 	{
-		
+
 	}
 
 	// Change state of device.
-	public void changeState(GameObject reference)
+	public void changeState (GameObject reference)
 	{
 		// If fusebox is active.
 		if (box.stateActive ()) 
 		{
 			// If A.R.S is over 0.
 			// Change active / damaged states and elements.
-			if (room.availableRoomSupply > 0) 
+			if (!stateActive ()) 
 			{
-				if (!stateActive ()) 
+				if ((room.availableRoomSupply - powerDemand) >= 0)
 				{
-					if (room.availableRoomSupply > 0) 
+					drainerStateChangeCriteria ();
+					if (myName == "Health_Console") 
 					{
-						drainerStateChangeCriteria ();
 						recharge ();
 					}
 				} 
-			}
-			else
+			} 
+			else 
+			{
 				drainerStateChangeCriteria ();
+			}
 		} 
 		else
-		{ // If the room isn't powered:
-			/* If the object is not Neutral: (That means not off but with no power reaching it anyway.)
-				 * Debug.
-				 * Change its color.
-				 * Turn it to Neutral !!!.	*/
+		{
 			if (!stateOn ()) 
 			{
-				Debug.Log ("Device neutral");
 				changeRendColor (neutralColor);
 				stateOn (true);
 			}
 
-			/* If the object is Neutral:
-				 * Debug.
-				 * Change its color.
-				 * Turn it to OFF !!!.	*/
 			else if (stateOn ()) 
 			{
-				Debug.Log ("Device off");
 				changeRendColor (offColor);
 				stateOn (false);
 			} 
@@ -81,7 +74,7 @@ public class PowerDrain : ObjectClass
 		}
 	}
 
-	void OnTriggerEnter(Collider detector)
+	void OnTriggerEnter (Collider detector)
 	{
 		if (detector.transform.tag == "Player") 
 		{
@@ -90,7 +83,7 @@ public class PowerDrain : ObjectClass
 		}
 	}
 
-	void OnTriggerStay(Collider detector)
+	void OnTriggerStay (Collider detector)
 	{
 		// Detect player at object and turn it on by pressing E.
 		// If it's a charge station: replenish health, suit power and oxygen.
@@ -99,20 +92,41 @@ public class PowerDrain : ObjectClass
 		{
 			if (Input.GetKeyDown (KeyCode.E) && !statePressed ()) 
 			{
-				changeState(this.gameObject);
+				changeState (this.gameObject);
 				statePressed (true);
 			}
-
 			if (Input.GetKeyUp (KeyCode.E)) 
 			{
-				statePressed(false);
+				statePressed (false);
+			}
+
+			if (Input.GetKeyDown (KeyCode.U) && !statePressed ()) 
+			{
+				if (myTag == "GoalCon") 
+				{
+					if (gameMngr.uploadedDevices.Count == (gameMngr.numberOfDevices - 1))
+					{
+						StartCoroutine (uploadFiles ());
+						Debug.Log ("You Win");
+					}
+				}
+				else
+				{
+					StartCoroutine (uploadFiles ());
+					gameMngr.uploadedDevices.Add (this.gameObject);
+				}
+				statePressed (true);
+			}
+			if (Input.GetKeyUp (KeyCode.U)) 
+			{
+				statePressed (false);
 			}
 		}
 
 		machineStateMeterCheck ();
 	}
 
-	void OnTriggerExit(Collider detector)
+	void OnTriggerExit (Collider detector)
 	{
 		if (detector.transform.tag == "Player") 
 		{
@@ -121,48 +135,62 @@ public class PowerDrain : ObjectClass
 		}
 	}
 
-	// Checks if device group is damaged or not and A.R.S is enough to turn on.
-	public void massActivationCheck()
+	IEnumerator uploadFiles ()
 	{
-		if (!stateDamaged() && stateOn() && room.availableRoomSupply - powerDemand >= 0)
-		{
-			Debug.Log ("Safe Activation for " + myName);
-			stateActive(true);
-			stateOn(false);
-			changeRendColor (activeColor);
-			box.roomSinglePowerUp (powerDemand);
-			gameMngr.availableLevelSupply -= powerDemand;
-			recharge ();
+		Debug.Log ("Buffering");
+		yield return new WaitForSeconds (repairTime);
+		uploadComplete = true;
+	}
+
+	// Checks if device group is damaged or not and A.R.S is enough to turn on.
+	public void massActivationCheck ()
+	{
+		if ((room.availableRoomSupply - powerDemand) >= 0) 
+		{				
+			if (!stateDamaged () && stateOn ())
+			{
+				Debug.Log ("Safe Activation for " + myName);
+				stateActive (true);
+				stateOn (false);
+				changeRendColor (activeColor);
+				box.roomSinglePowerUp (powerDemand);
+				gameMngr.levelObjectPowerUp (powerDemand);
+				gameMngr.objectsToCut.Add (this.gameObject);
+				if (myTag == "HealthCon")
+				{
+					recharge ();
+				}
+			}
+			else if (stateDamaged () && stateOn ()) 
+			{
+				box.roomCrash ();
+				Debug.Log (myName + " is Damaged");
+				Debug.Log ("And now Fusebox is Damaged");
+			} 
 		}
-		else if (stateDamaged() && stateOn()) 
-		{
-			box.roomCrash ();
-			Debug.Log (myName + " is Damaged");
-			Debug.Log ("And now Fusebox is Damaged");
-		} 
 	}
 
 	/* If device group is turned on:
 	 * if any are damaged, changed to damaged criteria.
 	 * If true and others aren't make them inactive.	*/
-	public void massCrashCheckForDevice()
+	public void massCrashCheckForDevice ()
 	{
-		if (stateActive() && !stateDamaged() || stateOn() && !stateDamaged()) 
+		if (stateActive () && !stateDamaged () || stateOn () && !stateDamaged ()) 
 		{
 			stateActive(false);
 			stateOn(false);
 			changeRendColor (offColor);
 		}
-		else if (stateActive() && stateDamaged() || stateOn() && stateDamaged()) 
+		else if (stateActive () && stateDamaged () || stateOn () && stateDamaged ()) 
 		{
 			stateDamaged (true);
 			stateActive(false);
-			stateOn(false);
+			stateOn (false);
 			changeRendColor (damagedColor);
 		}
 	}
 
-	public void machineStateMeterCheck()
+	public void machineStateMeterCheck ()
 	{
 		if (besideDevice) 
 		{
@@ -182,6 +210,10 @@ public class PowerDrain : ObjectClass
 			{
 				player.changeStateMeterColors (damagedColor);
 			}
+			else if (uploadComplete)
+			{
+				player.changeStateMeterColors (Color.blue);
+			}
 		}
 		else 
 		{
@@ -189,7 +221,7 @@ public class PowerDrain : ObjectClass
 		}
 	}
 
-	public void changeRendColor(Color32 colour)
+	public void changeRendColor (Color32 colour)
 	{
 		deviceRend.material.color = colour;
 	}
@@ -202,7 +234,7 @@ public class PowerDrain : ObjectClass
 			changeRendColor (offColor);
 			stateActive (false);
 			box.roomSinglePowerDown (powerDemand);
-			gameMngr.availableLevelSupply += powerDemand;
+			gameMngr.levelObjectPowerDown (powerDemand);
 		}
 		else if (stateActive () && stateDamaged ()) 
 		{
@@ -210,7 +242,7 @@ public class PowerDrain : ObjectClass
 			changeRendColor (damagedColor);
 			stateActive (false);
 			box.roomSinglePowerDown (powerDemand);
-			gameMngr.availableLevelSupply += powerDemand;
+			gameMngr.levelObjectPowerDown (powerDemand);
 		}
 		else if (!stateActive () && !stateDamaged ()) 
 		{
@@ -218,7 +250,8 @@ public class PowerDrain : ObjectClass
 			changeRendColor (activeColor);
 			stateActive (true);
 			box.roomSinglePowerUp (powerDemand);
-			gameMngr.availableLevelSupply -= powerDemand;
+			gameMngr.levelObjectPowerUp (powerDemand);
+			gameMngr.objectsToCut.Add (this.gameObject);
 		}
 		else if (!stateActive () && stateDamaged ()) 
 		{
@@ -226,18 +259,15 @@ public class PowerDrain : ObjectClass
 			changeRendColor (damagedColor);
 			stateActive (true);
 			box.roomCrash ();
-		} 
+		}
 		else // Debug error with object's name.
 			Debug.Log ("ObjectScript ChangeState Error" + this.name);
 	}
 
 	public void recharge ()
 	{
-		if (myName == "ChargeStation") 
-		{
-			player.changeHealth (100f);
-			player.changeEnergy (100f);
-			player.changeOxygen (100f);
-		}
+		player.changeHealth (100f);
+		player.changeEnergy (100f);
+		player.changeOxygen (100f);
 	}
 }

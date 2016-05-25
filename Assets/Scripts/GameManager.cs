@@ -7,17 +7,21 @@ public class GameManager : MonoBehaviour
 {
 	public static GameManager instance;
 
-	public List <GameObject> roomList = new List<GameObject>();
-	public List <GameObject> doorList = new List<GameObject>();
-	public List <GameObject> suppliers = new List<GameObject>();
-	public List <GameObject> chainLinks = new List<GameObject>();
+	public List <GameObject> roomList = new List<GameObject> ();
+	public List <GameObject> doorList = new List<GameObject> ();
+	public List <GameObject> suppliers = new List<GameObject> ();
+	public List <GameObject> chainLinks = new List<GameObject> ();
+	public List <GameObject> tier1 = new List<GameObject> (); 
+	public List <GameObject> tier2 = new List<GameObject> (); 
+	public List <GameObject> tier3 = new List<GameObject> ();
+	public List <GameObject> objectsToCut = new List <GameObject> ();
+	public List <GameObject> uploadedDevices = new List <GameObject> ();
 
-	DoorScript Door;
-	RoomScript Room;
 	AngusMovement player;
 
 	int oxygenAmount;
-	int levelTimer;
+
+	private GUIStyle style = new GUIStyle ();
 
 	public Canvas mainMenu;
 	public Canvas playerUI;
@@ -40,13 +44,20 @@ public class GameManager : MonoBehaviour
 
 	public GameObject playerObject;
 
+	public Color energy;
+	public Color oxygen;
+	public Color health;
+
+	public int levelTimer;
+
 	public int totalLevelSupply;
 	public int totalLevelDemand;
 
 	public int availableLevelSupply;
 	public int activeLevelDemand;
 
-    int number;
+	public int supplyToCut = 0;
+	public int numberOfDevices = 0;
 
 	void Awake()
 	{
@@ -55,17 +66,18 @@ public class GameManager : MonoBehaviour
 
 	/// Identify player.
 	/// Determine power figures and initiate UI.
-	void Start()
+	void Start ()
 	{
 		player = playerObject.GetComponent<AngusMovement> ();
         UIStart ();
 		updateUI ();
 		updateAllSupplyDemand (totalLevelSupply, totalLevelDemand, availableLevelSupply, activeLevelDemand);
 		tallyTotalLevelPower();
+		InvokeRepeating ("countdown", 1f, 1f);
 	}
 
 	/// Update Player UI and power figures.
-	void Update()
+	void Update ()
 	{
         updateUI ();
 		updateAllSupplyDemand (totalLevelSupply, totalLevelDemand, availableLevelSupply, activeLevelDemand);
@@ -75,14 +87,19 @@ public class GameManager : MonoBehaviour
 			availableLevelSupply = 0;
 			activeLevelDemand = 0;
 		}
+
+		if (levelTimer < 0)
+		{
+			levelTimer = 0;
+		}
     }
 
 	/// Runs the UI.
-	void UIStart()
+	void UIStart ()
 	{
-		playerHealthBar.color = Color.red;
-		playerOxygenBar.color = Color.blue;
-		playerEnergyBar.color = Color.green;
+//		playerHealthBar.color = health;
+//		playerOxygenBar.color = oxygen;
+//		playerEnergyBar.color = energy;
 		machineStateMeter1.color = Color.white;
 		machineStateMeter2.color = Color.white;
 		textGlobalSupply.text = System.Convert.ToString(totalLevelSupply);
@@ -92,7 +109,7 @@ public class GameManager : MonoBehaviour
 	}
 
 	/// Updates the Player UI.
-	void updateUI()
+	void updateUI ()
 	{
 		float currentHealth = player.currentHealth;
 		float startHealth = player.startHealth;
@@ -102,30 +119,41 @@ public class GameManager : MonoBehaviour
 	}
 
 	/// Tallies the total level power.
-	/// Summed up by the total room values.
-	public void tallyTotalLevelPower()
+	/// Summed up by the total room values & door values.
+	public void tallyTotalLevelPower ()
 	{
-		foreach (GameObject room in roomList) 
+		for (int x = 0; x < roomList.Count; x++) 
 		{
-			RoomScript currentRoom = room.GetComponent<RoomScript> ();
-			totalLevelSupply += currentRoom.totalRoomSupply;
-			totalLevelDemand += currentRoom.totalRoomDemand;
+			GameObject section = roomList[x];
+			RoomScript sectionScript = section.GetComponent<RoomScript> ();
+			FuseBox sectionBox = sectionScript.roomFuseBox.GetComponent<FuseBox> ();
+			for (int y = 0; y < sectionBox.roomObjects.Count; y++) 
+			{
+				ObjectClass machine = sectionBox.roomObjects[y].GetComponent<ObjectClass> ();
+				totalLevelSupply += machine.powerSupply;
+				totalLevelDemand += machine.powerDemand;
+				numberOfDevices += 1;
+			}
 		}
 
-//		#pragma warning disable
-/*		for (int x = 0; x < roomList.Count; x++) 
+		for (int x = 0; x < doorList.Count; x++)
 		{
-			RoomScript currentRoom = roomList[x].GetComponent<RoomScript> ();
-			totalLevelSupply += currentRoom.totalRoomSupply;
-			totalLevelDemand += currentRoom.totalRoomDemand;
-//			break;
+			GameObject door = doorList [x];
+			if (door.GetComponent<DoorScript> ())
+			{
+				DoorScript doorWay = door.GetComponent<DoorScript> ();
+				totalLevelDemand += doorWay.powerDemand;
+			}
+			if (door.GetComponent<DoorCompleteScript> ())
+			{
+				DoorCompleteScript doorWayComp = door.GetComponent<DoorCompleteScript> ();
+				totalLevelDemand += doorWayComp.powerDemand;
+			}
 		}
-//		#pragma warning restore
-*/
 	}
 
 	/// Updates the room power UI.
-	public void updateRoomUI(int supply, int demand, int activeSupply, int activeDemand)
+	public void updateRoomUI (int supply, int demand, int activeSupply, int activeDemand)
     {
 		textRoomSupply.text = System.Convert.ToString(supply);
 		textRoomDemand.text = System.Convert.ToString(demand);
@@ -134,7 +162,7 @@ public class GameManager : MonoBehaviour
     }
 
    /// Updates the global power UI.
-	public void updateAllSupplyDemand(int supply, int demand, int availableSupply, int activeDemand)
+	public void updateAllSupplyDemand (int supply, int demand, int availableSupply, int activeDemand)
     {
 		textGlobalSupply.text = System.Convert.ToString(supply);
 		textGlobalDemand.text = System.Convert.ToString(demand);
@@ -143,27 +171,62 @@ public class GameManager : MonoBehaviour
 	}
 		
 	/// Increases active global supply by the values of a room.
-	public void levelRoomPowerUp(int demand)
+	public void levelRoomPowerUp (int demand)
 	{
 		availableLevelSupply -= demand;
+		activeLevelDemand += demand;
 	}
 
 	/// Decreases active global supply by the values of a room.
-	public void levelRoomPowerDown(int demand)
+	public void levelRoomPowerDown (int demand)
 	{
 		availableLevelSupply += demand;
+		activeLevelDemand -= demand;
 	}
 
 	/// Increases active global supply by the value of a single object.
-	public void levelObjectPowerUp(int demand)
+	public void levelObjectPowerUp (int demand)
 	{
 		availableLevelSupply -= demand;
+		activeLevelDemand += demand;
 	}
 
 	/// Decreases active global supply by the values of a single object.
-	public void levelObjectPowerDown(int demand)
+	public void levelObjectPowerDown (int demand)
 	{
 		availableLevelSupply += demand;
+		activeLevelDemand -= demand;
+	}
+
+	/// Increases active global supply by the value of a single door.
+	public void levelDoorPowerUp (int demand)
+	{
+		availableLevelSupply -= demand;
+		activeLevelDemand += demand;
+	}
+
+	/// Decreases active global supply by the values of a single door.
+	public void levelDoorPowerDown (int demand)
+	{
+		availableLevelSupply += demand;
+		activeLevelDemand -= demand;
+	}
+		
+	public void countdown ()
+	{
+		levelTimer -= 1;
+	}
+
+	// Converts timer int to real time & displays it in UI.
+	void OnGUI () 
+	{
+		style.fontSize = 20;
+		style.normal.textColor = Color.cyan;
+
+		int minutes = Mathf.FloorToInt (levelTimer / 60f);
+		int seconds = Mathf.FloorToInt (levelTimer - minutes * 60);
+		string niceTime = string.Format ("{0:0}:{1:00}", minutes, seconds);
+		GUI.Label (new Rect (10, 10, 250, 100), niceTime, style);
 	}
 }
 

@@ -9,13 +9,13 @@ public class FuseBox : ObjectClass
 
 	public List<GameObject> roomObjects = new List<GameObject>();
 
-	RoomScript room;
-
+	public RoomScript room;
 	Renderer boxRend;
+	CompassScript compass;
 
 	public bool besideBox;
 
-	void Start()
+	void Start ()
 	{
 		myName = this.gameObject.transform.name;
 		myTag = this.gameObject.transform.tag;
@@ -23,15 +23,78 @@ public class FuseBox : ObjectClass
 		gameMngr = GameManager.instance;
 		room = this.gameObject.GetComponentInParent<RoomScript> ();		
 		boxRend = this.gameObject.GetComponent<Renderer> ();
+		compass = room.compass.GetComponent<CompassScript> ();
 	}
 
-	void Update()
+	void Update ()
 	{
 
 	}
 
+	/// Conditioning to basically force:
+	/// Having to continue the power chain to turn on rooms, except with the first link.
+	/// And being able to turn on empty rooms.
+	public void fuseBoxRules ()
+	{
+		if (!stateActive ()) 
+		{
+			if (gameMngr.chainLinks.Count == 0) 
+			{
+				changeState (this.gameObject);							
+			}
+			else if (gameMngr.chainLinks.Count > 0)
+			{
+				activeChainRules ();
+			}
+		}
+		else
+			changeState (this.gameObject);
+	}
+
+	/// If this room has x neighbours:
+	/// If the chain contains one of them:
+	/// If there are devices, supply is needed to turn the box on.
+	/// Else just turn it on.
+	public void activeChainRules ()
+	{
+		if (room.neighbours.Count == 1)
+		{
+			if (gameMngr.chainLinks.Contains (room.neighbours [0]))
+			{
+				changeState (this.gameObject);			
+			}						
+		}
+		else if (room.neighbours.Count == 2)
+		{
+			if (gameMngr.chainLinks.Contains (room.neighbours [0]) || 
+				gameMngr.chainLinks.Contains (room.neighbours [1]))
+			{
+				changeState (this.gameObject);
+			}						
+		}
+		else if (room.neighbours.Count == 3)
+		{
+			if (gameMngr.chainLinks.Contains (room.neighbours [0]) || 
+				gameMngr.chainLinks.Contains (room.neighbours [1]) || 
+				gameMngr.chainLinks.Contains (room.neighbours [2]))
+			{
+				changeState (this.gameObject);					
+			}						
+		}
+		else if (room.neighbours.Count == 4)
+		{
+			if (gameMngr.chainLinks.Contains (room.neighbours [0]) || 
+				gameMngr.chainLinks.Contains (room.neighbours [1]) || 
+				gameMngr.chainLinks.Contains (room.neighbours [2]) || 
+				gameMngr.chainLinks.Contains (room.neighbours [3]))
+			{
+				changeState (this.gameObject);
+			}						
+		}
+	}
+
 	// If there is available room supply, change the box's state.
-	public void changeState(GameObject reference)
+	public void changeState (GameObject reference)
 	{
 		roomStateCheck ();
 		boxStateChangeCriteria ();
@@ -40,7 +103,7 @@ public class FuseBox : ObjectClass
 	// When player enters trigger:
 	// He is beside this.
 	// Call meter color change function.
-	void OnTriggerEnter(Collider detector)
+	void OnTriggerEnter (Collider detector)
 	{
 		if (detector.transform.tag == "Player") 
 		{
@@ -50,7 +113,7 @@ public class FuseBox : ObjectClass
 	}
 
 	// While inside trigger.
-	void OnTriggerStay(Collider detector)
+	void OnTriggerStay (Collider detector)
 	{
 		// Detect player at object
 		if (detector.transform.tag == "Player")
@@ -75,72 +138,6 @@ public class FuseBox : ObjectClass
 			{
 				statePressed (false);
 			}
-
-			// If A.R.S > 0, store power supply from the room in the suit. 
-			if (Input.GetKeyDown (KeyCode.P) && !statePressed ()) 
-			{
-				if (room.availableRoomSupply > 0) 
-				{
-					storePowerPackSupply ();
-					statePressed (true);
-				}
-			}
-
-			// If A.R.S is 0, share power supply from the suit to the room. 
-			if (Input.GetKey (KeyCode.LeftShift) && Input.GetKeyDown (KeyCode.P) && !statePressed ()) 
-			{
-				if (room.availableRoomSupply == 0) 
-				{
-					sharePowerPackSupply ();
-					statePressed (true);
-				}
-			}
-
-			if (Input.GetKeyUp (KeyCode.LeftShift) || Input.GetKeyUp (KeyCode.P)) 
-			{
-				statePressed (false);
-			}
-
-			if (stateActive())
-			{
-				// Press T: call transfer supply -> north.
-				if (Input.GetKeyDown (KeyCode.T) && room.north && !statePressed ()) 
-				{
-					room.transferPowerSupply(room.north);
-					Debug.Log ("Power moved north to " + room.north.name);
-					statePressed (true);
-				}
-
-				// Press H: call transfer supply -> east.
-				if (Input.GetKeyDown (KeyCode.H) && room.east && !statePressed ()) 
-				{
-					room.transferPowerSupply(room.east);
-					Debug.Log ("Power moved east to " + room.east.name);
-					statePressed (true);
-				}
-
-				// Press G: call transfer supply -> south.
-				if (Input.GetKeyDown (KeyCode.G) && room.south && !statePressed ()) 
-				{
-					room.transferPowerSupply(room.south);
-					Debug.Log ("Power moved south to " + room.south.name);
-					statePressed (true);
-				}
-
-				// Press F: call transfer supply -> west.
-				if (Input.GetKeyDown (KeyCode.F) && room.west && !statePressed ()) 
-				{
-					room.transferPowerSupply(room.west);
-					Debug.Log ("Power moved west to " + room.west.name);
-					statePressed (true);
-				}
-			}
-
-			if (Input.GetKeyUp (KeyCode.T) || Input.GetKeyUp (KeyCode.H) ||
-				Input.GetKeyUp (KeyCode.G) || Input.GetKeyUp (KeyCode.F)) 
-			{
-				statePressed (false);
-			}
 		}
 
 		// Check what color the statemeters should be.
@@ -150,7 +147,7 @@ public class FuseBox : ObjectClass
 	// When player leaves trigger:
 	// Player is not beside.
 	// Check what color the statemeters should be.
-	void OnTriggerExit(Collider detector)
+	void OnTriggerExit (Collider detector)
 	{
 		if (detector.transform.tag == "Player") 
 		{
@@ -160,40 +157,17 @@ public class FuseBox : ObjectClass
 	}
 		
 	/// Checks and changes active state of a room.
-	public void roomStateCheck()
+	public void roomStateCheck ()
 	{
-		Debug.Log ("Room Check Called");
-
 		// Turn off room.
 		// Remove it from Chain Links.
 		if (stateActive()) 
 		{
 			room.isPowered = false;
-			gameMngr.chainLinks.Remove (room.here);
 		}
 		else if (!stateActive()) 
 		{
-			// Turn room on.
-			// If chain links is empty, just add it.
-			// Otherwise check this room's doors.
-			// If one is a receiver, then add the room to chain links.
 			room.isPowered = true;
-			if (gameMngr.chainLinks.Count == 0) 
-			{
-				gameMngr.chainLinks.Add (room.here);
-			}
-
-			if (gameMngr.chainLinks.Count > 0)
-			{
-				for (int x = 0; x < room.doors.Count; x++)
-				{
-					DoorScript door = room.doors [x].GetComponent<DoorScript> ();
-					if (door.isDirectionalReceiver)
-					{
-						gameMngr.chainLinks.Add (room.here);
-					}
-				}
-			}
 		}
 		roomStateChange ();
 	}
@@ -201,81 +175,105 @@ public class FuseBox : ObjectClass
 	/// Determines what to do when the Fusebox switch is flipped.
 	/// When turning it ON, Activate.
 	/// When turning it OFF, Sleep.
-	public void roomStateChange()
+	public void roomStateChange ()
 	{
-		Debug.Log ("Room State Change Called");
-
 		if (room.isPowered) 
 		{
+			gameMngr.chainLinks.Add (room.here);
+			room.callPowerTransfer ();
 			roomActivate ();
+			compass.flipDoorSwitch (compass.currentHitTarget);
 		} 
-		else
+		else if (!room.isPowered)
 		{
-			for (int x = 0; x < roomObjects.Count; x++) 
-			{
-				if (roomObjects [x].tag == "Device") 
-				{
-					PowerDrain device = roomObjects [x].GetComponent<PowerDrain> ();
-
-					for (int y = 0; y < roomObjects.Count; y++) 
-					{
-						if (device.stateActive ()) 
-						{
-							roomSleep ();
-						}
-					}
-				}
-			}
+			breakChain ();
+			gameMngr.chainLinks.Remove (room.here);
+			roomSleep ();
+			compass.flipDoorSwitch (compass.currentHitTarget);
 		}
 	}
 
 	/// Turns off the room.
-	public void roomSleep()
+	public void roomSleep ()
 	{
-		Debug.Log ("Room Sleep Called");
-
 		// Go through room items list.
 		for (int x = 0; x < roomObjects.Count; x++)  
 		{
-			if (roomObjects [x].tag == "Device") 
+			GameObject device = roomObjects [x];
+			if (device.tag == "GoalCon") 
 			{
-				PowerDrain device = roomObjects [x].GetComponent<PowerDrain> ();
+				PowerDrain goalCon = device.GetComponent<PowerDrain> ();
+				if (goalCon.stateActive ()) 
+				{
+					goalCon.stateActive (false);
+					goalCon.changeRendColor (offColor);
+					roomSinglePowerDown (goalCon.powerDemand);
+					gameMngr.levelObjectPowerDown (goalCon.powerDemand);
+					gameMngr.objectsToCut.Remove (goalCon.gameObject);
+				}
+			}
 
-				device.stateActive (false);
-				device.changeRendColor (offColor);
-				roomSinglePowerDown (device.powerDemand);
+			if (device.tag == "HealthCon") 
+			{
+				PowerDrain healthCon = device.GetComponent<PowerDrain> ();
+				if (healthCon.stateActive ()) 
+				{
+					healthCon.stateActive (false);
+					healthCon.changeRendColor (offColor);
+					roomSinglePowerDown (healthCon.powerDemand);
+					gameMngr.levelObjectPowerDown (healthCon.powerDemand);
+					gameMngr.objectsToCut.Remove (healthCon.gameObject);
+				}
+			}
+
+			if (device.tag == "ServerCon") 
+			{
+				PowerDrain serverCon = device.GetComponent<PowerDrain> ();
+				if (serverCon.stateActive ()) 
+				{
+					serverCon.stateActive (false);
+					serverCon.changeRendColor (offColor);
+					roomSinglePowerDown (serverCon.powerDemand);
+					gameMngr.levelObjectPowerDown (serverCon.powerDemand);
+					gameMngr.objectsToCut.Remove (serverCon.gameObject);
+				}
 			}
 		}
 	}
 
 	/// Turns room ON.
 	/// Calls check for if device could be damaged.
-	public void roomActivate()
+	public void roomActivate ()
 	{
-		Debug.Log ("Room Activate Called");
-
 		for (int x = 0; x < roomObjects.Count; x++) 
 		{
-			if (roomObjects [x].tag == "Device") 
-			{
-				PowerDrain device = roomObjects [x].GetComponent<PowerDrain> ();
+			GameObject device = roomObjects [x];
 
-				for (int y = 0; y < roomObjects.Count; y++) 
-				{
-					device.massActivationCheck ();
-				}
+			if (device.tag == "GoalCon") 
+			{
+				PowerDrain goalCon = device.GetComponent<PowerDrain> ();
+				goalCon.massActivationCheck ();
+			}
+
+			if (device.tag == "HealthCon") 
+			{
+				PowerDrain healthCon = device.GetComponent<PowerDrain> ();
+				healthCon.massActivationCheck ();
+			}
+
+			if (device.tag == "ServerCon") 
+			{
+				PowerDrain serverCon = device.GetComponent<PowerDrain> ();
+				serverCon.massActivationCheck ();
 			}
 		}
 	}
 		
 	/// Room turns OFF, objects turn OFF and values change accordingly.
 	/// These changes include damaging the Fusebox and identifying the culprit which caused the crash.
-	public void roomCrash()
+	public void roomCrash ()
 	{
-		Debug.Log ("Oops! Room Crash Called");
-
 		roomMassPowerDown ();
-
 		stateDamaged (true);
 		stateActive (false);
 		changeRendColor (damagedColor);
@@ -290,90 +288,80 @@ public class FuseBox : ObjectClass
 	}
 
 	/// Increases the active room power values by the sum of the active objects' values.
-	public void roomMassPowerUp()
+	public void roomMassPowerUp ()
 	{
 		for (int x = 0; x < roomObjects.Count; x++) 
 		{
-			ObjectClass massScript = roomObjects [x].GetComponent<ObjectClass> ();
+			PowerDrain drainer = roomObjects [x].GetComponent<PowerDrain> ();
 
-			if (massScript.stateActive()) 
+			if (drainer.stateActive ()) 
 			{
-				room.availableRoomSupply -= massScript.powerDemand;
-				gameMngr.availableLevelSupply -= massScript.powerDemand;
+				roomSinglePowerUp (drainer.powerDemand);
+				gameMngr.levelObjectPowerUp (drainer.powerDemand);
 			}
 		}
 	}
 
 	/// Decreases the active room power values by the sum of the active objects' values.
 	/// Also constrains the values to not fall below 0.
-	public void roomMassPowerDown()
+	public void roomMassPowerDown ()
 	{
 		for (int x = 0; x < roomObjects.Count; x++) 
 		{
 			PowerDrain drainer = roomObjects [x].GetComponent<PowerDrain> ();
-			PowerGen generator = roomObjects [x].GetComponent<PowerGen> ();
 
-			if (drainer.stateActive()) 
+			if (drainer.stateActive ()) 
 			{
-				room.availableRoomSupply += drainer.powerDemand;
-				gameMngr.availableLevelSupply += drainer.powerDemand;
-			}
-
-			if (generator.stateActive()) 
-			{
-				room.availableRoomSupply += generator.powerDemand;
-				room.availableRoomSupply -= generator.powerSupply;
+				roomSinglePowerDown (drainer.powerDemand);
+				gameMngr.levelObjectPowerDown (drainer.powerDemand);
 			}
 		}
 	}
 
+	/// Depending on the state of the box, change its factors accordingly.
 	public void boxStateChangeCriteria ()
 	{
 		if (stateActive () && !stateDamaged ()) 
 		{
-			Debug.Log ("Your box is a turn off");
 			changeRendColor (offColor);
 			stateActive (false);
 		}
 		else if (stateActive () && stateDamaged ()) 
 		{
-			Debug.Log ("Turning damaged box off");
 			changeRendColor (damagedColor);
 			stateActive (false);
 		}
 		else if (!stateActive () && !stateDamaged ()) 
 		{
-			Debug.Log ("Much turn on, Much WOW");
 			changeRendColor (activeColor);
 			stateActive (true);
 		}
 		else if (!stateActive () && stateDamaged ()) 
 		{
-			Debug.Log ("Damn, the box crashed it");
 			changeRendColor (damagedColor);
 			stateActive (true);
 			roomCrash ();
 		} 
 		else // Debug error with object's name.
 			Debug.Log ("ObjectScript ChangeState Error" + this.name);		
-
 	}
 
 	/// Increases the active room power values by a single active objects' values.
-	public void roomSinglePowerUp(int demand)
+	public void roomSinglePowerUp (int demand)
 	{
 		room.availableRoomSupply -= demand;
+		room.currentRoomDemand += demand;
 	}
 
 	/// Decreases the active room power values by a single active objects' values.
-	/// Also constrains the values to not fall below 0.
-	public void roomSinglePowerDown(int demand)
+	public void roomSinglePowerDown (int demand)
 	{
 		room.availableRoomSupply += demand;
+		room.currentRoomDemand -= demand;
 	}
 
 	// If player is beside box (or not), depending on its state, change state meters colors accordingly.
-	public void machineStateMeterCheck()
+	public void machineStateMeterCheck ()
 	{
 		if (besideBox) 
 		{
@@ -402,29 +390,56 @@ public class FuseBox : ObjectClass
 	}
 
 	// Change color of box.
-	public void changeRendColor(Color32 colour)
+	public void changeRendColor (Color32 colour)
 	{
 		boxRend.material.color = colour;
 	}
 
-	// Store power supply from the room to the suit. 
-	public void storePowerPackSupply()
+	/// Increases/creates the chain.
+	/// If there is no chain, just add a link.
+	/// Else go thorugh this room's neighbours and the chain.
+	/// If a neghbour is in the chain, add link.
+	public void powerChainIncrease ()
 	{
-		int spareSupply = room.availableRoomSupply;
-		player.powerPack += spareSupply;
-		room.availableRoomSupply -= spareSupply;
+		if (gameMngr.chainLinks.Count == 0) 
+		{
+			gameMngr.chainLinks.Add (room.here);
+		}
 
-		Debug.Log ("Storing Power");
+		 else if (gameMngr.chainLinks.Count > 0)
+		{
+			for (int x = 0; x < room.neighbours.Count; x++) 
+			{
+				GameObject friend = room.neighbours [x];
+				for (int y = 0; y < gameMngr.chainLinks.Count; y++)
+				{
+					GameObject link = gameMngr.chainLinks [y];
+					if (link == friend)
+					{
+						gameMngr.chainLinks.Add (room.here);
+					}
+				}
+			}
+		}
 	}
 
-	// Share power supply from the suit to the room. 
-	public void sharePowerPackSupply()
+	/// Breaks the chain.
+	/// Go thorugh the chain.
+	/// If a room has a higher position.
+	/// Turn it off too. 
+	public void breakChain ()
 	{
-		int requiredSupply = room.totalRoomDemand;
-		room.availableRoomSupply += requiredSupply;
-		player.powerPack -= requiredSupply;
+		for (int x = 0; x < gameMngr.chainLinks.Count; x++)
+		{
+			GameObject link = gameMngr.chainLinks [x];
+			RoomScript linkScript = link.GetComponent<RoomScript> ();
+			FuseBox linkBox = linkScript.roomFuseBox.GetComponent<FuseBox> ();
 
-		Debug.Log ("Sharing Power");
+			if (linkScript.chainPos > room.chainPos) 
+			{
+				linkBox.changeState (linkBox.gameObject);
+			}
+		}
 	}
 
 }
