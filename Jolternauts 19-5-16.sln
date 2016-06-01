@@ -1,0 +1,35 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{D6150D80-E139-4505-8787-8BC6C632F003}") = "Jolternauts 19-5-16", "Assembly-CSharp-firstpass.csproj", "{746B8B07-17DE-C8A0-58B4-63BADD5789FD}"
+EndProject
+Project("{D6150D80-E139-4505-8787-8BC6C632F003}") = "Jolternauts 19-5-16", "Assembly-CSharp.csproj", "{F7768742-5389-5184-6EEE-49E9888A9D29}"
+EndProject
+Project("{D6150D80-E139-4505-8787-8BC6C632F003}") = "Jolternauts 19-5-16", "Assembly-CSharp-Editor.csproj", "{E1C0F8F3-88B1-5833-9A94-27F52F9DA3CC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{746B8B07-17DE-C8A0-58B4-63BADD5789FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{746B8B07-17DE-C8A0-58B4-63BADD5789FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{746B8B07-17DE-C8A0-58B4-63BADD5789FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{746B8B07-17DE-C8A0-58B4-63BADD5789FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7768742-5389-5184-6EEE-49E9888A9D29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7768742-5389-5184-6EEE-49E9888A9D29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7768742-5389-5184-6EEE-49E9888A9D29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7768742-5389-5184-6EEE-49E9888A9D29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1C0F8F3-88B1-5833-9A94-27F52F9DA3CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1C0F8F3-88B1-5833-9A94-27F52F9DA3CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1C0F8F3-88B1-5833-9A94-27F52F9DA3CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1C0F8F3-88B1-5833-9A94-27F52F9DA3CC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+EndGlobal
