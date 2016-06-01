@@ -5,13 +5,13 @@ using UnityEngine.UI;
 
 public class AngusMovement : MonoBehaviour 
 {
-    public float startHealth = 100.0f;
-    public float currentHealth;
+	public float startHealth = 100.0f;
+	public float currentHealth;
 
-    public float startEnergy = 100.0f;
+	public float startEnergy = 100.0f;
 	public float currentEnergy;
 
-    public float startOxygen = 100.0f;
+	public float startOxygen = 100.0f;
 	public float currentOxygen;
 
 	public float healthDown = 1f;
@@ -21,7 +21,7 @@ public class AngusMovement : MonoBehaviour
 	public float targetDistance = 0;
 	public float maxRange = 30;
 
-    public bool isAlive;
+	public bool isAlive;
 	public bool isGrounded;
 	public bool isJumping = false;
 	public bool isDoubleJumping = false;
@@ -48,15 +48,15 @@ public class AngusMovement : MonoBehaviour
 	RoomScript thisRoom;
 	GameObject friend;
 
-    void Start () 
+	void Start () 
 	{
 		currentHealth = startHealth;
 		currentEnergy = startEnergy;
 		currentOxygen = startOxygen;
 		rigBod = transform.GetComponent<Rigidbody> ();
 		gameMngr = GameManager.instance;
-    }
-		
+	}
+
 	void Update ()
 	{	
 		jumpControls ();

@@ -33,7 +33,7 @@ public class DoorMagnet : MonoBehaviour
 
 		magnetsTouching = new List<GameObject> ();
 
-//		lerpTarget = magnetTargets [currentStage].transform.position;
+		//		lerpTarget = magnetTargets [currentStage].transform.position;
 
 	}
 

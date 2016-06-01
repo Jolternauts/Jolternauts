@@ -134,7 +134,7 @@ public class FuseBox : ObjectClass
 				fuseBoxRules ();
 				statePressed (true);
 			}
-				
+
 			if (Input.GetKeyUp (KeyCode.E)) 
 			{
 				statePressed (false);
@@ -156,7 +156,7 @@ public class FuseBox : ObjectClass
 			machineStateMeterCheck ();
 		}
 	}
-		
+
 	/// Checks and changes active state of a room.
 	public void roomStateCheck ()
 	{
@@ -270,7 +270,7 @@ public class FuseBox : ObjectClass
 			}
 		}
 	}
-		
+
 	/// Room turns OFF, objects turn OFF and values change accordingly.
 	/// These changes include damaging the Fusebox and identifying what caused the crash.
 	public void roomCrash ()
@@ -409,7 +409,7 @@ public class FuseBox : ObjectClass
 			gameMngr.chainLinks.Add (room.here);
 		}
 
-		 else if (gameMngr.chainLinks.Count > 0)
+		else if (gameMngr.chainLinks.Count > 0)
 		{
 			for (int x = 0; x < room.neighbours.Count; x++) 
 			{

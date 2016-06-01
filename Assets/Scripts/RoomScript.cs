@@ -63,8 +63,8 @@ public class RoomScript : MonoBehaviour
 	public int currentRoomDemand;
 	public int chainPos = 0;
 
-//	public float offset1 = -3.2f;
-//	public float offset2 = 30;
+	//	public float offset1 = -3.2f;
+	//	public float offset2 = 30;
 
 
 	// Shortcutted reference to initiate functions or set values on Start-up.
@@ -84,7 +84,7 @@ public class RoomScript : MonoBehaviour
 			gameMngr.roomList.Add (this.gameObject);
 		}
 		tallyTotalRoomPower ();
-    }
+	}
 
 	void Update ()
 	{
@@ -93,7 +93,7 @@ public class RoomScript : MonoBehaviour
 			availableRoomSupply = 0;
 			currentRoomDemand = 0;
 		}
-			
+
 		if (playerIsHere) 
 		{
 			player.room = this.gameObject.GetComponent<RoomScript> ();
@@ -235,7 +235,7 @@ public class RoomScript : MonoBehaviour
 
 			if (Physics.Raycast (transform.position + Vector3.left * 3f, Vector3.forward, out hit, locator.range, lightLayer.value)) 
 			{
-//				Debug.Log (here.name + ": target = " + hit.collider.gameObject.name + ", north room = " + north.name);
+///				Debug.Log (here.name + ": target = " + hit.collider.gameObject.name + ", north room = " + north.name);
 				northLight = hit.collider.transform.gameObject;
 			}
 		}
@@ -254,7 +254,7 @@ public class RoomScript : MonoBehaviour
 
 			if (Physics.Raycast (transform.position + Vector3.forward * 3f, Vector3.right, out hit, locator.range, lightLayer.value)) 
 			{
-//				Debug.Log (here.name + ": target = " + hit.collider.gameObject.name + ", east room = " + east.name);
+///				Debug.Log (here.name + ": target = " + hit.collider.gameObject.name + ", east room = " + east.name);
 				eastLight = hit.collider.transform.gameObject;
 			}
 		}
@@ -273,7 +273,7 @@ public class RoomScript : MonoBehaviour
 
 			if (Physics.Raycast (transform.position + Vector3.right * 3f, Vector3.back, out hit, locator.range, lightLayer.value)) 
 			{
-//				Debug.Log (here.name + ": target = " + hit.collider.gameObject.name + ", south room = " + south.name);
+///				Debug.Log (here.name + ": target = " + hit.collider.gameObject.name + ", south room = " + south.name);
 				southLight = hit.collider.transform.gameObject;
 			}
 		}
@@ -292,12 +292,12 @@ public class RoomScript : MonoBehaviour
 
 			if (Physics.Raycast (transform.position + Vector3.back * 3f, Vector3.left, out hit, locator.range, lightLayer.value)) 
 			{
-//				Debug.Log (here.name + ": target = " + hit.collider.gameObject.name + ", west room = " + west.name);
+///				Debug.Log (here.name + ": target = " + hit.collider.gameObject.name + ", west room = " + west.name);
 				westLight = hit.collider.transform.gameObject;
 			}
 		}
 	}
-		
+
 	/// Detects player entering room & updates power UI.
 	void OnTriggerEnter (Collider detector)
 	{
@@ -309,7 +309,7 @@ public class RoomScript : MonoBehaviour
 				playerIsHere = true;
 				roomStateCheck ();
 				gameMngr.updateRoomUI (totalRoomSupply, totalRoomDemand, 
-									   availableRoomSupply, currentRoomDemand);
+					availableRoomSupply, currentRoomDemand);
 			}
 		}
 	}
@@ -324,7 +324,7 @@ public class RoomScript : MonoBehaviour
 			playerIsHere = true;
 			roomStateCheck ();
 			gameMngr.updateRoomUI (totalRoomSupply, totalRoomDemand, 
-								   availableRoomSupply, currentRoomDemand);
+				availableRoomSupply, currentRoomDemand);
 
 			if (this.roomFuseBox.GetComponent<ObjectClass>().stateActive())
 			{
@@ -338,11 +338,11 @@ public class RoomScript : MonoBehaviour
 	{
 		if (detector.transform.tag == "Player")
 		{
-            runOnce = false;
+			runOnce = false;
 			playerIsHere = false;
-       }
+		}
 	}
-		
+
 	/// Check active state of room.
 	/// If the room is inactive oxygen & health are depleted.
 	public void roomStateCheck ()
@@ -481,39 +481,6 @@ public class RoomScript : MonoBehaviour
 	{
 		yield return new WaitForSeconds (.5f);
 		tallyTotalRoomPower ();
-//		changeRoomLightColor ();
-	}
-
-	public void changeRoomLightColor ()
-	{
-		Debug.Log ("entered function");
-
-		if (this.name == "Room (Start)")
-		{
-			Transform light = GetComponentInChildren<Transform> ();
-			if (light.gameObject.name == "Lightbox")
-			{
-				light.gameObject.GetComponent<Renderer> ().material.color = Color.blue;
-				Debug.Log ("Colour changed");
-			}
-		}
-/*
-		GameObject referenceRoom = null;
-		foreach (GameObject room in rooms)
-		{
-			if (room.name == "Room (Start)") 
-			{
-				referenceRoom = room;
-				Transform roomLight = room.GetComponentInChildren<Transform> ();
-				if (roomLight.name == "Lightbox")
-				{
-					roomLight.gameObject.GetComponent<Renderer> ().material.color = Color.blue;
-					Debug.Log ("Colour changed");
-				}
-			}
-	}
-*/
-		Debug.Log ("left function");
 	}
 }
 

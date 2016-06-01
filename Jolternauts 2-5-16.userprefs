@@ -1,11 +1,31 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+>>>>>>> origin/master
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\DoorMagnet.cs">
     <Files>
       <File FileName="Assets\Scripts\DoorCompleteScript.cs" Line="104" Column="3" />
       <File FileName="Assets\Scripts\MagnetScript.cs" Line="204" Column="3" />
       <File FileName="Assets\Scripts\AngusMovement.cs" Line="111" Column="36" />
       <File FileName="Assets\Scripts\DoorMagnet.cs" Line="73" Column="63" />
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\DoorCompleteScript.cs">
+    <Files>
+      <File FileName="Assets\Scripts\MagnetScript.cs" Line="52" Column="44" />
+      <File FileName="Assets\Scripts\AngusMovement.cs" Line="180" Column="1" />
+      <File FileName="Assets\Scripts\DoorCompleteScript.cs" Line="127" Column="12" />
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

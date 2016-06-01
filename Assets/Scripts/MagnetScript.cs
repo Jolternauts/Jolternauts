@@ -22,7 +22,7 @@ public class MagnetScript : MonoBehaviour
 		rend = transform.GetComponent<MeshRenderer> ();
 		StartCoroutine (Wait ());
 	}
-	
+
 	// Update is called once per frame
 	void Update () 
 	{		
@@ -85,7 +85,7 @@ public class MagnetScript : MonoBehaviour
 			magRules ();
 		}
 	}
-		
+
 	/// If the magnet you're aiming at is on whichever side:
 	/// If it's on the bottom, charge it.
 	/// But if it's higher, the ones from all preceding heights must be on.

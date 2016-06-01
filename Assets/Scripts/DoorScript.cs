@@ -252,5 +252,3 @@ public class DoorScript : MonoBehaviour
 	}
 }
 
-
-

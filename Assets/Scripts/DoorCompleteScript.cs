@@ -193,7 +193,7 @@ public class DoorCompleteScript : MonoBehaviour
 		doorMagnet.transform.localPosition = Vector3.Lerp 
 			(doorMagnet.transform.localPosition, positionDoorMagStart, .01f);
 	}
-		
+
 	/// Detects Player entering door collider.
 	void OnTriggerStay (Collider detector)
 	{		
@@ -328,5 +328,5 @@ public class DoorCompleteScript : MonoBehaviour
 		}
 		return returnValue;
 	}		
-		
+
 }
