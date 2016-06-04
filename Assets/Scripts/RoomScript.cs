@@ -10,8 +10,8 @@ public class RoomScript : MonoBehaviour
 	public GameObject roomFuseBox;
 	public GameObject compass;
 
-//	GameObject computer;
-//	GameObject gen;
+	//	GameObject computer;
+	//	GameObject gen;
 
 	public GameObject north;
 	public GameObject east;
@@ -39,8 +39,8 @@ public class RoomScript : MonoBehaviour
 	GameManager gameMngr;
 	AngusMovement player;
 	FuseBox box;
-//	PowerDrain console;
-//	PowerGen supplier;
+	//	PowerDrain console;
+	//	PowerGen supplier;
 
 	public RoomScript northScript;
 	public RoomScript eastScript;
@@ -95,7 +95,7 @@ public class RoomScript : MonoBehaviour
 		}
 		tallyTotalRoomPower ();
 
-    }
+	}
 
 	void Update ()
 	{
@@ -104,7 +104,7 @@ public class RoomScript : MonoBehaviour
 			availableRoomSupply = 0;
 			currentRoomDemand = 0;
 		}
-			
+
 		if (playerIsHere) 
 		{
 			player.room = this.gameObject.GetComponent<RoomScript> ();
@@ -116,7 +116,7 @@ public class RoomScript : MonoBehaviour
 		} 
 		else
 			chainPos = 0;
-//		drawLines ();
+		//		drawLines ();
 	}
 
 	public void drawLines ()
@@ -324,7 +324,7 @@ public class RoomScript : MonoBehaviour
 			}
 		}
 	}
-		
+
 	/// Detects player entering room & updates power UI.
 	void OnTriggerEnter (Collider detector)
 	{
@@ -336,7 +336,7 @@ public class RoomScript : MonoBehaviour
 				playerIsHere = true;
 				roomStateCheck ();
 				gameMngr.updateRoomUI (totalRoomSupply, totalRoomDemand, 
-									   availableRoomSupply, currentRoomDemand);
+					availableRoomSupply, currentRoomDemand);
 			}
 		}
 	}
@@ -351,7 +351,7 @@ public class RoomScript : MonoBehaviour
 			playerIsHere = true;
 			roomStateCheck ();
 			gameMngr.updateRoomUI (totalRoomSupply, totalRoomDemand, 
-								   availableRoomSupply, currentRoomDemand);
+				availableRoomSupply, currentRoomDemand);
 
 			if (this.roomFuseBox.GetComponent<ObjectClass>().stateActive())
 			{
@@ -365,11 +365,11 @@ public class RoomScript : MonoBehaviour
 	{
 		if (detector.transform.tag == "Player")
 		{
-            runOnce = false;
+			runOnce = false;
 			playerIsHere = false;
-       }
+		}
 	}
-		
+
 	/// Check active state of room.
 	/// If the room is inactive oxygen & health are depleted.
 	public void roomStateCheck ()

@@ -86,13 +86,13 @@ public class DoorScript : MonoBehaviour
 			hitRoom = hit.collider.gameObject.GetComponent<RoomScript>();
 			if (hit.collider.gameObject != this.gameObject)
 			{
-				
+
 				Debug.Log (this.gameObject.name + ": Hit: " + hit.collider.gameObject.name);
 				doorSideA = hit.collider.gameObject;
 				lightSideA = hitRoom.eastLight;
 			}
 		}
-			
+
 		if (Physics.Raycast (transform.position, Vector3.right, out hit, range)) 
 		{
 			hitRoom = hit.collider.gameObject.GetComponent<RoomScript>();
@@ -265,6 +265,3 @@ public class DoorScript : MonoBehaviour
 			isDirectionalReceiver = false;
 	}
 }
-
-
-

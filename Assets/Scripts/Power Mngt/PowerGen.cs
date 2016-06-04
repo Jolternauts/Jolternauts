@@ -32,7 +32,7 @@ public class PowerGen : ObjectClass
 
 	void Update ()
 	{
-		
+
 	}
 
 	public void powerSupplierRules ()
@@ -156,7 +156,7 @@ public class PowerGen : ObjectClass
 		else // Debug error with object's name.
 			Debug.Log ("ObjectScript ChangeState Error" + this.name);		
 	}
-		
+
 	/// Depending on the state of the reactor, change its factors accordingly.
 	public void reactorStateChangeCriteria ()
 	{
@@ -238,7 +238,7 @@ public class PowerGen : ObjectClass
 		}
 		machineStateMeterCheck ();
 	}
-		
+
 	void OnTriggerExit (Collider detector)
 	{
 		if (detector.transform.tag == "Player") 
@@ -247,7 +247,7 @@ public class PowerGen : ObjectClass
 			machineStateMeterCheck ();
 		}
 	}
-		
+
 	public void machineStateMeterCheck ()
 	{
 		if (besideGen) 
@@ -269,7 +269,7 @@ public class PowerGen : ObjectClass
 				player.changeStateMeterColors (damagedColor);
 			}
 		}
-			
+
 		else 
 		{
 			player.changeStateMeterColors (Color.white);
@@ -291,7 +291,7 @@ public class PowerGen : ObjectClass
 			changeRendColor (offColor);
 		}
 		else if (stateActive () && stateDamaged () || 
-				 stateOn () && stateDamaged ()) 
+			stateOn () && stateDamaged ()) 
 		{
 			stateDamaged (true);
 			stateActive (false);

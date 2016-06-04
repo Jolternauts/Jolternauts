@@ -22,17 +22,17 @@ public class CompassScript : MonoBehaviour
 		gameMngr = GameManager.instance;
 		identifyTarget ();
 	}
-	
+
 	void Update () 
 	{
-//		identifyTarget ();
+		//		identifyTarget ();
 	}
 
 	/// Cast a ray forward from the compass' arrow, 
 	/// If it hits, what it hits is current hit target.
 	public void identifyTarget ()
 	{
-//		Vector3 forward = arrow.transform.TransformDirection (Vector3.forward) * range; 
+		//		Vector3 forward = arrow.transform.TransformDirection (Vector3.forward) * range; 
 		RaycastHit hit;
 		if (Physics.Raycast (arrow.transform.position, arrow.transform.forward, out hit)) 
 		{
@@ -53,7 +53,7 @@ public class CompassScript : MonoBehaviour
 		}
 		Debug.Log (currentHitTarget.name);
 	}
-		
+
 	/// Turns the dial left.
 	/// Undo power transfer for original target.
 	/// Renew the raycast.

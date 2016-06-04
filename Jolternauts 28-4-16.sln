@@ -1,3 +1,16 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
@@ -6,6 +19,28 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jolternauts 28-4-16.CSharp", "Jolternauts 28-4-16.CSharp.csproj", "{F42ED795-0EF9-E71C-5DF2-253F8133B664}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Jolternauts 28-4-16.CSharp.Editor", "Jolternauts 28-4-16.CSharp.Editor.csproj", "{3F84B98F-B989-31BF-91CD-16A7DE3BAEC1}"
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2008
+
+Project("{A08C0BB6-0F27-FC95-B03E-5F5E9A101979}") = "Jolternauts 28-4-16", "Assembly-CSharp-firstpass.csproj", "{DA1F9C12-E05E-95F1-541A-9CDD2A8D355D}"
+EndProject
+Project("{A08C0BB6-0F27-FC95-B03E-5F5E9A101979}") = "Jolternauts 28-4-16", "Assembly-CSharp.csproj", "{08D40E43-FED1-AEB7-B2CB-C1B811E314B0}"
+EndProject
+Project("{A08C0BB6-0F27-FC95-B03E-5F5E9A101979}") = "Jolternauts 28-4-16", "Assembly-CSharp-Editor.csproj", "{ADFAC537-2F6A-CDB0-30CB-261AFEEF6F02}"
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,6 +48,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 		{86A00EC8-ED1C-9EEB-86BA-368E6135BF47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{86A00EC8-ED1C-9EEB-86BA-368E6135BF47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86A00EC8-ED1C-9EEB-86BA-368E6135BF47}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -25,8 +73,52 @@ Global
 		{3F84B98F-B989-31BF-91CD-16A7DE3BAEC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F84B98F-B989-31BF-91CD-16A7DE3BAEC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F84B98F-B989-31BF-91CD-16A7DE3BAEC1}.Release|Any CPU.Build.0 = Release|Any CPU
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+=======
+		{DA1F9C12-E05E-95F1-541A-9CDD2A8D355D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA1F9C12-E05E-95F1-541A-9CDD2A8D355D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA1F9C12-E05E-95F1-541A-9CDD2A8D355D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA1F9C12-E05E-95F1-541A-9CDD2A8D355D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08D40E43-FED1-AEB7-B2CB-C1B811E314B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08D40E43-FED1-AEB7-B2CB-C1B811E314B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08D40E43-FED1-AEB7-B2CB-C1B811E314B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08D40E43-FED1-AEB7-B2CB-C1B811E314B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADFAC537-2F6A-CDB0-30CB-261AFEEF6F02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADFAC537-2F6A-CDB0-30CB-261AFEEF6F02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADFAC537-2F6A-CDB0-30CB-261AFEEF6F02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADFAC537-2F6A-CDB0-30CB-261AFEEF6F02}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Assembly-CSharp.csproj
+	EndGlobalSection
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
+>>>>>>> origin/master
 EndGlobal

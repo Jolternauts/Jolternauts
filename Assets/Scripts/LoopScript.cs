@@ -20,7 +20,7 @@ public class LoopScript : MonoBehaviour
 		loopAssign ();
 		tierAssign ();
 	}
-	
+
 	void Update () 
 	{
 		if (gameMngr.objectsToCut.Contains (this.gameObject)) 

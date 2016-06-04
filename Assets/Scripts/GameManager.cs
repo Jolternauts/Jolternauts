@@ -75,10 +75,10 @@ public class GameManager : MonoBehaviour
 	void Start ()
 	{
 		player = playerObject.GetComponent<AngusMovement> ();
-        UIStart ();
+		UIStart ();
 		updateUI ();
 		updateAllSupplyDemand (totalLevelSupply, totalLevelDemand, 
-							   availableLevelSupply, activeLevelDemand);
+			availableLevelSupply, activeLevelDemand);
 		InvokeRepeating ("countdown", 1f, 1f);
 		StartCoroutine (Wait ());
 	}
@@ -87,9 +87,9 @@ public class GameManager : MonoBehaviour
 	/// Update Player UI and power figures.
 	void Update ()
 	{
-        updateUI ();
+		updateUI ();
 		updateAllSupplyDemand (totalLevelSupply, totalLevelDemand, 
-							   availableLevelSupply, activeLevelDemand);
+			availableLevelSupply, activeLevelDemand);
 
 		if (availableLevelSupply < 0 || activeLevelDemand < 0) 
 		{
@@ -101,14 +101,14 @@ public class GameManager : MonoBehaviour
 		{
 			levelTimer = 0;
 		}
-    }
+	}
 
 	/// Runs the UI.
 	void UIStart ()
 	{
-//		playerHealthBar.color = health;
-//		playerOxygenBar.color = oxygen;
-//		playerEnergyBar.color = energy;
+		//		playerHealthBar.color = health;
+		//		playerOxygenBar.color = oxygen;
+		//		playerEnergyBar.color = energy;
 		machineStateMeter1.color = Color.white;
 		machineStateMeter2.color = Color.white;
 		textGlobalSupply.text = System.Convert.ToString (totalLevelSupply);
@@ -161,8 +161,8 @@ public class GameManager : MonoBehaviour
 			}
 		}
 
-//		numberOfDevicesToUpload = 1;
-//		numberOfGensToActivate = 0;
+		//		numberOfDevicesToUpload = 1;
+		//		numberOfGensToActivate = 0;
 
 		for (int x = 0; x < doorList.Count; x++)
 		{
@@ -182,24 +182,24 @@ public class GameManager : MonoBehaviour
 
 	/// Updates the room power UI.
 	public void updateRoomUI (int supply, int demand, 
-							  int activeSupply, int activeDemand)
-    {
+		int activeSupply, int activeDemand)
+	{
 		textRoomSupply.text = System.Convert.ToString (supply);
 		textRoomDemand.text = System.Convert.ToString (demand);
 		textAvailableRoomSupply.text = System.Convert.ToString (activeSupply);
 		textActiveRoomDemand.text = System.Convert.ToString (activeDemand);
-    }
+	}
 
-   /// Updates the global power UI.
+	/// Updates the global power UI.
 	public void updateAllSupplyDemand (int supply, int demand, 
-									   int availableSupply, int activeDemand)
-    {
+		int availableSupply, int activeDemand)
+	{
 		textGlobalSupply.text = System.Convert.ToString (supply);
 		textGlobalDemand.text = System.Convert.ToString (demand);
 		textAvailableGlobalSupply.text = System.Convert.ToString (availableSupply);
 		textActiveGlobalDemand.text = System.Convert.ToString (activeDemand);   
 	}
-		
+
 	/// Increases active global supply by the values of a room.
 	public void levelRoomPowerUp (int demand)
 	{
@@ -241,12 +241,12 @@ public class GameManager : MonoBehaviour
 		availableLevelSupply += demand;
 		activeLevelDemand -= demand;
 	}
-		
+
 	public void countdown ()
 	{
 		levelTimer -= 1;
 	}
-		
+
 	/// Converts timer int to real time & displays it in UI.
 	/// Displays other necessary values.
 	void OnGUI () 
@@ -270,6 +270,5 @@ public class GameManager : MonoBehaviour
 	}
 
 }
-
 
 

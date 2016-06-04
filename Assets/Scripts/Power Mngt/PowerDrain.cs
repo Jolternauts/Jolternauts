@@ -30,8 +30,8 @@ public class PowerDrain : ObjectClass
 		player = GameObject.FindWithTag ("Player").GetComponent<AngusMovement>();
 		box = room.roomFuseBox.GetComponent<FuseBox> ();
 		deviceRend = this.gameObject.GetComponent<Renderer> ();
-//		launchSequence ();
-//		showWin = true;
+		//		launchSequence ();
+		//		showWin = true;
 	}
 
 	void Update()
@@ -297,7 +297,7 @@ public class PowerDrain : ObjectClass
 			changeRendColor (offColor);
 		}
 		else if (stateActive () && stateDamaged () || 
-			 	 stateOn () && stateDamaged ()) 
+			stateOn () && stateDamaged ()) 
 		{
 			stateDamaged (true);
 			stateActive(false);
