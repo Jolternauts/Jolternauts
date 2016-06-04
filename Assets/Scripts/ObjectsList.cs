@@ -101,7 +101,7 @@ public class ObjectsList : MonoBehaviour
 			 * If not colliding with Fusebox then just repair.
 			 * Not sure why yet but this constraint doesn't work.
 			*/
-			if (Input.GetKey (KeyCode.R) && this.gameObject.GetComponent<ObjectsList> ().isDamaged) 
+/*			if (Input.GetKey (KeyCode.R) && this.gameObject.GetComponent<ObjectsList> ().isDamaged) 
 			{
 				if (myName == "Fusebox") 
 				{
@@ -119,14 +119,14 @@ public class ObjectsList : MonoBehaviour
 				else 
 					repairObject (this.gameObject);
 			}
-
+*/
 			if (Input.GetKeyDown (KeyCode.T) && !keyPressed) 
 			{
 				if (myName == "FuseBox")
 				{
 					if (Room.availableRoomSupply > 0) 
 					{
-						Room.roomFuseBox.GetComponent<FuseBox>().storePowerPackSupply ();
+//						Room.roomFuseBox.GetComponent<FuseBox>().storePowerPackSupply ();
 					}
 				}
 			} 
@@ -141,7 +141,7 @@ public class ObjectsList : MonoBehaviour
 				{
 					if (Room.availableRoomSupply == 0)
 					{
-						Room.roomFuseBox.GetComponent<FuseBox>().sharePowerPackSupply ();
+//						Room.roomFuseBox.GetComponent<FuseBox>().sharePowerPackSupply ();
 					}
 				}
 			} 

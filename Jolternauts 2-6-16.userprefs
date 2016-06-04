@@ -1,0 +1,16 @@
+﻿<Properties StartupItem="Assembly-CSharp.csproj">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\RoomScript.cs">
+    <Files>
+      <File FileName="Assets\Scripts\RoomScript.cs" Line="14" Column="3" />
+      <File FileName="Assets\Scripts\Power Mngt\PowerGen.cs" Line="24" Column="43" />
+      <File FileName="Assets\Scripts\Power Mngt\FuseBox.cs" Line="139" Column="5" />
+      <File FileName="Assets\Scripts\DoorScript.cs" Line="56" Column="16" />
+      <File FileName="Assets\Scripts\DoorCompleteScript.cs" Line="171" Column="4" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>

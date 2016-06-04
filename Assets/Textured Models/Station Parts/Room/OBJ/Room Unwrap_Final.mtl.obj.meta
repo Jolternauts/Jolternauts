@@ -1,0 +1,163 @@
+fileFormatVersion: 2
+guid: 2b2cf6dabeb43ba438083359de57e68c
+timeCreated: 1463737624
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Room_HighPoly_Room_HighPoly_Station_Brace_Horizontal
+    100004: Room_HighPoly_Room_HighPoly_Station_Brace_Vertical
+    100006: Room_HighPoly_Room_HighPoly_Station_External
+    100008: Room_HighPoly_Room_HighPoly_Station_Floor_Border
+    100010: Room_HighPoly_Room_HighPoly_Station_Floor_EM
+    100012: Room_HighPoly_Room_HighPoly_Station_Pipe_LS_In
+    100014: Room_HighPoly_Room_HighPoly_Station_Pipe_LS_Out
+    100016: Room_HighPoly_Room_HighPoly_Station_Pipe_Power
+    100018: Room_HighPoly_Room_HighPoly_Station_Socket_A
+    100020: Room_HighPoly_Room_HighPoly_Station_Socket_B
+    100022: Room_HighPoly_Room_HighPoly_Station_UI
+    100024: Room_HighPoly_Room_HighPoly_Station_Wall_Cloth
+    100026: Room_HighPoly_Room_HighPoly_Station_Wall_Metal
+    100028: Room_HighPoly_Room_HighPoly_Unset
+    100030: Room_HighPoly_Room_HighPoly_Window
+    400000: //RootNode
+    400002: Room_HighPoly_Room_HighPoly_Station_Brace_Horizontal
+    400004: Room_HighPoly_Room_HighPoly_Station_Brace_Vertical
+    400006: Room_HighPoly_Room_HighPoly_Station_External
+    400008: Room_HighPoly_Room_HighPoly_Station_Floor_Border
+    400010: Room_HighPoly_Room_HighPoly_Station_Floor_EM
+    400012: Room_HighPoly_Room_HighPoly_Station_Pipe_LS_In
+    400014: Room_HighPoly_Room_HighPoly_Station_Pipe_LS_Out
+    400016: Room_HighPoly_Room_HighPoly_Station_Pipe_Power
+    400018: Room_HighPoly_Room_HighPoly_Station_Socket_A
+    400020: Room_HighPoly_Room_HighPoly_Station_Socket_B
+    400022: Room_HighPoly_Room_HighPoly_Station_UI
+    400024: Room_HighPoly_Room_HighPoly_Station_Wall_Cloth
+    400026: Room_HighPoly_Room_HighPoly_Station_Wall_Metal
+    400028: Room_HighPoly_Room_HighPoly_Unset
+    400030: Room_HighPoly_Room_HighPoly_Window
+    2300000: Room_HighPoly_Room_HighPoly_Station_Brace_Horizontal
+    2300002: Room_HighPoly_Room_HighPoly_Station_Brace_Vertical
+    2300004: Room_HighPoly_Room_HighPoly_Station_External
+    2300006: Room_HighPoly_Room_HighPoly_Station_Floor_Border
+    2300008: Room_HighPoly_Room_HighPoly_Station_Floor_EM
+    2300010: Room_HighPoly_Room_HighPoly_Station_Pipe_LS_In
+    2300012: Room_HighPoly_Room_HighPoly_Station_Pipe_LS_Out
+    2300014: Room_HighPoly_Room_HighPoly_Station_Pipe_Power
+    2300016: Room_HighPoly_Room_HighPoly_Station_Socket_A
+    2300018: Room_HighPoly_Room_HighPoly_Station_Socket_B
+    2300020: Room_HighPoly_Room_HighPoly_Station_UI
+    2300022: Room_HighPoly_Room_HighPoly_Station_Wall_Cloth
+    2300024: Room_HighPoly_Room_HighPoly_Station_Wall_Metal
+    2300026: Room_HighPoly_Room_HighPoly_Unset
+    2300028: Room_HighPoly_Room_HighPoly_Window
+    3300000: Room_HighPoly_Room_HighPoly_Station_Brace_Horizontal
+    3300002: Room_HighPoly_Room_HighPoly_Station_Brace_Vertical
+    3300004: Room_HighPoly_Room_HighPoly_Station_External
+    3300006: Room_HighPoly_Room_HighPoly_Station_Floor_Border
+    3300008: Room_HighPoly_Room_HighPoly_Station_Floor_EM
+    3300010: Room_HighPoly_Room_HighPoly_Station_Pipe_LS_In
+    3300012: Room_HighPoly_Room_HighPoly_Station_Pipe_LS_Out
+    3300014: Room_HighPoly_Room_HighPoly_Station_Pipe_Power
+    3300016: Room_HighPoly_Room_HighPoly_Station_Socket_A
+    3300018: Room_HighPoly_Room_HighPoly_Station_Socket_B
+    3300020: Room_HighPoly_Room_HighPoly_Station_UI
+    3300022: Room_HighPoly_Room_HighPoly_Station_Wall_Cloth
+    3300024: Room_HighPoly_Room_HighPoly_Station_Wall_Metal
+    3300026: Room_HighPoly_Room_HighPoly_Unset
+    3300028: Room_HighPoly_Room_HighPoly_Window
+    4300000: Room_HighPoly_Room_HighPoly_Station_Brace_Horizontal
+    4300002: Room_HighPoly_Room_HighPoly_Station_Brace_Vertical
+    4300004: Room_HighPoly_Room_HighPoly_Station_External
+    4300006: Room_HighPoly_Room_HighPoly_Station_Floor_Border
+    4300008: Room_HighPoly_Room_HighPoly_Station_Floor_EM
+    4300010: Room_HighPoly_Room_HighPoly_Station_Pipe_LS_In
+    4300012: Room_HighPoly_Room_HighPoly_Station_Pipe_LS_Out
+    4300014: Room_HighPoly_Room_HighPoly_Station_Pipe_Power
+    4300016: Room_HighPoly_Room_HighPoly_Station_Socket_A
+    4300018: Room_HighPoly_Room_HighPoly_Station_Socket_B
+    4300020: Room_HighPoly_Room_HighPoly_Station_UI
+    4300022: Room_HighPoly_Room_HighPoly_Station_Wall_Cloth
+    4300024: Room_HighPoly_Room_HighPoly_Station_Wall_Metal
+    4300026: Room_HighPoly_Room_HighPoly_Unset
+    4300028: Room_HighPoly_Room_HighPoly_Window
+    6400000: Room_HighPoly_Room_HighPoly_Station_Brace_Horizontal
+    6400002: Room_HighPoly_Room_HighPoly_Station_Brace_Vertical
+    6400004: Room_HighPoly_Room_HighPoly_Station_External
+    6400006: Room_HighPoly_Room_HighPoly_Station_Floor_Border
+    6400008: Room_HighPoly_Room_HighPoly_Station_Floor_EM
+    6400010: Room_HighPoly_Room_HighPoly_Station_Pipe_LS_In
+    6400012: Room_HighPoly_Room_HighPoly_Station_Pipe_LS_Out
+    6400014: Room_HighPoly_Room_HighPoly_Station_Pipe_Power
+    6400016: Room_HighPoly_Room_HighPoly_Station_Socket_A
+    6400018: Room_HighPoly_Room_HighPoly_Station_Socket_B
+    6400020: Room_HighPoly_Room_HighPoly_Station_UI
+    6400022: Room_HighPoly_Room_HighPoly_Station_Wall_Cloth
+    6400024: Room_HighPoly_Room_HighPoly_Station_Wall_Metal
+    6400026: Room_HighPoly_Room_HighPoly_Unset
+    6400028: Room_HighPoly_Room_HighPoly_Window
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

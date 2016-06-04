@@ -1,0 +1,115 @@
+fileFormatVersion: 2
+guid: 3751b2878f50e4b41a16163dff922fd8
+timeCreated: 1463737625
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Brace_Horizontal
+    100002: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Brace_Vertical
+    100004: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_External
+    100006: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_Border
+    100008: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_EM
+    100010: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_Plain
+    100012: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Wall_Cloth
+    100014: //RootNode
+    400000: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Brace_Horizontal
+    400002: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Brace_Vertical
+    400004: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_External
+    400006: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_Border
+    400008: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_EM
+    400010: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_Plain
+    400012: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Wall_Cloth
+    400014: //RootNode
+    2300000: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Brace_Horizontal
+    2300002: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Brace_Vertical
+    2300004: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_External
+    2300006: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_Border
+    2300008: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_EM
+    2300010: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_Plain
+    2300012: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Wall_Cloth
+    3300000: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Brace_Horizontal
+    3300002: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Brace_Vertical
+    3300004: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_External
+    3300006: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_Border
+    3300008: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_EM
+    3300010: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_Plain
+    3300012: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Wall_Cloth
+    4300000: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Brace_Horizontal
+    4300002: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Brace_Vertical
+    4300004: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_External
+    4300006: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_Border
+    4300008: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_EM
+    4300010: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_Plain
+    4300012: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Wall_Cloth
+    6400000: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Brace_Horizontal
+    6400002: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Brace_Vertical
+    6400004: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_External
+    6400006: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_Border
+    6400008: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_EM
+    6400010: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Floor_Plain
+    6400012: Corridor_Straight___medium_HighPoly_Corridor_Straight___medium_HighPoly_Station_Wall_Cloth
+  materials:
+    importMaterials: 1
+    materialName: 1
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 1
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 1
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

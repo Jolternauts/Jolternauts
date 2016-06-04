@@ -1,0 +1,138 @@
+fileFormatVersion: 2
+guid: d080d9b597355c642b9de88158d4c0c7
+timeCreated: 1464770957
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Frame_High_Poly_Frame_High_Poly_Frame
+    100002: Frame_High_Poly_Frame_High_Poly_Generator_Handles
+    100004: Frame_High_Poly_Frame_High_Poly_Handle_Brackets
+    100006: Frame_Low_Poly_Frame_Low_Poly_None
+    100008: Generator_Body_High_Poly_Generator_Body_High_Poly_Contol_Dials
+    100010: Generator_Body_High_Poly_Generator_Body_High_Poly_Control_Panel
+    100012: Generator_Body_High_Poly_Generator_Body_High_Poly_Cover__Plate
+    100014: Generator_Body_High_Poly_Generator_Body_High_Poly_Fan_Body
+    100016: Generator_Body_High_Poly_Generator_Body_High_Poly_Fan_Vents
+    100018: Generator_Body_High_Poly_Generator_Body_High_Poly_Motor
+    100020: Generator_Body_High_Poly_Generator_Body_High_Poly_Motor_Body
+    100022: Generator_Body_High_Poly_Generator_Body_High_Poly_Small_Generator_Cover
+    100024: Generator_Body_Low_Poly_Generator_Body_Low_Poly_None
+    100026: //RootNode
+    400000: Frame_High_Poly_Frame_High_Poly_Frame
+    400002: Frame_High_Poly_Frame_High_Poly_Generator_Handles
+    400004: Frame_High_Poly_Frame_High_Poly_Handle_Brackets
+    400006: Frame_Low_Poly_Frame_Low_Poly_None
+    400008: Generator_Body_High_Poly_Generator_Body_High_Poly_Contol_Dials
+    400010: Generator_Body_High_Poly_Generator_Body_High_Poly_Control_Panel
+    400012: Generator_Body_High_Poly_Generator_Body_High_Poly_Cover__Plate
+    400014: Generator_Body_High_Poly_Generator_Body_High_Poly_Fan_Body
+    400016: Generator_Body_High_Poly_Generator_Body_High_Poly_Fan_Vents
+    400018: Generator_Body_High_Poly_Generator_Body_High_Poly_Motor
+    400020: Generator_Body_High_Poly_Generator_Body_High_Poly_Motor_Body
+    400022: Generator_Body_High_Poly_Generator_Body_High_Poly_Small_Generator_Cover
+    400024: Generator_Body_Low_Poly_Generator_Body_Low_Poly_None
+    400026: //RootNode
+    2300000: Frame_High_Poly_Frame_High_Poly_Frame
+    2300002: Frame_High_Poly_Frame_High_Poly_Generator_Handles
+    2300004: Frame_High_Poly_Frame_High_Poly_Handle_Brackets
+    2300006: Frame_Low_Poly_Frame_Low_Poly_None
+    2300008: Generator_Body_High_Poly_Generator_Body_High_Poly_Contol_Dials
+    2300010: Generator_Body_High_Poly_Generator_Body_High_Poly_Control_Panel
+    2300012: Generator_Body_High_Poly_Generator_Body_High_Poly_Cover__Plate
+    2300014: Generator_Body_High_Poly_Generator_Body_High_Poly_Fan_Body
+    2300016: Generator_Body_High_Poly_Generator_Body_High_Poly_Fan_Vents
+    2300018: Generator_Body_High_Poly_Generator_Body_High_Poly_Motor
+    2300020: Generator_Body_High_Poly_Generator_Body_High_Poly_Motor_Body
+    2300022: Generator_Body_High_Poly_Generator_Body_High_Poly_Small_Generator_Cover
+    2300024: Generator_Body_Low_Poly_Generator_Body_Low_Poly_None
+    3300000: Frame_High_Poly_Frame_High_Poly_Frame
+    3300002: Frame_High_Poly_Frame_High_Poly_Generator_Handles
+    3300004: Frame_High_Poly_Frame_High_Poly_Handle_Brackets
+    3300006: Frame_Low_Poly_Frame_Low_Poly_None
+    3300008: Generator_Body_High_Poly_Generator_Body_High_Poly_Contol_Dials
+    3300010: Generator_Body_High_Poly_Generator_Body_High_Poly_Control_Panel
+    3300012: Generator_Body_High_Poly_Generator_Body_High_Poly_Cover__Plate
+    3300014: Generator_Body_High_Poly_Generator_Body_High_Poly_Fan_Body
+    3300016: Generator_Body_High_Poly_Generator_Body_High_Poly_Fan_Vents
+    3300018: Generator_Body_High_Poly_Generator_Body_High_Poly_Motor
+    3300020: Generator_Body_High_Poly_Generator_Body_High_Poly_Motor_Body
+    3300022: Generator_Body_High_Poly_Generator_Body_High_Poly_Small_Generator_Cover
+    3300024: Generator_Body_Low_Poly_Generator_Body_Low_Poly_None
+    4300000: Frame_High_Poly_Frame_High_Poly_Frame
+    4300002: Frame_High_Poly_Frame_High_Poly_Generator_Handles
+    4300004: Frame_High_Poly_Frame_High_Poly_Handle_Brackets
+    4300006: Frame_Low_Poly_Frame_Low_Poly_None
+    4300008: Generator_Body_High_Poly_Generator_Body_High_Poly_Contol_Dials
+    4300010: Generator_Body_High_Poly_Generator_Body_High_Poly_Control_Panel
+    4300012: Generator_Body_High_Poly_Generator_Body_High_Poly_Cover__Plate
+    4300014: Generator_Body_High_Poly_Generator_Body_High_Poly_Fan_Body
+    4300016: Generator_Body_High_Poly_Generator_Body_High_Poly_Fan_Vents
+    4300018: Generator_Body_High_Poly_Generator_Body_High_Poly_Motor
+    4300020: Generator_Body_High_Poly_Generator_Body_High_Poly_Motor_Body
+    4300022: Generator_Body_High_Poly_Generator_Body_High_Poly_Small_Generator_Cover
+    4300024: Generator_Body_Low_Poly_Generator_Body_Low_Poly_None
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

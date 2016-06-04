@@ -1,0 +1,133 @@
+fileFormatVersion: 2
+guid: bb24accd4a382634bb1fab59e43f2143
+timeCreated: 1464704268
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Floor_Border
+    100002: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Floor_EM
+    100004: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Floor_Plain
+    100006: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Horzontal_Brace
+    100008: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Station_Exterior
+    100010: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Vertical_Brace.001
+    100012: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Wall_Cloth.001
+    100014: //RootNode
+    100016: Living_Quarters_Living_Quarters_Horizontal_Brace
+    100018: Living_Quarters_Living_Quarters_Living_Quarters_Door
+    100020: Living_Quarters_Living_Quarters_Living_Quarters_Floor
+    100022: Living_Quarters_Living_Quarters_Vertical_Brace
+    100024: Living_Quarters_Living_Quarters_Wall_Cloth
+    400000: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Floor_Border
+    400002: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Floor_EM
+    400004: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Floor_Plain
+    400006: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Horzontal_Brace
+    400008: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Station_Exterior
+    400010: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Vertical_Brace.001
+    400012: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Wall_Cloth.001
+    400014: //RootNode
+    400016: Living_Quarters_Living_Quarters_Horizontal_Brace
+    400018: Living_Quarters_Living_Quarters_Living_Quarters_Door
+    400020: Living_Quarters_Living_Quarters_Living_Quarters_Floor
+    400022: Living_Quarters_Living_Quarters_Vertical_Brace
+    400024: Living_Quarters_Living_Quarters_Wall_Cloth
+    2300000: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Floor_Border
+    2300002: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Floor_EM
+    2300004: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Floor_Plain
+    2300006: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Horzontal_Brace
+    2300008: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Station_Exterior
+    2300010: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Vertical_Brace.001
+    2300012: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Wall_Cloth.001
+    2300014: Living_Quarters_Living_Quarters_Horizontal_Brace
+    2300016: Living_Quarters_Living_Quarters_Living_Quarters_Door
+    2300018: Living_Quarters_Living_Quarters_Living_Quarters_Floor
+    2300020: Living_Quarters_Living_Quarters_Vertical_Brace
+    2300022: Living_Quarters_Living_Quarters_Wall_Cloth
+    3300000: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Floor_Border
+    3300002: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Floor_EM
+    3300004: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Floor_Plain
+    3300006: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Horzontal_Brace
+    3300008: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Station_Exterior
+    3300010: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Vertical_Brace.001
+    3300012: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Wall_Cloth.001
+    3300014: Living_Quarters_Living_Quarters_Horizontal_Brace
+    3300016: Living_Quarters_Living_Quarters_Living_Quarters_Door
+    3300018: Living_Quarters_Living_Quarters_Living_Quarters_Floor
+    3300020: Living_Quarters_Living_Quarters_Vertical_Brace
+    3300022: Living_Quarters_Living_Quarters_Wall_Cloth
+    4300000: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Floor_Border
+    4300002: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Floor_EM
+    4300004: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Floor_Plain
+    4300006: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Horzontal_Brace
+    4300008: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Station_Exterior
+    4300010: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Vertical_Brace.001
+    4300012: Corridor_Corner_HighPoly_Corridor_Corner_HighPoly_Wall_Cloth.001
+    4300014: Living_Quarters_Living_Quarters_Horizontal_Brace
+    4300016: Living_Quarters_Living_Quarters_Living_Quarters_Door
+    4300018: Living_Quarters_Living_Quarters_Living_Quarters_Floor
+    4300020: Living_Quarters_Living_Quarters_Vertical_Brace
+    4300022: Living_Quarters_Living_Quarters_Wall_Cloth
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleRotations: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

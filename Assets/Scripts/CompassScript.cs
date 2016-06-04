@@ -6,218 +6,212 @@ public class CompassScript : MonoBehaviour
 {
 	public float range;
 
-	bool keyPressed;
-	bool hittingTarget;
-
-	RoomScript room;
-	RoomScript neighbourScript; 
-	DoorScript targetDoorScript;
-	DoorScript thisRoomDoorScript;
-	GameObject thisRoomDoor;
-	GameObject targetDoor;
-	GameObject neighbour;
 	public GameObject currentHitTarget;
 	public GameObject arrow;
 	public List<GameObject> arrows = new List<GameObject>();
+
+	RoomScript targetRoom;
+	RoomScript room;
+	GameManager gameMngr;
+
 
 	void Start () 
 	{
 		room = this.gameObject.GetComponentInParent<RoomScript> ();
 		this.GetComponent<BoxCollider> ().isTrigger = true;
+		gameMngr = GameManager.instance;
+		identifyTarget ();
 	}
 	
 	void Update () 
 	{
-		/// Cast a ray forward from the compass' arrow, if it hits, what it hits is current hit target.
-		RaycastHit hit;
-		Vector3 forward = arrow.transform.TransformDirection(Vector3.forward) * range; 
-		Debug.DrawRay(arrow.transform.position, forward, Color.green);  
+//		identifyTarget ();
+	}
 
+	/// Cast a ray forward from the compass' arrow, 
+	/// If it hits, what it hits is current hit target.
+	public void identifyTarget ()
+	{
+//		Vector3 forward = arrow.transform.TransformDirection (Vector3.forward) * range; 
+		RaycastHit hit;
 		if (Physics.Raycast (arrow.transform.position, arrow.transform.forward, out hit)) 
 		{
 			currentHitTarget = hit.collider.gameObject;
 		}
-	}
-
-	// Get the name of what the ray hits.
-	void sayMyName (RaycastHit hit)
-	{
-		Debug.Log (hit.transform.name);
+		targetRoom = currentHitTarget.GetComponent<RoomScript> ();
 	}
 
 	// Wait function.
-	public IEnumerator WaitAMinute()
+	public IEnumerator Wait (float seconds)
 	{
-		yield return new WaitForSeconds (3);
+		yield return new WaitForSeconds (seconds);
+
+		if (targetRoom && currentHitTarget != room.here)
+		{
+			room.callPowerTransfer ();
+			flipDoorSwitch (currentHitTarget);
+		}
 		Debug.Log (currentHitTarget.name);
 	}
-
-	/// Checks the flow receiver (the complicated first attempt way).
-	/// The crteria it checks are as follows:
-
-	/// Is the room the compass is in powered.
-	/// Does the room have which ever direction.
-	/// Is the direction the target.
-	/// Go through this room's door list.
-	/// Go through that room's door list.
-	/// If both lists have the same door, it is a receiver.
-
-	/// If the direction is not the target, it's not a receiver.
-	/// To be sure, if the room isn't pwoered, no doors here are receivers.
-	public void checkFlowReceiver ()
-	{
-//		#pragma warning disable
-
-		if (room.isPowered) 
-		{
-			if (room.north) 
-			{
-				if (currentHitTarget == room.north) 
-				{
-					for (int x = 0; x < room.doors.Count; x++) 
-					{
-						thisRoomDoor = room.doors [x];
-						thisRoomDoorScript = thisRoomDoor.GetComponent<DoorScript> ();
-					}
-					for (int y = 0; y < room.northScript.doors.Count; y++) 
-					{
-						if (room.northScript.doors.Contains (thisRoomDoor)) 
-						{
-							thisRoomDoorScript.isDirectionalReceiver = true;
-						}
-					}
-				}
-				else
-					thisRoomDoorScript.isDirectionalReceiver = false;
-			}
-
-			if (room.east) 
-			{
-				if (currentHitTarget == room.east) 
-				{
-					for (int x = 0; x < room.doors.Count; x++) 
-					{
-						thisRoomDoor = room.doors [x];
-						thisRoomDoorScript = thisRoomDoor.GetComponent<DoorScript> ();
-					}
-					for (int y = 0; y < room.eastScript.doors.Count; y++) 
-					{
-						if (room.eastScript.doors.Contains (thisRoomDoor)) 
-						{
-							thisRoomDoorScript.isDirectionalReceiver = true;
-						}
-					}
-				}
-				else
-					thisRoomDoorScript.isDirectionalReceiver = false;
-			}
-
-			if (room.south) 
-			{
-				if (currentHitTarget == room.south) 
-				{
-					for (int x = 0; x < room.doors.Count; x++) 
-					{
-						thisRoomDoor = room.doors [x];
-						thisRoomDoorScript = thisRoomDoor.GetComponent<DoorScript> ();
-					}
-					for (int y = 0; y < room.southScript.doors.Count; y++) 
-					{
-						if (room.southScript.doors.Contains (thisRoomDoor)) 
-						{
-							thisRoomDoorScript.isDirectionalReceiver = true;
-						}
-					}
-				}
-				else
-					thisRoomDoorScript.isDirectionalReceiver = false;
-			}
-
-			if (room.west) 
-			{
-				if (currentHitTarget == room.west) 
-				{
-					for (int x = 0; x < room.doors.Count; x++) 
-					{
-						thisRoomDoor = room.doors [x];
-						thisRoomDoorScript = thisRoomDoor.GetComponent<DoorScript> ();
-					}
-					for (int y = 0; y < room.westScript.doors.Count; y++) 
-					{
-						if (room.westScript.doors.Contains (thisRoomDoor)) 
-						{
-							thisRoomDoorScript.isDirectionalReceiver = true;
-						}
-					}
-				} 
-				else
-					thisRoomDoorScript.isDirectionalReceiver = false;
-			}
-		} 
-		else
-			for (int x = 0; x < room.doors.Count; x++) 
-			{
-				thisRoomDoor = room.doors [x];
-				thisRoomDoorScript = thisRoomDoor.GetComponent<DoorScript> ();
-				thisRoomDoorScript.isDirectionalReceiver = false;
-			}
-//		#pragma warning restore
-	}
-
-	// If player is colliding and Q is pressed, turn compass to the right. 
-	void OnTriggerStay(Collider detector)
-	{
-		if (detector.transform.tag == "Player") 
-		{
-			if (Input.GetKeyDown (KeyCode.Q) && !statePressed ()) 
-			{
-				turnDialRight ();
-				statePressed (true);
-			}
-
-			if (Input.GetKeyUp (KeyCode.Q)) 
-			{
-				statePressed (false);
-			}
-		}
-	}
-
+		
 	/// Turns the dial left.
+	/// Undo power transfer for original target.
 	/// Renew the raycast.
+	/// Transfer to new target.
 	/// Debug what it hits.
 	public void turnDialLeft ()
 	{
-		transform.Rotate (0, -90, 0, Space.Self);
-		RaycastHit hit;
-		if (Physics.Raycast (transform.position, transform.forward, out hit)) 
+		targetRoom = currentHitTarget.GetComponent<RoomScript> ();
+		if (room.isPowered) 
 		{
-			currentHitTarget = hit.collider.gameObject;
+			if (targetRoom)
+			{				
+				if (currentHitTarget != room.here && 
+					targetRoom.chainPos >= room.chainPos)
+				{
+					flipDoorSwitch (currentHitTarget);
+				}
+				if (currentHitTarget != room.here && 
+					targetRoom.chainPos >= room.chainPos && 
+					!targetRoom.isPowered)
+				{
+					room.redirectPowerTransfer (currentHitTarget);  
+					targetRoom.hasReceivedSourcePower = false;
+				}
+			}
+			Debug.Log (currentHitTarget.name);
 		}
-		Debug.Log (currentHitTarget.name);
+		transform.Rotate (0, -90, 0, Space.Self);
+		identifyTarget ();
+		if (room.isPowered) 
+		{
+			StartCoroutine (Wait (0.5f));
+		}
 	}
 
 	// Same as above but turn right.
 	public void turnDialRight ()
 	{
-		transform.Rotate (0, 90, 0, Space.Self);
-		transform.Rotate (0, -90, 0, Space.Self);
-		RaycastHit hit;
-		if (Physics.Raycast (transform.position, transform.forward, out hit)) 
+		targetRoom = currentHitTarget.GetComponent<RoomScript> ();
+		if (room.isPowered) 
 		{
-			currentHitTarget = hit.collider.gameObject;
+			if (targetRoom)
+			{
+				if (currentHitTarget != room.here && 
+					targetRoom.chainPos >= room.chainPos)
+				{
+					flipDoorSwitch (currentHitTarget);
+				}
+				if (currentHitTarget != room.here && 
+					targetRoom.chainPos >= room.chainPos && 
+					!targetRoom.isPowered)
+				{
+					room.redirectPowerTransfer (currentHitTarget);  
+					targetRoom.hasReceivedSourcePower = false;
+				}
+			}
+			Debug.Log (currentHitTarget.name);
 		}
-		Debug.Log (currentHitTarget.name);
+		transform.Rotate (0, 90, 0, Space.Self);
+		identifyTarget ();
+		if (room.isPowered) 
+		{
+			StartCoroutine (Wait (0.5f));
+		}
 	}
 
-	// Sets bool state.
-	public void statePressed(bool setPress)
+	/// Determines direction of the target.
+	/// Accesses that doorScript.
+	/// Changes active state of the door.
+	/// If changing to off, remove it from active loop list.
+	public void flipDoorSwitch (GameObject direction)
 	{
-		keyPressed = setPress;
+		Debug.Log ("FlipSwitch called on " + direction.name);
+		if (direction == room.north)
+		{
+			if (room.northDoorScript)
+			{
+				room.northDoorScript.changeActiveState (room.northDoor);
+				if (!room.northDoorScript.stateActive ())
+				{
+					gameMngr.objectsToCut.Remove (room.northDoor);
+				}
+			}
+			else if (room.northDoorCompScript)
+			{
+				room.northDoorCompScript.changeActiveState (room.northDoor);
+				if (!room.northDoorCompScript.stateActive ())
+				{
+					gameMngr.objectsToCut.Remove (room.northDoor);
+				}
+			}
+		}
+		if (direction == room.east)
+		{
+			if (room.eastDoorScript)
+			{
+				room.eastDoorScript.changeActiveState (room.eastDoor);
+				if (!room.eastDoorScript.stateActive ())
+				{
+					gameMngr.objectsToCut.Remove (room.eastDoor);
+				}
+			}
+			else if (room.eastDoorCompScript)
+			{
+				room.eastDoorCompScript.changeActiveState (room.eastDoor);
+				if (!room.eastDoorCompScript.stateActive ())
+				{
+					gameMngr.objectsToCut.Remove (room.eastDoor);
+				}
+			}
+		}
+		if (direction == room.south)
+		{
+			if (room.southDoorScript)
+			{
+				room.southDoorScript.changeActiveState (room.southDoor);
+				if (!room.southDoorScript.stateActive ())
+				{
+					gameMngr.objectsToCut.Remove (room.southDoor);
+				}
+			}
+			else if (room.southDoorCompScript)
+			{
+				room.southDoorCompScript.changeActiveState (room.southDoor);
+				if (!room.southDoorCompScript.stateActive ())
+				{
+					gameMngr.objectsToCut.Remove (room.southDoor);
+				}
+			}
+		}
+		if (direction == room.west)
+		{
+			if (room.westDoor.GetComponent<DoorScript> ())
+			{
+				room.westDoorScript = room.westDoor.GetComponent<DoorScript> ();
+			}
+			else if (room.westDoor.GetComponent<DoorCompleteScript> ())
+			{
+				room.westDoorCompScript = room.westDoor.GetComponent<DoorCompleteScript> ();
+			}
+
+			if (room.westDoorScript)
+			{
+				room.westDoorScript.changeActiveState (room.westDoor);
+				if (!room.westDoorScript.stateActive ())
+				{
+					gameMngr.objectsToCut.Remove (room.westDoor);
+				}
+			}
+			else if (room.westDoorCompScript)
+			{
+				room.westDoorCompScript.changeActiveState (room.westDoor);
+				if (!room.westDoorCompScript.stateActive ())
+				{
+					gameMngr.objectsToCut.Remove (room.westDoor);
+				}
+			}
+		}
 	}
 
-	// Returns bool state.
-	public bool statePressed()
-	{
-		return keyPressed;
-	}
 }
